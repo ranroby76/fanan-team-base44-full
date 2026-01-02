@@ -18,7 +18,7 @@ export default function Home() {
       </section>
 
       <section className="container mx-auto px-4 text-center">
-        <div className="bg-secondary p-6 rounded-lg shadow-md border border-border">
+        <div className="bg-secondary p-6 rounded-lg shadow-md border border-border border-l-4 border-primary">
           <p className="text-lg font-semibold text-secondary-foreground">
             New to fanan team? Please, always read the "how to buy?" instructions before purchasing
           </p>
@@ -36,7 +36,7 @@ export default function Home() {
               alt="Promo graphic"
               className="hidden sm:block object-contain w-40 h-40"
             />
-            <h2 className="text-3xl font-bold text-foreground tracking-wider uppercase text-center px-4">
+            <h2 className="text-3xl font-bold text-primary tracking-wider uppercase text-center px-4">
               WE BELIEVE EVERY SEASON IS SALES SEASON
             </h2>
             <img
