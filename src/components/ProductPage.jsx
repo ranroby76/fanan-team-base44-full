@@ -54,7 +54,9 @@ export default function ProductPage({
     demoLink: dbProduct.demo_link,
     buyLink: dbProduct.buy_link || "/BuyNow",
     longDescription: dbProduct.long_description,
-    pack: dbProduct.pack
+    pack: dbProduct.pack,
+    downloadLinks: dbProduct.download_links || [],
+    youtubeLinks: dbProduct.youtube_links || []
   } : {
     name: productName,
     description: productDescription,
@@ -67,7 +69,9 @@ export default function ProductPage({
     demoLink: demoLink,
     buyLink: buyLink,
     longDescription: longDescription,
-    pack: packName
+    pack: packName,
+    downloadLinks: [],
+    youtubeLinks: []
   };
 
   const [mainImage, setMainImage] = useState(finalProduct.image || productImage);
@@ -150,14 +154,24 @@ export default function ProductPage({
                 <h2 className="font-semibold tracking-tight font-headline text-2xl text-primary mb-4">About this Plugin</h2>
                 <div className="space-y-4 text-foreground/90 leading-relaxed">
                   {finalProduct.longDescription ? (
-                     <div dangerouslySetInnerHTML={{ __html: finalProduct.longDescription }} />
+                    <div className="prose prose-invert prose-p:text-foreground/90 prose-headings:text-primary max-w-none">
+                       {/* Render simplified markdown manually */}
+                       {finalProduct.longDescription.split('\n').map((line, i) => {
+                         if (line.startsWith('## ')) return <h2 key={i} className="text-xl font-bold mt-4 mb-2">{line.replace('## ', '')}</h2>;
+                         if (line.startsWith('# ')) return <li key={i} className="list-disc ml-4 my-1">{line.replace('# ', '')}</li>;
+                         // Handle existing HTML content if old data exists
+                         if (line.trim().startsWith('<') && line.trim().endsWith('>')) return <div key={i} dangerouslySetInnerHTML={{ __html: line }} />;
+                         return line.trim() ? <p key={i} className="mb-2">{line}</p> : <br key={i}/>;
+                       })}
+                    </div>
                   ) : (
                     <p>{finalProduct.description}</p>
                   )}
                 </div>
               </div>
 
-              {finalProduct.features && finalProduct.features.length > 0 && finalProduct.features.some(f => f.trim() !== "") && (
+              {/* Features - only show if legacy format (array) is used, since new format uses description text */}
+              {(!finalProduct.longDescription || !finalProduct.longDescription.includes("# ")) && finalProduct.features && finalProduct.features.length > 0 && finalProduct.features.some(f => f && f.trim() !== "") && (
                 <div>
                   <h3 className="text-xl font-headline text-primary font-semibold mb-3">Key Features</h3>
                   <ul className="space-y-3">
@@ -205,6 +219,33 @@ export default function ProductPage({
                   </div>
                 </div>
               )}
+
+              {/* YouTube Videos */}
+              {finalProduct.youtubeLinks && finalProduct.youtubeLinks.length > 0 && (
+                <div className="space-y-6 mt-8">
+                  <h3 className="text-xl font-headline text-primary font-semibold">Videos</h3>
+                  <div className="grid grid-cols-1 gap-4">
+                    {finalProduct.youtubeLinks.map((link, idx) => {
+                      if (!link) return null;
+                      // Simple regex to extract video ID for embed
+                      const videoId = link.match(/(?:youtu\.be\/|youtube\.com(?:\/embed\/|\/v\/|\/watch\?v=|\/user\/\S+|\/ytscreeningroom\?v=))([\w-]{11})/)?.[1];
+                      return videoId ? (
+                        <div key={idx} className="aspect-video rounded-lg overflow-hidden border border-border shadow-md">
+                          <iframe
+                            width="100%"
+                            height="100%"
+                            src={`https://www.youtube.com/embed/${videoId}`}
+                            title={`YouTube video ${idx + 1}`}
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                          ></iframe>
+                        </div>
+                      ) : null;
+                    })}
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
 
@@ -227,20 +268,36 @@ export default function ProductPage({
               )}
 
               <div className="space-y-3">
-                {finalProduct.demoLink && (
-                  <Button asChild variant="outline" className="w-full h-12 text-base font-semibold border-primary/50 hover:bg-primary/10 hover:text-primary transition-all">
-                    <a href={finalProduct.demoLink} target="_blank" rel="noopener noreferrer">
-                      <Download className="mr-2 h-5 w-5" /> Download Demo
-                    </a>
-                  </Button>
-                )}
+                {/* Custom Download Links */}
+                {finalProduct.downloadLinks && finalProduct.downloadLinks.length > 0 && finalProduct.downloadLinks.map((link, idx) => (
+                  (link.url || link.label) && (
+                    <Button key={idx} asChild className="w-full h-12 text-base font-bold bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg hover:shadow-primary/20 transition-all">
+                      <a href={link.url || "#"} target="_blank" rel="noopener noreferrer">
+                        <Download className="mr-2 h-5 w-5" /> {link.label || "Download"}
+                      </a>
+                    </Button>
+                  )
+                ))}
 
-                {finalProduct.buyLink && (
-                  <Button asChild className="w-full h-12 text-base font-bold bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg hover:shadow-primary/20 transition-all">
-                    <Link to={finalProduct.buyLink}>
-                      <ShoppingCart className="mr-2 h-5 w-5" /> Buy Now
-                    </Link>
-                  </Button>
+                {/* Legacy Links (only if no custom download links) */}
+                {(!finalProduct.downloadLinks || finalProduct.downloadLinks.length === 0) && (
+                  <>
+                    {finalProduct.demoLink && (
+                      <Button asChild variant="outline" className="w-full h-12 text-base font-semibold border-primary/50 hover:bg-primary/10 hover:text-primary transition-all">
+                        <a href={finalProduct.demoLink} target="_blank" rel="noopener noreferrer">
+                          <Download className="mr-2 h-5 w-5" /> Download Demo
+                        </a>
+                      </Button>
+                    )}
+
+                    {finalProduct.buyLink && (
+                      <Button asChild className="w-full h-12 text-base font-bold bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg hover:shadow-primary/20 transition-all">
+                        <Link to={finalProduct.buyLink}>
+                          <ShoppingCart className="mr-2 h-5 w-5" /> Buy Now
+                        </Link>
+                      </Button>
+                    )}
+                  </>
                 )}
               </div>
             </CardContent>
