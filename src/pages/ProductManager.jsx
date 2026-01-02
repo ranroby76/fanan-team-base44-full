@@ -26,6 +26,13 @@ export default function ProductManager() {
 
 
 
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!authLoading && !user) {
+      base44.auth.redirectToLogin(window.location.pathname);
+    }
+  }, [user, authLoading]);
+
   // Check if user is allowed admin
   const isAllowedAdmin = user && allowedAdmins.includes(user.email);
 
@@ -64,43 +71,11 @@ export default function ProductManager() {
     })
     .sort((a, b) => a.title?.localeCompare(b.title));
 
-  // Show loading while checking auth
-  if (authLoading) {
+  // Show loading while checking auth or redirecting to login
+  if (authLoading || !user) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
-      </div>
-    );
-  }
-
-  // Show login prompt if not authenticated
-  if (!user) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-6 text-center px-4">
-        <Lock className="w-16 h-16 text-primary" />
-        <div className="space-y-6">
-          <div>
-            <h1 className="text-3xl font-bold mb-2">VIP Login Required</h1>
-            <p className="text-muted-foreground mb-6">Please sign in to access the product manager.</p>
-          </div>
-          <div className="flex flex-col gap-3 min-w-[280px]">
-            <Button 
-              onClick={() => base44.auth.redirectToLogin(window.location.pathname)} 
-              size="lg"
-              className="w-full"
-            >
-              Sign In with Email
-            </Button>
-            <Button 
-              onClick={() => base44.auth.redirectToLogin(window.location.pathname)} 
-              size="lg"
-              variant="outline"
-              className="w-full"
-            >
-              Sign In with Google
-            </Button>
-          </div>
-        </div>
       </div>
     );
   }
