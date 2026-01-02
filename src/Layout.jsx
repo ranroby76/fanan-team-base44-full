@@ -1,17 +1,30 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
+import { Menu, X, Home, VenetianMask, List, HelpCircle, ShoppingCart, Mail, Package, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function Layout({ children, currentPageName }) {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
-  const navigation = [
-    { name: "Home", page: "Home" },
-    { name: "How to Buy?", page: "HowToBuy" },
-    { name: "Buy Now", page: "BuyNow" },
-    { name: "Contact Us", page: "ContactUs" },
-    { name: "GUI Me", page: "GuiMe" },
+  // Navigation structure matching reference
+  const mainNavLinks = [
+    { name: "GUI Me", page: "GuiMe", path: "/GuiMe", icon: VenetianMask },
+    { name: "Packs List", page: "PacksList", path: "/PacksList", icon: List },
+    { name: "How to Buy", page: "HowToBuy", path: "/HowToBuy", icon: HelpCircle },
+    { name: "Buy Now", page: "BuyNow", path: "/BuyNow", icon: ShoppingCart },
+    { name: "Contact Us", page: "ContactUs", path: "/ContactUs", icon: Mail },
+  ];
+
+  const productLinks = [
+    { name: "Mad MIDI Machines", path: "/MadMidiMachinePack" },
+    { name: "Max! Pack", path: "/MaxPack" },
+    { name: "Free Pack", path: "/FreePack" },
   ];
 
   return (
@@ -41,28 +54,49 @@ export default function Layout({ children, currentPageName }) {
         }
       `}</style>
       <header className="bg-primary text-primary-foreground shadow-lg sticky top-0 z-50">
-        <nav className="container mx-auto px-4 py-4">
+        <nav className="container mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
-            <Link to="/" className="text-2xl font-bold text-primary-foreground hover:opacity-90 transition-colors">
+            <Link to="/" className="text-2xl font-bold text-primary-foreground hover:opacity-90 transition-colors flex items-center gap-2">
               <img src="https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team-3/public/images/fanan_logo.png" alt="Fanan Team" className="h-10 w-auto" />
             </Link>
 
-            <div className="hidden md:flex items-center space-x-6">
-              {navigation.map((item) => (
-                <Link
-                  key={item.page}
-                  to={`/${item.page === 'Home' ? '' : item.page}`}
-                  className={`hover:opacity-80 transition-colors ${
-                    currentPageName === item.page ? "text-primary-foreground font-semibold" : "text-primary-foreground"
-                  }`}
-                >
-                  {item.name}
+            <div className="hidden md:flex items-center space-x-2">
+              <Button variant="ghost" asChild className={`hover:bg-primary-foreground/10 text-primary-foreground ${currentPageName === 'Home' ? 'bg-primary-foreground/10' : ''}`}>
+                <Link to="/" className="flex items-center gap-2">
+                  <Home size={18} />
+                  <span>Home</span>
                 </Link>
+              </Button>
+
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="hover:bg-primary-foreground/10 text-primary-foreground gap-2">
+                    <Package size={18} />
+                    <span>Products</span>
+                    <ChevronDown size={14} />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="bg-primary text-primary-foreground border-primary-foreground/20">
+                  {productLinks.map((link) => (
+                    <DropdownMenuItem key={link.path} asChild className="focus:bg-primary-foreground/20 focus:text-primary-foreground cursor-pointer">
+                      <Link to={link.path}>{link.name}</Link>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              {mainNavLinks.map((item) => (
+                <Button key={item.page} variant="ghost" asChild className={`hover:bg-primary-foreground/10 text-primary-foreground ${currentPageName === item.page ? 'bg-primary-foreground/10' : ''}`}>
+                  <Link to={item.path} className="flex items-center gap-2">
+                    <item.icon size={18} />
+                    <span>{item.name}</span>
+                  </Link>
+                </Button>
               ))}
             </div>
 
             <button
-              className="md:hidden"
+              className="md:hidden text-primary-foreground"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -71,16 +105,36 @@ export default function Layout({ children, currentPageName }) {
 
           {mobileMenuOpen && (
             <div className="md:hidden mt-4 pb-4 space-y-2">
-              {navigation.map((item) => (
+              <Link
+                to="/"
+                className="block py-2 px-4 hover:bg-primary-foreground/10 rounded transition-colors text-primary-foreground flex items-center gap-2"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Home size={18} /> Home
+              </Link>
+              
+              <div className="py-2 px-4 text-primary-foreground font-semibold flex items-center gap-2 opacity-70">
+                <Package size={18} /> Products
+              </div>
+              {productLinks.map((link) => (
                 <Link
-                  key={item.page}
-                  to={`/${item.page === 'Home' ? '' : item.page}`}
-                  className={`block py-2 hover:opacity-80 transition-colors ${
-                    currentPageName === item.page ? "text-primary-foreground font-semibold" : "text-primary-foreground"
-                  }`}
+                  key={link.path}
+                  to={link.path}
+                  className="block py-2 px-8 hover:bg-primary-foreground/10 rounded transition-colors text-primary-foreground/90"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  {item.name}
+                  {link.name}
+                </Link>
+              ))}
+
+              {mainNavLinks.map((item) => (
+                <Link
+                  key={item.page}
+                  to={item.path}
+                  className="block py-2 px-4 hover:bg-primary-foreground/10 rounded transition-colors text-primary-foreground flex items-center gap-2"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <item.icon size={18} /> {item.name}
                 </Link>
               ))}
             </div>

@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import HowToBuy from './pages/HowToBuy';
 import MadMidiMachinePack from './pages/MadMidiMachinePack';
 import MaxPack from './pages/MaxPack';
+import PacksList from './pages/PacksList';
 import __Layout from './Layout.jsx';
 
 
@@ -18,6 +19,7 @@ export const PAGES = {
     "HowToBuy": HowToBuy,
     "MadMidiMachinePack": MadMidiMachinePack,
     "MaxPack": MaxPack,
+    "PacksList": PacksList,
 }
 
 export const pagesConfig = {
