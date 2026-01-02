@@ -54,38 +54,43 @@ export default function Dashboard() {
 
         <TabsContent value="products" className="space-y-6">
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
+            <CardHeader className="flex flex-row items-center justify-between gap-4">
               <div>
                 <CardTitle>Product Catalog</CardTitle>
                 <CardDescription>Manage your VST plugins and packs</CardDescription>
               </div>
-              <div className="relative w-72">
-                <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input 
-                  placeholder="Search products..." 
-                  className="pl-8" 
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
+              
+              <div className="flex gap-2 bg-muted/20 p-1 rounded-lg">
+                {packs.map(pack => (
+                  <Button
+                    key={pack}
+                    size="sm"
+                    variant={selectedPack === pack ? "default" : "ghost"}
+                    onClick={() => setSelectedPack(pack)}
+                    className={`text-xs font-medium ${selectedPack === pack ? 'shadow-sm' : 'opacity-70 hover:opacity-100'}`}
+                  >
+                    {pack}
+                  </Button>
+                ))}
+              </div>
+
+              <div className="flex items-center gap-3">
+                 <Button onClick={() => setEditingProduct({})} size="sm" className="hidden md:flex">
+                  <Plus className="w-4 h-4 mr-2" /> Add Product
+                </Button>
+                <div className="relative w-64">
+                  <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <Input 
+                    placeholder="Search products..." 
+                    className="pl-8 h-9" 
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                </div>
               </div>
             </CardHeader>
             <CardContent>
-              <div className="mb-6 p-6 border-2 rounded-xl bg-background/50 shadow-sm">
-                <h3 className="text-md font-bold mb-4 text-foreground uppercase tracking-wide">Select Pack to View:</h3>
-                <div className="flex flex-wrap gap-4">
-                  {packs.map(pack => (
-                    <Button
-                      key={pack}
-                      size="lg"
-                      variant={selectedPack === pack ? "default" : "outline"}
-                      onClick={() => setSelectedPack(pack)}
-                      className={`flex-1 md:flex-none text-base font-semibold border-2 ${selectedPack === pack ? 'shadow-lg scale-105' : 'opacity-70 hover:opacity-100'}`}
-                    >
-                      {pack}
-                    </Button>
-                  ))}
-                </div>
-              </div>
+
 
               <div className="rounded-md border">
                 <Table>

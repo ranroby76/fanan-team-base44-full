@@ -46,14 +46,20 @@ export default function EditProduct({ product, onClose }) {
   const [versionsList, setVersionsList] = React.useState(product.versions || []);
 
   const updateProductMutation = useMutation({
-    mutationFn: (data) => base44.entities.Product.update(product.id, data),
+    mutationFn: (data) => {
+      if (product.id) {
+        return base44.entities.Product.update(product.id, data);
+      } else {
+        return base44.entities.Product.create(data);
+      }
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['products'] });
-      toast.success("Product updated successfully");
+      toast.success(product.id ? "Product updated successfully" : "Product created successfully");
       onClose();
     },
     onError: (error) => {
-      toast.error("Failed to update product: " + error.message);
+      toast.error("Failed to save product: " + error.message);
     }
   });
 
@@ -85,7 +91,7 @@ export default function EditProduct({ product, onClose }) {
             <Button variant="ghost" size="icon" onClick={onClose}>
               <ArrowLeft className="w-5 h-5" />
             </Button>
-            <CardTitle className="text-2xl font-headline text-primary">Edit: {product.title}</CardTitle>
+            <CardTitle className="text-2xl font-headline text-primary">{product.id ? `Edit: ${product.title}` : 'Create New Product'}</CardTitle>
           </div>
           <div className="flex gap-2">
             <Button variant="outline" onClick={onClose}>Cancel</Button>
