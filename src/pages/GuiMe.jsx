@@ -25,28 +25,28 @@ export default function GuiMe() {
             </p>
             
             <div className="grid md:grid-cols-2 gap-6 mt-8">
-              <div className="p-6 bg-secondary/30 rounded-lg">
+              <div className="p-6 bg-secondary border border-border text-secondary-foreground rounded-lg">
                 <h3 className="text-xl font-semibold mb-3">Visual Clarity</h3>
                 <p className="leading-relaxed">
                   Every element has a purpose. We design with intention, ensuring that each control and display serves the musician's workflow without clutter or confusion.
                 </p>
               </div>
               
-              <div className="p-6 bg-secondary/30 rounded-lg">
+              <div className="p-6 bg-secondary border border-border text-secondary-foreground rounded-lg">
                 <h3 className="text-xl font-semibold mb-3">Intuitive Controls</h3>
                 <p className="leading-relaxed">
                   Our interfaces are designed to feel natural. Whether you're a beginner or a pro, you'll find our plugins easy to navigate and quick to master.
                 </p>
               </div>
               
-              <div className="p-6 bg-secondary/30 rounded-lg">
+              <div className="p-6 bg-secondary border border-border text-secondary-foreground rounded-lg">
                 <h3 className="text-xl font-semibold mb-3">Aesthetic Excellence</h3>
                 <p className="leading-relaxed">
                   Beautiful design inspires creativity. We craft interfaces that you'll enjoy looking at during those long studio sessions.
                 </p>
               </div>
               
-              <div className="p-6 bg-secondary/30 rounded-lg">
+              <div className="p-6 bg-secondary border border-border text-secondary-foreground rounded-lg">
                 <h3 className="text-xl font-semibold mb-3">Performance First</h3>
                 <p className="leading-relaxed">
                   Pretty interfaces mean nothing if they slow you down. Our GUIs are optimized to be lightweight and responsive.
