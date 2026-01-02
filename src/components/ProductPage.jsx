@@ -195,38 +195,49 @@ export default function ProductPage({
 
               <Separator className="bg-primary/20" />
 
-              {/* Safe check for formats using optional chaining */}
-              {(finalProduct.formats?.audio || finalProduct.formats?.video || (Array.isArray(finalProduct.formats?.list) && finalProduct.formats.list.length > 0)) && (
-                <div>
-                  <h3 className="text-xl font-headline text-primary font-semibold mb-3">Supported Formats</h3>
-                  
-                  {/* Format List (VST, Windows, etc.) */}
-                  {Array.isArray(finalProduct.formats?.list) && finalProduct.formats.list.length > 0 && (
-                     <div className="flex flex-wrap gap-2 mb-4">
-                        {finalProduct.formats.list.map(f => (
-                           <span key={f} className="bg-secondary/50 text-secondary-foreground px-3 py-1 rounded-full text-sm font-semibold border border-secondary">
-                              {f}
-                           </span>
-                        ))}
-                     </div>
-                  )}
+              {/* Supported Formats Section */}
+              {(() => {
+                const audio = finalProduct.formats?.audio;
+                const video = finalProduct.formats?.video;
+                const list = Array.isArray(finalProduct.formats?.list) ? finalProduct.formats.list : [];
+                const hasAnyFormat = audio || video || list.length > 0;
 
-                  <div className={`grid ${finalProduct.formats?.audio && finalProduct.formats?.video ? 'grid-cols-2' : 'grid-cols-1'} gap-4`}>
-                    {finalProduct.formats?.audio && (
-                      <div className="bg-secondary/30 p-3 rounded border border-secondary">
-                        <strong className="block text-primary mb-1">Audio</strong>
-                        <span className="text-sm">{finalProduct.formats.audio}</span>
-                      </div>
+                if (!hasAnyFormat) return null;
+
+                return (
+                  <div>
+                    <h3 className="text-xl font-headline text-primary font-semibold mb-3">Supported Formats</h3>
+                    
+                    {/* Format List (VST, Windows, etc.) */}
+                    {list.length > 0 && (
+                       <div className="flex flex-wrap gap-2 mb-4">
+                          {list.map(f => (
+                             <span key={f} className="bg-secondary/50 text-secondary-foreground px-3 py-1 rounded-full text-sm font-semibold border border-secondary">
+                                {f}
+                             </span>
+                          ))}
+                       </div>
                     )}
-                    {finalProduct.formats?.video && (
-                      <div className="bg-secondary/30 p-3 rounded border border-secondary">
-                        <strong className="block text-primary mb-1">Video</strong>
-                        <span className="text-sm">{finalProduct.formats.video}</span>
+
+                    {(audio || video) && (
+                      <div className={`grid ${audio && video ? 'grid-cols-2' : 'grid-cols-1'} gap-4`}>
+                        {audio && (
+                          <div className="bg-secondary/30 p-3 rounded border border-secondary">
+                            <strong className="block text-primary mb-1">Audio</strong>
+                            <span className="text-sm">{audio}</span>
+                          </div>
+                        )}
+                        {video && (
+                          <div className="bg-secondary/30 p-3 rounded border border-secondary">
+                            <strong className="block text-primary mb-1">Video</strong>
+                            <span className="text-sm">{video}</span>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
-                </div>
-              )}
+                );
+              })()}
 
               {finalProduct.versions && finalProduct.versions.length > 0 && finalProduct.versions.some(v => v.name) && (
                 <div className="bg-primary/5 p-4 rounded-lg border border-primary/10">
