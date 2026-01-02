@@ -48,7 +48,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="w-full py-12 bg-accent text-accent-foreground">
+      <section className="w-full py-12 bg-secondary">
         <div className="container mx-auto px-4 flex flex-col md:flex-row items-center gap-8">
           <div className="md:w-1/2">
             <img

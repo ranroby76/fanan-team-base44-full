@@ -16,10 +16,10 @@ export default function Layout({ children, currentPageName }) {
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
-      <header className="bg-accent text-accent-foreground shadow-lg sticky top-0 z-50">
+      <header className="bg-primary text-primary-foreground shadow-lg sticky top-0 z-50">
         <nav className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <Link to="/" className="text-2xl font-bold text-primary hover:opacity-90 transition-colors">
+            <Link to="/" className="text-2xl font-bold text-primary-foreground hover:opacity-90 transition-colors">
               Fanan Team
             </Link>
 
@@ -28,9 +28,9 @@ export default function Layout({ children, currentPageName }) {
                 <Link
                   key={item.page}
                   to={`/${item.page === 'Home' ? '' : item.page}`}
-                  className={`hover:text-primary transition-colors ${
-                    currentPageName === item.page ? "text-primary font-semibold" : ""
-                  }`}
+                  className={`hover:opacity-80 transition-colors ${
+                    currentPageName === item.page ? "text-primary-foreground font-semibold" : "text-primary-foreground"
+                  }`
                 >
                   {item.name}
                 </Link>
@@ -51,8 +51,8 @@ export default function Layout({ children, currentPageName }) {
                 <Link
                   key={item.page}
                   to={`/${item.page === 'Home' ? '' : item.page}`}
-                  className={`block py-2 hover:text-primary transition-colors ${
-                    currentPageName === item.page ? "text-primary font-semibold" : ""
+                  className={`block py-2 hover:opacity-80 transition-colors ${
+                    currentPageName === item.page ? "text-primary-foreground font-semibold" : "text-primary-foreground"
                   }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
@@ -68,9 +68,9 @@ export default function Layout({ children, currentPageName }) {
         {children}
       </main>
 
-      <footer className="bg-accent text-accent-foreground py-8 mt-12">
+      <footer className="bg-secondary text-secondary-foreground py-8 mt-12">
         <div className="container mx-auto px-4 text-center">
-          <p className="text-muted-foreground">
+          <p className="text-secondary-foreground">
             © {new Date().getFullYear()} Fanan Team. All rights reserved.
           </p>
           <p className="text-sm text-muted-foreground mt-2">
