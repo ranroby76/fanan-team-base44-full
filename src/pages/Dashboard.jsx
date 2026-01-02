@@ -11,6 +11,7 @@ import EditProduct from "../components/dashboard/EditProduct";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("products");
+  const [selectedPack, setSelectedPack] = useState("Mad MIDI Machines");
   const [editingProduct, setEditingProduct] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -23,7 +24,8 @@ export default function Dashboard() {
   const packs = ["Mad MIDI Machines", "Max! Pack", "Free Pack"];
 
   const filteredProducts = products.filter(p => 
-    p.title.toLowerCase().includes(searchTerm.toLowerCase())
+    p.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
+    p.pack === selectedPack
   );
 
   if (isLoading) {
@@ -68,80 +70,79 @@ export default function Dashboard() {
               </div>
             </CardHeader>
             <CardContent>
-              <Tabs defaultValue="Mad MIDI Machines">
-                <TabsList className="mb-4">
-                  {packs.map(pack => (
-                    <TabsTrigger key={pack} value={pack}>{pack}</TabsTrigger>
-                  ))}
-                </TabsList>
-                
+              <div className="flex flex-wrap gap-2 mb-6">
                 {packs.map(pack => (
-                  <TabsContent key={pack} value={pack}>
-                    <div className="rounded-md border">
-                      <Table>
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead className="w-[80px]">Image</TableHead>
-                            <TableHead>Title</TableHead>
-                            <TableHead className="hidden md:table-cell">Description</TableHead>
-                            <TableHead className="hidden md:table-cell">Formats</TableHead>
-                            <TableHead className="text-right">Actions</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {filteredProducts
-                            .filter(p => p.pack === pack)
-                            .map((product) => (
-                              <TableRow 
-                                key={product.id} 
-                                className="cursor-pointer hover:bg-muted/50"
-                                onClick={() => setEditingProduct(product)}
-                              >
-                                <TableCell>
-                                  {product.main_image && (
-                                    <img 
-                                      src={product.main_image} 
-                                      alt={product.title} 
-                                      className="h-10 w-10 object-cover rounded bg-muted"
-                                    />
-                                  )}
-                                </TableCell>
-                                <TableCell className="font-medium">{product.title}</TableCell>
-                                <TableCell className="hidden md:table-cell text-muted-foreground">
-                                  {product.short_description}
-                                </TableCell>
-                                <TableCell className="hidden md:table-cell">
-                                  <div className="flex flex-wrap gap-1">
-                                    {(product.formats || []).slice(0, 3).map(fmt => (
-                                      <span key={fmt} className="text-xs bg-secondary px-1.5 py-0.5 rounded text-secondary-foreground">
-                                        {fmt}
-                                      </span>
-                                    ))}
-                                    {(product.formats || []).length > 3 && (
-                                      <span className="text-xs text-muted-foreground">+{product.formats.length - 3}</span>
-                                    )}
-                                  </div>
-                                </TableCell>
-                                <TableCell className="text-right">
-                                  <Button variant="ghost" size="icon">
-                                    <Edit className="w-4 h-4" />
-                                  </Button>
-                                </TableCell>
-                              </TableRow>
-                            ))}
-                          {filteredProducts.filter(p => p.pack === pack).length === 0 && (
-                            <TableRow>
-                              <TableCell colSpan={5} className="text-center h-24 text-muted-foreground">
-                                No products found in this pack.
-                              </TableCell>
-                            </TableRow>
-                          )}
-                        </TableBody>
-                      </Table>
-                    </div>
-                  </TabsContent>
+                  <Button
+                    key={pack}
+                    variant={selectedPack === pack ? "default" : "outline"}
+                    onClick={() => setSelectedPack(pack)}
+                    className="flex-1 md:flex-none"
+                  >
+                    {pack}
+                  </Button>
                 ))}
-              </Tabs>
+              </div>
+
+              <div className="rounded-md border">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="w-[80px]">Image</TableHead>
+                      <TableHead>Title</TableHead>
+                      <TableHead className="hidden md:table-cell">Description</TableHead>
+                      <TableHead className="hidden md:table-cell">Formats</TableHead>
+                      <TableHead className="text-right">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredProducts.map((product) => (
+                      <TableRow 
+                        key={product.id} 
+                        className="cursor-pointer hover:bg-muted/50"
+                        onClick={() => setEditingProduct(product)}
+                      >
+                        <TableCell>
+                          {product.main_image && (
+                            <img 
+                              src={product.main_image} 
+                              alt={product.title} 
+                              className="h-10 w-10 object-cover rounded bg-muted"
+                            />
+                          )}
+                        </TableCell>
+                        <TableCell className="font-medium">{product.title}</TableCell>
+                        <TableCell className="hidden md:table-cell text-muted-foreground">
+                          {product.short_description}
+                        </TableCell>
+                        <TableCell className="hidden md:table-cell">
+                          <div className="flex flex-wrap gap-1">
+                            {(product.formats || []).slice(0, 3).map(fmt => (
+                              <span key={fmt} className="text-xs bg-secondary px-1.5 py-0.5 rounded text-secondary-foreground">
+                                {fmt}
+                              </span>
+                            ))}
+                            {(product.formats || []).length > 3 && (
+                              <span className="text-xs text-muted-foreground">+{product.formats.length - 3}</span>
+                            )}
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <Button variant="ghost" size="icon">
+                            <Edit className="w-4 h-4" />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                    {filteredProducts.length === 0 && (
+                      <TableRow>
+                        <TableCell colSpan={5} className="text-center h-24 text-muted-foreground">
+                          No products found in this pack matching your search.
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
