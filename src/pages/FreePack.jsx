@@ -1,81 +1,123 @@
 import React from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Gift, Download } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function FreePack() {
+  const products = [
+    {
+      id: "blue-lue",
+      name: "Blue Lue",
+      description: "Slots Driven Drum Machine",
+      image: "https://fananteam.com/images/bluelue1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/BlueLue"
+    },
+    {
+      id: "999-gen2",
+      name: "999 gen2",
+      description: "Rhythmic Midi Arp",
+      image: "https://fananteam.com/images/9991.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/999Gen2"
+    },
+    {
+      id: "anytext",
+      name: "AnyText",
+      description: "Textual Comments Generator",
+      image: "https://fananteam.com/images/anytext1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/AnyText"
+    },
+    {
+      id: "bella",
+      name: "Bella",
+      description: "Bell Machine",
+      image: "https://fananteam.com/images/bella1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/Bella"
+    },
+    {
+      id: "bjorn",
+      name: "Bjorn",
+      description: "Filter Module",
+      image: "https://fananteam.com/images/Bjorn1.jpg",
+      footer: "VST | Windows 32bit/64bit",
+      link: "/Bjorn"
+    },
+    {
+      id: "bonnie",
+      name: "Bonnie",
+      description: "Drum Slots Sampler",
+      image: "https://fananteam.com/images/bonnie1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/Bonnie"
+    },
+    {
+      id: "djup",
+      name: "Djup",
+      description: "Nordish Bass Module",
+      image: "https://fananteam.com/images/djup1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/Djup"
+    },
+    {
+      id: "kitton-3",
+      name: "Kitton 3",
+      description: "GM Compatible Drum Machine",
+      image: "https://fananteam.com/images/kitton31.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/Kitton3"
+    }
+  ];
+
   return (
-    <div className="container mx-auto px-4">
-      <div className="animate-fade-in space-y-12">
-        <div className="text-center">
-          <Gift className="mx-auto h-12 w-12 text-primary mb-4" />
-          <h1 className="text-4xl font-bold text-primary">Free Pack</h1>
-          <p className="text-lg mt-2 text-muted-foreground">
-            Get started with our free plugins and tools
-          </p>
+    <div className="container mx-auto px-4 py-8 animate-fade-in space-y-8">
+      {/* Header Image */}
+      <div className="flex justify-center mb-8">
+        <div className="w-full max-w-lg h-auto">
+          <img
+            src="https://fananteam.com/images/free%20pack.png"
+            alt="Free Pack Logo"
+            className="object-contain w-full h-auto"
+          />
         </div>
+      </div>
 
-        <Card className="shadow-xl">
-          <CardHeader>
-            <CardTitle className="text-3xl">Try Before You Buy</CardTitle>
-            <CardDescription className="text-lg">
-              Full-featured free plugins to experience our quality
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <img
-              src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&h=400&fit=crop"
-              alt="Free Pack"
-              className="rounded-lg shadow-lg w-full object-cover"
-            />
-            
-            <div className="bg-secondary p-6 rounded-lg border border-border">
-              <p className="text-lg font-semibold text-center text-secondary-foreground">
-                100% Free Forever - No Strings Attached!
-              </p>
-            </div>
-
-            <p className="text-lg leading-relaxed">
-              Our Free Pack includes fully functional plugins that showcase the quality and design philosophy of Fanan Team. These aren't demos or limited versions—they're complete, professional tools that you can use in your productions forever.
-            </p>
-
-            <div className="grid md:grid-cols-2 gap-6 mt-8">
-              <div className="p-6 bg-secondary/30 rounded-lg">
-                <h3 className="text-xl font-semibold mb-3">Basic Synthesizer</h3>
-                <p>A streamlined synth perfect for learning and experimenting</p>
+      {/* Products Grid */}
+      <div className="columns-1 md:columns-2 gap-8 space-y-8">
+        {products.map((product) => (
+          <div 
+            key={product.id}
+            className="rounded-lg border border-border bg-card text-card-foreground shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden break-inside-avoid group flex flex-col"
+          >
+            <Link to={product.link} className="flex flex-col h-full">
+              {/* Image Container */}
+              <div className="relative overflow-hidden bg-muted">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="object-contain w-full h-auto p-2 group-hover:scale-105 transition-transform duration-300"
+                />
               </div>
-              
-              <div className="p-6 bg-secondary/30 rounded-lg">
-                <h3 className="text-xl font-semibold mb-3">MIDI Monitor</h3>
-                <p>Essential tool for debugging and understanding MIDI data</p>
-              </div>
-              
-              <div className="p-6 bg-secondary/30 rounded-lg">
-                <h3 className="text-xl font-semibold mb-3">Simple Delay</h3>
-                <p>Clean, straightforward delay effect</p>
-              </div>
-              
-              <div className="p-6 bg-secondary/30 rounded-lg">
-                <h3 className="text-xl font-semibold mb-3">Tuner</h3>
-                <p>Accurate tuner for all your instruments</p>
-              </div>
-            </div>
 
-            <div className="p-6 bg-primary/10 rounded-lg border-l-4 border-primary mt-8">
-              <p className="font-semibold mb-2">Why Free?</p>
-              <p className="leading-relaxed">
-                We believe in letting our work speak for itself. Try our free plugins, experience our design quality, and upgrade to our paid packs when you're ready for more advanced features.
-              </p>
-            </div>
+              {/* Content */}
+              <div className="flex flex-col space-y-1.5 flex-grow p-4 bg-muted">
+                <h2 className="tracking-tight text-xl font-bold font-headline text-primary truncate transition-colors">
+                  {product.name}
+                </h2>
+                <p className="text-sm text-foreground/80 h-10 line-clamp-2">
+                  {product.description}
+                </p>
+              </div>
 
-            <div className="flex justify-center mt-8">
-              <Button size="lg" className="bg-primary">
-                <Download className="mr-2 h-5 w-5" />
-                Download Free Pack
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+              {/* Footer */}
+              <div className="flex items-center p-3 border-t border-border bg-muted/30 mt-auto">
+                <p className="text-base text-muted-foreground text-center truncate w-full">
+                  {product.footer}
+                </p>
+              </div>
+            </Link>
+          </div>
+        ))}
       </div>
     </div>
   );

@@ -1,90 +1,123 @@
 import React from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Award, Download } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function MaxPack() {
+  const products = [
+    {
+      id: "sultana-2",
+      name: "Sultana 2",
+      description: "Darbuka Machine",
+      image: "https://fananteam.com/images/sultana1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/Sultana2"
+    },
+    {
+      id: "kitton-stylist",
+      name: "Kitton Stylist",
+      description: "Advanced Stylist Sampler",
+      image: "https://fananteam.com/images/kittonstylist1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/KittonStylist"
+    },
+    {
+      id: "callisto",
+      name: "Callisto",
+      description: "Arranger Module",
+      image: "https://fananteam.com/images/calisto1.jpg",
+      footer: "VSTi | Windows 32bit/64bit | Stand-Alone",
+      link: "/Callisto"
+    },
+    {
+      id: "concordia",
+      name: "Concordia",
+      description: "Ambient Accompaniment",
+      image: "https://fananteam.com/images/CONCORDIA1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/Concordia"
+    },
+    {
+      id: "gala-xl",
+      name: "Gala XL",
+      description: "Multi Instrument Ensemble",
+      image: "https://fananteam.com/images/gala1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/GalaXL"
+    },
+    {
+      id: "gala-duo",
+      name: "Gala Duo",
+      description: "Hybrid Multi - Instrument Ensemble",
+      image: "https://fananteam.com/images/galaduo1.png",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/GalaDuo"
+    },
+    {
+      id: "arpomaniac",
+      name: "Arpomaniac",
+      description: "Rhythmic Synth",
+      image: "https://fananteam.com/images/arpomanica1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/Arpomaniac"
+    },
+    {
+      id: "anyimage",
+      name: "AnyImage",
+      description: "Image Album Generator",
+      image: "https://fananteam.com/images/anyimage1.jpg",
+      footer: "VST | Windows 32bit/64bit",
+      link: "/AnyImage"
+    }
+  ];
+
   return (
-    <div className="container mx-auto px-4">
-      <div className="animate-fade-in space-y-12">
-        <div className="text-center">
-          <Award className="mx-auto h-12 w-12 text-primary mb-4" />
-          <h1 className="text-4xl font-bold text-primary">MAX! Pack</h1>
-          <p className="text-lg mt-2 text-muted-foreground">
-            All veteran plugins in one professional bundle
-          </p>
+    <div className="container mx-auto px-4 py-8 animate-fade-in space-y-8">
+      {/* Header Image */}
+      <div className="flex justify-center mb-8">
+        <div className="w-full max-w-lg h-auto">
+          <img
+            src="https://fananteam.com/images/pro%20pack.png"
+            alt="Max! Pack Logo"
+            className="object-contain w-full h-auto"
+          />
         </div>
+      </div>
 
-        <Card className="shadow-xl border-2 border-primary">
-          <CardHeader>
-            <CardTitle className="text-3xl">The Complete Professional Collection</CardTitle>
-            <CardDescription className="text-lg">
-              Every plugin we've ever made, in one powerful package
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <img
-              src="https://images.unsplash.com/photo-1487180144351-b8472da7d491?w=800&h=400&fit=crop"
-              alt="MAX! Pack"
-              className="rounded-lg shadow-lg w-full object-cover"
-            />
-            
-            <div className="bg-secondary p-6 rounded-lg border border-border">
-              <p className="text-lg font-semibold text-center text-secondary-foreground">
-                🎉 Existing customers: Use your old serial number to unlock MAX! Pack completely!
-              </p>
-            </div>
+      {/* Products Grid */}
+      <div className="columns-1 md:columns-2 gap-8 space-y-8">
+        {products.map((product) => (
+          <div 
+            key={product.id}
+            className="rounded-lg border border-border bg-card text-card-foreground shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden break-inside-avoid group flex flex-col"
+          >
+            <Link to={product.link} className="flex flex-col h-full">
+              {/* Image Container */}
+              <div className="relative overflow-hidden bg-muted">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="object-contain w-full h-auto p-2 group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
 
-            <p className="text-lg leading-relaxed">
-              The MAX! Pack combines all our veteran plugins into one comprehensive bundle. If you've bought any bundle from us before, you already have access to everything in MAX! with your existing serial number.
-            </p>
+              {/* Content */}
+              <div className="flex flex-col space-y-1.5 flex-grow p-4 bg-muted">
+                <h2 className="tracking-tight text-xl font-bold font-headline text-primary truncate transition-colors">
+                  {product.name}
+                </h2>
+                <p className="text-sm text-foreground/80 h-10 line-clamp-2">
+                  {product.description}
+                </p>
+              </div>
 
-            <div className="grid md:grid-cols-3 gap-6 mt-8">
-              <div className="p-6 bg-secondary/30 rounded-lg text-center">
-                <h3 className="text-xl font-semibold mb-3">Callisto VSTi</h3>
-                <p>Powerful synthesizer with unique sound design capabilities</p>
+              {/* Footer */}
+              <div className="flex items-center p-3 border-t border-border bg-muted/30 mt-auto">
+                <p className="text-base text-muted-foreground text-center truncate w-full">
+                  {product.footer}
+                </p>
               </div>
-              
-              <div className="p-6 bg-secondary/30 rounded-lg text-center">
-                <h3 className="text-xl font-semibold mb-3">Professional Effects</h3>
-                <p>Studio-grade reverbs, delays, and modulation effects</p>
-              </div>
-              
-              <div className="p-6 bg-secondary/30 rounded-lg text-center">
-                <h3 className="text-xl font-semibold mb-3">Arranger Tools</h3>
-                <p>Advanced tools for arranging and sequencing</p>
-              </div>
-              
-              <div className="p-6 bg-secondary/30 rounded-lg text-center">
-                <h3 className="text-xl font-semibold mb-3">MIDI Processors</h3>
-                <p>Complete MIDI manipulation suite</p>
-              </div>
-              
-              <div className="p-6 bg-secondary/30 rounded-lg text-center">
-                <h3 className="text-xl font-semibold mb-3">Utilities</h3>
-                <p>Essential production utilities and helpers</p>
-              </div>
-              
-              <div className="p-6 bg-secondary/30 rounded-lg text-center">
-                <h3 className="text-xl font-semibold mb-3">& More!</h3>
-                <p>Regular updates with new plugins included</p>
-              </div>
-            </div>
-
-            <div className="flex gap-4 justify-center mt-8">
-              <Button size="lg" className="bg-primary">
-                <Download className="mr-2 h-5 w-5" />
-                Download Demo
-              </Button>
-              <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
-                <Link to="/BuyNow">
-                  Buy Now - $49.99
-                </Link>
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+            </Link>
+          </div>
+        ))}
       </div>
     </div>
   );
