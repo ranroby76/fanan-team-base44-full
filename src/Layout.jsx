@@ -154,9 +154,14 @@ export default function Layout({ children, currentPageName }) {
           </p>
           <p className="text-sm text-muted-foreground mt-2">
             VSTi plugins and MIDI tools for music production
-          </p>
-        </div>
-      </footer>
+            </p>
+            <div className="mt-4">
+            <Link to="/Dashboard" className="text-xs text-muted-foreground hover:text-primary transition-colors">
+              Dashboard
+            </Link>
+            </div>
+            </div>
+            </footer>
     </div>
   );
 }
