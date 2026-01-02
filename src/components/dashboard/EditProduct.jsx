@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useForm, useFieldArray, Controller } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { Button } from "@/components/ui/button";
@@ -7,34 +7,58 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { X, Plus, Trash2, Save, ArrowLeft } from "lucide-react";
+import { Save, ArrowLeft } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
+// Helper to ensure array has fixed size with empty placeholders
+const ensureArraySize = (arr, size, fill) => {
+  const res = Array.isArray(arr) ? [...arr] : [];
+  while (res.length < size) res.push(fill);
+  return res.slice(0, size);
+};
+
 export default function EditProduct({ product, onClose }) {
   const queryClient = useQueryClient();
-  const { register, control, handleSubmit, reset, watch, setValue } = useForm({
-    defaultValues: {
-      ...product,
-      formats: product.formats || [],
-      // Ensure arrays exist for fixed slots
-      download_links: product.download_links || [{}, {}, {}, {}],
-      youtube_links: product.youtube_links || ["", "", "", ""],
-    }
+  
+  // Prepare default values
+  const defaultValues = {
+    ...product,
+    title: product.title || "",
+    short_description: product.short_description || "",
+    pack: product.pack || "Mad MIDI Machines",
+    price: product.price || "$22.00",
+    buy_link: product.buy_link || "/BuyNow",
+    demo_link: product.demo_link || "",
+    page_slug: product.page_slug || "",
+    long_description: product.long_description || "",
+    supported_audio_formats: product.supported_audio_formats || "",
+    supported_video_formats: product.supported_video_formats || "",
+    formats: product.formats || [],
+    download_links: ensureArraySize(product.download_links, 4, { label: "", url: "" }),
+    youtube_links: ensureArraySize(product.youtube_links, 4, ""),
+  };
+
+  const { register, control, handleSubmit, watch, setValue, reset } = useForm({
+    defaultValues
   });
+
+  // Reset form when product changes
+  useEffect(() => {
+    reset(defaultValues);
+    setImage1(product.main_image || "");
+    setGalleryImages(ensureArraySize(product.gallery_images, 6, ""));
+  }, [product, reset]);
 
   // Manage images state for 7 slots (1 main + 6 gallery)
   const [image1, setImage1] = React.useState(product.main_image || "");
-  const [galleryImages, setGalleryImages] = React.useState(product.gallery_images || []);
-  // Helper to get gallery image at index safe
-  const getGalleryImage = (idx) => galleryImages[idx] || "";
+  const [galleryImages, setGalleryImages] = React.useState(ensureArraySize(product.gallery_images, 6, ""));
+
   const setGalleryImage = (idx, val) => {
     const newGallery = [...galleryImages];
-    // Ensure array is filled up to idx
-    while(newGallery.length <= idx) newGallery.push("");
     newGallery[idx] = val;
     setGalleryImages(newGallery);
   };
@@ -58,13 +82,12 @@ export default function EditProduct({ product, onClose }) {
   });
 
   const onSubmit = (data) => {
-    // Construct final data matching the simplified requirements
+    // Construct final data matching requirements
     const finalData = {
       ...data,
       main_image: image1,
-      gallery_images: galleryImages.filter(img => img && img.trim() !== ""), // Clean up empty gallery slots
-      // Ensure download_links and youtube_links are saved as is (or filtered if you want to remove empty ones, but keeping slots might be better for UI persistence if we want fixed 1-4)
-      // Let's filter empty ones for the DB to be clean, but the UI handles 4 slots.
+      gallery_images: galleryImages.filter(img => img && img.trim() !== ""),
+      // Filter empty links for cleaner DB, but ensure structure
       download_links: data.download_links.filter(l => l.label || l.url), 
       youtube_links: data.youtube_links.filter(l => l && l.trim() !== "")
     };
@@ -120,7 +143,7 @@ export default function EditProduct({ product, onClose }) {
                 control={control}
                 name="pack"
                 render={({ field }) => (
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select Pack" />
                     </SelectTrigger>
@@ -168,11 +191,11 @@ export default function EditProduct({ product, onClose }) {
                   <Label>Image {idx + 2} of the gallery</Label>
                   <div className="flex gap-2">
                     <Input 
-                      value={getGalleryImage(idx)} 
+                      value={galleryImages[idx] || ""} 
                       onChange={e => setGalleryImage(idx, e.target.value)} 
                       placeholder={`Gallery Image ${idx + 2} URL`} 
                     />
-                    {getGalleryImage(idx) && <img src={getGalleryImage(idx)} className="h-10 w-10 object-contain bg-muted" alt={`${idx+2}`} />}
+                    {galleryImages[idx] && <img src={galleryImages[idx]} className="h-10 w-10 object-contain bg-muted" alt={`${idx+2}`} />}
                   </div>
                 </div>
               ))}
@@ -215,6 +238,34 @@ export default function EditProduct({ product, onClose }) {
                   <Input {...register(`youtube_links.${i}`)} placeholder="https://youtube.com/watch?v=..." />
                 </div>
               ))}
+            </div>
+
+            {/* Other Fields - Price, Links, Slug */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t">
+              <div className="space-y-2">
+                <Label>Price</Label>
+                <Input {...register("price")} />
+              </div>
+              <div className="space-y-2">
+                <Label>Buy Link</Label>
+                <Input {...register("buy_link")} />
+              </div>
+              <div className="space-y-2">
+                <Label>Demo Link</Label>
+                <Input {...register("demo_link")} />
+              </div>
+               <div className="space-y-2">
+                <Label>Page Slug (Internal ID)</Label>
+                <Input {...register("page_slug")} placeholder="e.g. Playlisted2" />
+              </div>
+               <div className="space-y-2">
+                <Label>Supported Audio Formats</Label>
+                <Input {...register("supported_audio_formats")} />
+              </div>
+               <div className="space-y-2">
+                <Label>Supported Video Formats</Label>
+                <Input {...register("supported_video_formats")} />
+              </div>
             </div>
 
           </form>
