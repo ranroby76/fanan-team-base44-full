@@ -47,7 +47,8 @@ export default function ProductPage({
     features: dbProduct.features || [],
     formats: {
       audio: dbProduct.supported_audio_formats,
-      video: dbProduct.supported_video_formats
+      video: dbProduct.supported_video_formats,
+      list: dbProduct.formats || []
     },
     versions: dbProduct.versions || [],
     price: dbProduct.price,
@@ -189,9 +190,21 @@ export default function ProductPage({
 
               <Separator className="bg-primary/20" />
 
-              {(finalProduct.formats.audio || finalProduct.formats.video) && (
+              {(finalProduct.formats.audio || finalProduct.formats.video || (Array.isArray(finalProduct.formats.list) && finalProduct.formats.list.length > 0)) && (
                 <div>
                   <h3 className="text-xl font-headline text-primary font-semibold mb-3">Supported Formats</h3>
+                  
+                  {/* Format List (VST, Windows, etc.) */}
+                  {Array.isArray(finalProduct.formats.list) && finalProduct.formats.list.length > 0 && (
+                     <div className="flex flex-wrap gap-2 mb-4">
+                        {finalProduct.formats.list.map(f => (
+                           <span key={f} className="bg-secondary/50 text-secondary-foreground px-3 py-1 rounded-full text-sm font-semibold border border-secondary">
+                              {f}
+                           </span>
+                        ))}
+                     </div>
+                  )}
+
                   <div className={`grid ${finalProduct.formats.audio && finalProduct.formats.video ? 'grid-cols-2' : 'grid-cols-1'} gap-4`}>
                     {finalProduct.formats.audio && (
                       <div className="bg-secondary/30 p-3 rounded border border-secondary">
