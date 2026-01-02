@@ -70,7 +70,7 @@ export default function Home() {
         <div className="container mx-auto px-4 flex flex-col md:flex-row items-center gap-8">
           <div className="md:w-1/2">
              <img
-              src="https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team-3/public/images/intruduce%20on%20fanan%20site.jpg"
+              src="https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team-3/public/images/intruduce_playlisted_online.jpg"
               alt="Screenshot of the Playlisted website interface"
               className="rounded-lg shadow-2xl object-cover w-full h-auto"
             />
