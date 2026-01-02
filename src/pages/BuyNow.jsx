@@ -14,6 +14,18 @@ export default function BuyNow() {
     max: ""
   });
 
+  const [userCountry, setUserCountry] = React.useState(null);
+
+  React.useEffect(() => {
+    // Detect user's location
+    fetch('https://ipapi.co/json/')
+      .then(res => res.json())
+      .then(data => {
+        setUserCountry(data.country_code);
+      })
+      .catch(err => console.error('Location detection failed:', err));
+  }, []);
+
   const handlePayPalApprove = (data, pack, price) => {
     // Handle successful payment
     const serial = "XXXX-XXXX-XXXX-XXXX";
@@ -89,6 +101,12 @@ export default function BuyNow() {
             
             {machineIds.madMidi.length >= 3 && (
               <div className="mt-4">
+                {userCountry && (
+                  <div className="flex items-center justify-center gap-2 mb-3 text-sm text-muted-foreground">
+                    <span className="text-2xl">{String.fromCodePoint(0x1F1E6 + userCountry.charCodeAt(0) - 65, 0x1F1E6 + userCountry.charCodeAt(1) - 65)}</span>
+                    <span>Payment from {userCountry}</span>
+                  </div>
+                )}
                 <PayPalButtons
                   style={{ 
                     layout: "vertical",
@@ -157,6 +175,12 @@ export default function BuyNow() {
             
             {machineIds.max.length >= 3 && (
               <div className="mt-4">
+                {userCountry && (
+                  <div className="flex items-center justify-center gap-2 mb-3 text-sm text-muted-foreground">
+                    <span className="text-2xl">{String.fromCodePoint(0x1F1E6 + userCountry.charCodeAt(0) - 65, 0x1F1E6 + userCountry.charCodeAt(1) - 65)}</span>
+                    <span>Payment from {userCountry}</span>
+                  </div>
+                )}
                 <PayPalButtons
                   style={{ 
                     layout: "vertical",
