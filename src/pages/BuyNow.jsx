@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 export default function BuyNow() {
   const [machineIds, setMachineIds] = React.useState({
@@ -14,14 +14,19 @@ export default function BuyNow() {
     max: ""
   });
 
-  const handlePurchase = (pack) => {
-    // Placeholder for purchase logic
+  const handlePayPalApprove = (data, pack, price) => {
+    // Handle successful payment
     const serial = "XXXX-XXXX-XXXX-XXXX";
     setSerials({...serials, [pack]: serial});
-    alert(`Purchase successful! Your serial: ${serial} will be sent to your email.`);
+    alert(`Payment successful! Your serial: ${serial} will be sent to your email.`);
   };
 
   return (
+    <PayPalScriptProvider options={{ 
+      "client-id": "YOUR_PAYPAL_CLIENT_ID",
+      currency: "USD",
+      intent: "capture"
+    }}>
     <div className="container mx-auto px-4 py-8">
       {/* Background Image */}
       <div className="relative mb-8 rounded-lg overflow-hidden">
@@ -81,13 +86,36 @@ export default function BuyNow() {
               />
             </div>
             
-            <Button 
-              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 text-lg py-6"
-              onClick={() => handlePurchase('madMidi')}
-              disabled={!machineIds.madMidi}
-            >
-              BUY NOW
-            </Button>
+            {machineIds.madMidi.length >= 3 && (
+              <div className="mt-4">
+                <PayPalButtons
+                  style={{ 
+                    layout: "vertical",
+                    shape: "rect"
+                  }}
+                  createOrder={(data, actions) => {
+                    return actions.order.create({
+                      purchase_units: [{
+                        amount: {
+                          value: "22.00",
+                          currency_code: "USD"
+                        },
+                        description: "Mad MIDI Machines Pack"
+                      }]
+                    });
+                  }}
+                  onApprove={(data, actions) => {
+                    return actions.order.capture().then((details) => {
+                      handlePayPalApprove(data, 'madMidi', 22.00);
+                    });
+                  }}
+                  onError={(err) => {
+                    alert("Payment error. Please try again.");
+                  }}
+                  fundingSource={undefined}
+                />
+              </div>
+            )}
           </div>
         </div>
 
@@ -126,13 +154,36 @@ export default function BuyNow() {
               />
             </div>
             
-            <Button 
-              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 text-lg py-6"
-              onClick={() => handlePurchase('max')}
-              disabled={!machineIds.max}
-            >
-              BUY NOW
-            </Button>
+            {machineIds.max.length >= 3 && (
+              <div className="mt-4">
+                <PayPalButtons
+                  style={{ 
+                    layout: "vertical",
+                    shape: "rect"
+                  }}
+                  createOrder={(data, actions) => {
+                    return actions.order.create({
+                      purchase_units: [{
+                        amount: {
+                          value: "12.00",
+                          currency_code: "USD"
+                        },
+                        description: "Max Pack"
+                      }]
+                    });
+                  }}
+                  onApprove={(data, actions) => {
+                    return actions.order.capture().then((details) => {
+                      handlePayPalApprove(data, 'max', 12.00);
+                    });
+                  }}
+                  onError={(err) => {
+                    alert("Payment error. Please try again.");
+                  }}
+                  fundingSource={undefined}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -148,5 +199,6 @@ export default function BuyNow() {
         </p>
       </div>
     </div>
+    </PayPalScriptProvider>
   );
 }
