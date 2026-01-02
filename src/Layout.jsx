@@ -8,6 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import ScrollToTop from "@/components/ScrollToTop";
 
 export default function Layout({ children, currentPageName }) {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
@@ -30,6 +31,7 @@ export default function Layout({ children, currentPageName }) {
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
+      <ScrollToTop />
       <style>{`
         :root {
           --background: 0 0% 7%;
