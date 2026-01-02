@@ -98,27 +98,38 @@ export default function Home() {
       </div>
 
       <div className="container mx-auto px-4">
-        <div className="space-y-8 flex flex-col items-center">
-          <Link to="/MadMidiMachinePack" className="block group">
-            <img
-              src="https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team-3/public/images/mad%20midi%20machines.png"
-              alt="Mad MIDI Machines Pack"
-              className="h-auto rounded-lg shadow-lg object-contain transition-transform duration-300 group-hover:scale-[1.02]"
-            />
+        <div className="space-y-6 flex flex-col items-center">
+          <Link to="/MadMidiMachinePack" className="group w-full max-w-2xl">
+            <div className="h-32 bg-secondary/80 rounded-full border-2 border-primary/20 hover:border-primary transition-all duration-300 shadow-md hover:shadow-xl flex items-center justify-center p-4 overflow-hidden relative">
+              <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <img
+                src="https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team-3/public/images/mad%20midi%20machines.png"
+                alt="Mad MIDI Machines Pack"
+                className="h-full w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+              />
+            </div>
           </Link>
-          <Link to="/MaxPack" className="block group">
-            <img
-              src="https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team-3/public/images/pro%20pack.png"
-              alt="Max! Pack"
-              className="w-full h-auto rounded-lg shadow-lg object-contain transition-transform duration-300 group-hover:scale-[1.02]"
-            />
+
+          <Link to="/MaxPack" className="group w-full max-w-2xl">
+            <div className="h-32 bg-secondary/80 rounded-full border-2 border-primary/20 hover:border-primary transition-all duration-300 shadow-md hover:shadow-xl flex items-center justify-center p-4 overflow-hidden relative">
+              <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <img
+                src="https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team-3/public/images/pro%20pack.png"
+                alt="Max! Pack"
+                className="h-full w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+              />
+            </div>
           </Link>
-          <Link to="/FreePack" className="block group w-10/12 md:w-auto">
-            <img
-              src="https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team-3/public/images/free%20pack.png"
-              alt="Free Pack"
-              className="h-auto w-full rounded-lg shadow-lg object-contain transition-transform duration-300 group-hover:scale-[1.02]"
-            />
+
+          <Link to="/FreePack" className="group w-full max-w-2xl">
+            <div className="h-32 bg-secondary/80 rounded-full border-2 border-primary/20 hover:border-primary transition-all duration-300 shadow-md hover:shadow-xl flex items-center justify-center p-4 overflow-hidden relative">
+              <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <img
+                src="https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team-3/public/images/free%20pack.png"
+                alt="Free Pack"
+                className="h-full w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+              />
+            </div>
           </Link>
         </div>
       </div>
