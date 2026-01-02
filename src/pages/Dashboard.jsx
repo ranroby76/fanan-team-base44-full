@@ -23,10 +23,12 @@ export default function Dashboard() {
 
   const packs = ["Mad MIDI Machines", "Max! Pack", "Free Pack"];
 
-  const filteredProducts = products.filter(p => 
-    p.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-    p.pack === selectedPack
-  );
+  const filteredProducts = products
+    .filter(p => 
+      p.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      p.pack === selectedPack
+    )
+    .sort((a, b) => a.title.localeCompare(b.title));
 
   if (isLoading) {
     return (

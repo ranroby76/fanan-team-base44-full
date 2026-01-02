@@ -12,6 +12,7 @@ import BuyNow from './pages/BuyNow';
 import Callisto from './pages/Callisto';
 import Concordia from './pages/Concordia';
 import ContactUs from './pages/ContactUs';
+import Dashboard from './pages/Dashboard';
 import Djup from './pages/Djup';
 import FreePack from './pages/FreePack';
 import GalaDuo from './pages/GalaDuo';
@@ -53,7 +54,6 @@ import Yogi from './pages/Yogi';
 import Yowlseq2 from './pages/Yowlseq2';
 import Ziggy from './pages/Ziggy';
 import Zoe2 from './pages/Zoe2';
-import Dashboard from './pages/Dashboard';
 import __Layout from './Layout.jsx';
 
 
@@ -72,6 +72,7 @@ export const PAGES = {
     "Callisto": Callisto,
     "Concordia": Concordia,
     "ContactUs": ContactUs,
+    "Dashboard": Dashboard,
     "Djup": Djup,
     "FreePack": FreePack,
     "GalaDuo": GalaDuo,
@@ -113,7 +114,6 @@ export const PAGES = {
     "Yowlseq2": Yowlseq2,
     "Ziggy": Ziggy,
     "Zoe2": Zoe2,
-    "Dashboard": Dashboard,
 }
 
 export const pagesConfig = {
