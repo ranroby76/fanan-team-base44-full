@@ -31,6 +31,28 @@ import Rythmos from './pages/Rythmos';
 import Yogi from './pages/Yogi';
 import Yowlseq2 from './pages/Yowlseq2';
 import Zoe2 from './pages/Zoe2';
+import BlueLue from './pages/BlueLue';
+import _999Gen2 from './pages/999Gen2';
+import AnyText from './pages/AnyText';
+import Bella from './pages/Bella';
+import Bjorn from './pages/Bjorn';
+import Bonnie from './pages/Bonnie';
+import Djup from './pages/Djup';
+import Kitton3 from './pages/Kitton3';
+import Midmid from './pages/Midmid';
+import MiniRingo from './pages/MiniRingo';
+import Monica3 from './pages/Monica3';
+import Quentin from './pages/Quentin';
+import RandomidiFree from './pages/RandomidiFree';
+import RandRobin from './pages/RandRobin';
+import Rebellion from './pages/Rebellion';
+import SaxophiaGen2 from './pages/SaxophiaGen2';
+import ScandiClavia2 from './pages/ScandiClavia2';
+import Solina2k from './pages/Solina2k';
+import Spacelifter3 from './pages/Spacelifter3';
+import Spacelifter4 from './pages/Spacelifter4';
+import TropicanaFun from './pages/TropicanaFun';
+import Ymer from './pages/Ymer';
 import __Layout from './Layout.jsx';
 
 
@@ -68,6 +90,28 @@ export const PAGES = {
     "Yogi": Yogi,
     "Yowlseq2": Yowlseq2,
     "Zoe2": Zoe2,
+    "BlueLue": BlueLue,
+    "999Gen2": _999Gen2,
+    "AnyText": AnyText,
+    "Bella": Bella,
+    "Bjorn": Bjorn,
+    "Bonnie": Bonnie,
+    "Djup": Djup,
+    "Kitton3": Kitton3,
+    "Midmid": Midmid,
+    "MiniRingo": MiniRingo,
+    "Monica3": Monica3,
+    "Quentin": Quentin,
+    "RandomidiFree": RandomidiFree,
+    "RandRobin": RandRobin,
+    "Rebellion": Rebellion,
+    "SaxophiaGen2": SaxophiaGen2,
+    "ScandiClavia2": ScandiClavia2,
+    "Solina2k": Solina2k,
+    "Spacelifter3": Spacelifter3,
+    "Spacelifter4": Spacelifter4,
+    "TropicanaFun": TropicanaFun,
+    "Ymer": Ymer,
 }
 
 export const pagesConfig = {
