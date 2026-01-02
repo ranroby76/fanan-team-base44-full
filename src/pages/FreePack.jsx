@@ -11,8 +11,17 @@ export default function FreePack() {
     queryFn: async () => {
       const { data } = await base44.functions.invoke('getProducts');
       if (!Array.isArray(data)) throw new Error("Invalid data format received");
-      
-      return data
+
+      // Deduplicate products
+      const seen = new Set();
+      const uniqueData = data.filter(p => {
+        if (!p.title) return false;
+        if (seen.has(p.title)) return false;
+        seen.add(p.title);
+        return true;
+      });
+
+      return uniqueData
         .filter(p => p.pack === "Free Pack")
         .sort((a, b) => a.title.localeCompare(b.title));
     },
@@ -68,7 +77,7 @@ export default function FreePack() {
                     <img
                       src={product.main_image}
                       alt={product.title}
-                      className="object-contain w-full h-full p-2 group-hover:scale-105 transition-transform duration-300"
+                      className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
                     />
                   ) : (
                     <div className="text-muted-foreground text-sm">No Image</div>
