@@ -19,31 +19,25 @@ export default function EditProduct({ product, onClose }) {
   const { register, control, handleSubmit, reset, watch, setValue } = useForm({
     defaultValues: {
       ...product,
-      gallery_images: product.gallery_images || [],
-      features: product.features || [],
-      versions: product.versions || [],
       formats: product.formats || [],
+      // Ensure arrays exist for fixed slots
+      download_links: product.download_links || [{}, {}, {}, {}],
+      youtube_links: product.youtube_links || ["", "", "", ""],
     }
   });
 
-  const { fields: featureFields, append: appendFeature, remove: removeFeature } = useFieldArray({
-    control,
-    name: "features"
-  });
-
-  const { fields: galleryFields, append: appendGallery, remove: removeGallery } = useFieldArray({
-    control,
-    name: "gallery_images" // treating as array of strings, but useFieldArray works best with objects. convert carefully.
-    // Actually simpler to manage primitive arrays with a custom component or mapped inputs if not using field array objects.
-    // But let's try to stick to react-hook-form patterns.
-    // Since simple string array is tricky with useFieldArray (needs object wrapper), I'll handle it manually or wrap/unwrap.
-    // Let's wrap it on init and unwrap on submit.
-  });
-
-  // Helper for simple arrays (features, gallery)
-  const [featuresList, setFeaturesList] = React.useState(product.features || []);
-  const [galleryList, setGalleryList] = React.useState(product.gallery_images || []);
-  const [versionsList, setVersionsList] = React.useState(product.versions || []);
+  // Manage images state for 7 slots (1 main + 6 gallery)
+  const [image1, setImage1] = React.useState(product.main_image || "");
+  const [galleryImages, setGalleryImages] = React.useState(product.gallery_images || []);
+  // Helper to get gallery image at index safe
+  const getGalleryImage = (idx) => galleryImages[idx] || "";
+  const setGalleryImage = (idx, val) => {
+    const newGallery = [...galleryImages];
+    // Ensure array is filled up to idx
+    while(newGallery.length <= idx) newGallery.push("");
+    newGallery[idx] = val;
+    setGalleryImages(newGallery);
+  };
 
   const updateProductMutation = useMutation({
     mutationFn: (data) => {
@@ -64,12 +58,15 @@ export default function EditProduct({ product, onClose }) {
   });
 
   const onSubmit = (data) => {
-    // Merge manual lists back and filter out empty items
+    // Construct final data matching the simplified requirements
     const finalData = {
       ...data,
-      features: featuresList.filter(f => f && f.trim() !== ""),
-      gallery_images: galleryList.filter(g => g && g.trim() !== ""),
-      versions: versionsList.filter(v => v.name && v.name.trim() !== "")
+      main_image: image1,
+      gallery_images: galleryImages.filter(img => img && img.trim() !== ""), // Clean up empty gallery slots
+      // Ensure download_links and youtube_links are saved as is (or filtered if you want to remove empty ones, but keeping slots might be better for UI persistence if we want fixed 1-4)
+      // Let's filter empty ones for the DB to be clean, but the UI handles 4 slots.
+      download_links: data.download_links.filter(l => l.label || l.url), 
+      youtube_links: data.youtube_links.filter(l => l && l.trim() !== "")
     };
     updateProductMutation.mutate(finalData);
   };
@@ -104,56 +101,42 @@ export default function EditProduct({ product, onClose }) {
         <ScrollArea className="flex-1 p-6">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 pb-10">
             
-            {/* Basic Info */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label>Product Title</Label>
-                <Input {...register("title", { required: true })} />
-              </div>
-              <div className="space-y-2">
-                <Label>Short Description</Label>
-                <Input {...register("short_description")} />
-              </div>
-              <div className="space-y-2">
-                <Label>Pack</Label>
-                <Controller
-                  control={control}
-                  name="pack"
-                  render={({ field }) => (
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select Pack" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Mad MIDI Machines">Mad MIDI Machines</SelectItem>
-                        <SelectItem value="Max! Pack">Max! Pack</SelectItem>
-                        <SelectItem value="Free Pack">Free Pack</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  )}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>Price</Label>
-                <Input {...register("price")} />
-              </div>
-              <div className="space-y-2">
-                <Label>Buy Link</Label>
-                <Input {...register("buy_link")} />
-              </div>
-              <div className="space-y-2">
-                <Label>Demo Link</Label>
-                <Input {...register("demo_link")} />
-              </div>
-               <div className="space-y-2">
-                <Label>Page Slug (Internal ID)</Label>
-                <Input {...register("page_slug")} placeholder="e.g. Playlisted2" />
-              </div>
+            {/* 1. Product Title */}
+            <div className="space-y-2">
+              <Label className="text-lg font-bold">Product Title</Label>
+              <Input {...register("title", { required: true })} placeholder="Product Name" />
             </div>
 
-            {/* Formats Checkboxes */}
+            {/* 2. Short Description */}
+            <div className="space-y-2">
+              <Label className="text-lg font-bold">Short Description</Label>
+              <Input {...register("short_description")} placeholder="Brief description for cards" />
+            </div>
+
+            {/* 3. Product Pack */}
+            <div className="space-y-2">
+              <Label className="text-lg font-bold">Product Pack</Label>
+              <Controller
+                control={control}
+                name="pack"
+                render={({ field }) => (
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Pack" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Mad MIDI Machines">Mad MIDI Machines</SelectItem>
+                      <SelectItem value="Max! Pack">Max! Pack</SelectItem>
+                      <SelectItem value="Free Pack">Free Pack</SelectItem>
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+            </div>
+
+            {/* 4. Formats */}
             <div className="space-y-3 border p-4 rounded-lg bg-muted/10">
-              <Label className="text-base font-semibold">Formats</Label>
+              <Label className="text-lg font-bold">Formats</Label>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {["VST", "VSTi", "Windows 32bit", "Windows 64bit", "Mac", "CLAP", "AU", "Stand-Alone"].map(fmt => (
                   <div key={fmt} className="flex items-center space-x-2">
@@ -168,133 +151,70 @@ export default function EditProduct({ product, onClose }) {
               </div>
             </div>
 
-            {/* Images */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label>Main Image URL</Label>
-                <div className="flex gap-2">
-                  <Input {...register("main_image")} className="flex-1" />
-                  {watch("main_image") && (
-                    <img src={watch("main_image")} alt="Preview" className="h-10 w-10 object-contain rounded border bg-muted" />
-                  )}
-                </div>
-              </div>
+            {/* 5-11. Images 1-7 */}
+            <div className="space-y-4 border p-4 rounded-lg">
+              <h3 className="text-lg font-bold">Images</h3>
               
               <div className="space-y-2">
-                <Label>Gallery Images</Label>
-                <div className="space-y-2">
-                  {galleryList.map((url, idx) => (
-                    <div key={idx} className="flex gap-2">
-                      <Input 
-                        value={url} 
-                        onChange={(e) => {
-                          const newList = [...galleryList];
-                          newList[idx] = e.target.value;
-                          setGalleryList(newList);
-                        }} 
-                      />
-                      <Button type="button" variant="ghost" size="icon" onClick={() => setGalleryList(galleryList.filter((_, i) => i !== idx))}>
-                        <X className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  ))}
-                  <Button type="button" variant="outline" size="sm" onClick={() => setGalleryList([...galleryList, ""])}>
-                    <Plus className="w-4 h-4 mr-2" /> Add Image
-                  </Button>
+                <Label>Image 1 (Main)</Label>
+                <div className="flex gap-2">
+                  <Input value={image1} onChange={e => setImage1(e.target.value)} placeholder="Main Image URL" />
+                  {image1 && <img src={image1} className="h-10 w-10 object-contain bg-muted" alt="1" />}
                 </div>
               </div>
-            </div>
 
-            {/* Descriptions */}
-            <div className="space-y-2">
-              <Label>Long Description (HTML)</Label>
-              <div className="h-64 mb-12">
-                <Controller
-                  name="long_description"
-                  control={control}
-                  render={({ field }) => (
-                    <ReactQuill theme="snow" value={field.value || ""} onChange={field.onChange} className="h-full" />
-                  )}
-                />
-              </div>
-            </div>
-
-            {/* Features List */}
-            <div className="space-y-2 mt-8">
-              <Label>Features</Label>
-              <div className="space-y-2">
-                {featuresList.map((feature, idx) => (
-                  <div key={idx} className="flex gap-2">
+              {[0, 1, 2, 3, 4, 5].map((idx) => (
+                <div key={idx} className="space-y-2">
+                  <Label>Image {idx + 2} of the gallery</Label>
+                  <div className="flex gap-2">
                     <Input 
-                      value={feature} 
-                      onChange={(e) => {
-                        const newList = [...featuresList];
-                        newList[idx] = e.target.value;
-                        setFeaturesList(newList);
-                      }} 
+                      value={getGalleryImage(idx)} 
+                      onChange={e => setGalleryImage(idx, e.target.value)} 
+                      placeholder={`Gallery Image ${idx + 2} URL`} 
                     />
-                    <Button type="button" variant="ghost" size="icon" onClick={() => setFeaturesList(featuresList.filter((_, i) => i !== idx))}>
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
+                    {getGalleryImage(idx) && <img src={getGalleryImage(idx)} className="h-10 w-10 object-contain bg-muted" alt={`${idx+2}`} />}
                   </div>
-                ))}
-                <Button type="button" variant="outline" size="sm" onClick={() => setFeaturesList([...featuresList, ""])}>
-                  <Plus className="w-4 h-4 mr-2" /> Add Feature
-                </Button>
-              </div>
+                </div>
+              ))}
             </div>
 
-            {/* Supported Formats Text */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label>Supported Audio Formats</Label>
-                <Input {...register("supported_audio_formats")} />
-              </div>
-              <div className="space-y-2">
-                <Label>Supported Video Formats</Label>
-                <Input {...register("supported_video_formats")} />
-              </div>
+            {/* 12. Product Description */}
+            <div className="space-y-2">
+              <Label className="text-lg font-bold">Product Description</Label>
+              <p className="text-sm text-muted-foreground">Full free text. Use "#" for list item, "##" for title.</p>
+              <textarea 
+                {...register("long_description")} 
+                className="flex min-h-[300px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                placeholder="# Feature 1&#10;# Feature 2&#10;&#10;## Technical Details&#10;Some text here..."
+              />
             </div>
 
-            {/* Versions */}
-             <div className="space-y-2">
-              <Label>Versions</Label>
-              <div className="space-y-3">
-                {versionsList.map((ver, idx) => (
-                  <div key={idx} className="grid grid-cols-12 gap-2 items-center">
-                    <div className="col-span-4">
-                      <Input 
-                        placeholder="Version Name (e.g. Free Mode)" 
-                        value={ver.name} 
-                        onChange={(e) => {
-                          const newList = [...versionsList];
-                          newList[idx] = { ...ver, name: e.target.value };
-                          setVersionsList(newList);
-                        }} 
-                      />
-                    </div>
-                    <div className="col-span-7">
-                       <Input 
-                        placeholder="Description" 
-                        value={ver.desc} 
-                        onChange={(e) => {
-                          const newList = [...versionsList];
-                          newList[idx] = { ...ver, desc: e.target.value };
-                          setVersionsList(newList);
-                        }} 
-                      />
-                    </div>
-                    <div className="col-span-1">
-                      <Button type="button" variant="ghost" size="icon" onClick={() => setVersionsList(versionsList.filter((_, i) => i !== idx))}>
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </div>
+            {/* 13-20. Download Links (4 pairs) */}
+            <div className="space-y-4 border p-4 rounded-lg">
+              <h3 className="text-lg font-bold">Download Links</h3>
+              {[0, 1, 2, 3].map(i => (
+                <div key={i} className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-muted/20 rounded">
+                  <div className="space-y-2">
+                    <Label>Download link {i + 1} label</Label>
+                    <Input {...register(`download_links.${i}.label`)} placeholder={`e.g. Download VST (Win)`} />
                   </div>
-                ))}
-                <Button type="button" variant="outline" size="sm" onClick={() => setVersionsList([...versionsList, { name: "", desc: "" }])}>
-                  <Plus className="w-4 h-4 mr-2" /> Add Version
-                </Button>
-              </div>
+                  <div className="space-y-2">
+                    <Label>Download link {i + 1}</Label>
+                    <Input {...register(`download_links.${i}.url`)} placeholder="https://..." />
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* 21-24. YouTube Video Links */}
+            <div className="space-y-4 border p-4 rounded-lg">
+              <h3 className="text-lg font-bold">YouTube Videos</h3>
+              {[0, 1, 2, 3].map(i => (
+                <div key={i} className="space-y-2">
+                  <Label>YouTube video {i + 1} link</Label>
+                  <Input {...register(`youtube_links.${i}`)} placeholder="https://youtube.com/watch?v=..." />
+                </div>
+              ))}
             </div>
 
           </form>
