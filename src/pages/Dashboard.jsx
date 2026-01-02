@@ -70,17 +70,20 @@ export default function Dashboard() {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-wrap gap-2 mb-6">
-                {packs.map(pack => (
-                  <Button
-                    key={pack}
-                    variant={selectedPack === pack ? "default" : "outline"}
-                    onClick={() => setSelectedPack(pack)}
-                    className="flex-1 md:flex-none"
-                  >
-                    {pack}
-                  </Button>
-                ))}
+              <div className="flex flex-col space-y-3 mb-6 bg-muted/20 p-4 rounded-lg border">
+                <span className="text-sm font-medium text-muted-foreground">Filter by Pack:</span>
+                <div className="flex flex-wrap gap-2">
+                  {packs.map(pack => (
+                    <Button
+                      key={pack}
+                      variant={selectedPack === pack ? "default" : "secondary"}
+                      onClick={() => setSelectedPack(pack)}
+                      className={`flex-1 md:flex-none transition-all ${selectedPack === pack ? 'shadow-md scale-105' : 'hover:bg-secondary/80'}`}
+                    >
+                      {pack}
+                    </Button>
+                  ))}
+                </div>
               </div>
 
               <div className="rounded-md border">
