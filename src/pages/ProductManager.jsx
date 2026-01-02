@@ -13,6 +13,7 @@ export default function ProductManager() {
   const [password, setPassword] = useState("");
   const [verifying, setVerifying] = useState(false);
   const [error, setError] = useState("");
+  const [importing, setImporting] = useState(false);
 
   const [selectedPack, setSelectedPack] = useState("all");
   const [editingProduct, setEditingProduct] = useState(null);
@@ -68,6 +69,23 @@ export default function ProductManager() {
     }
   };
 
+  const handleImportFromGitHub = async () => {
+    setImporting(true);
+    try {
+      const response = await base44.functions.invoke('importProductsFromGitHub');
+      if (response.data.success) {
+        alert(`Successfully imported ${response.data.imported} products!`);
+        refetch();
+      } else {
+        alert('Import failed: ' + response.data.error);
+      }
+    } catch (err) {
+      alert('Import failed: ' + err.message);
+    } finally {
+      setImporting(false);
+    }
+  };
+
   // Show password input if not authenticated
   if (!isAuthenticated) {
     return (
@@ -115,9 +133,15 @@ export default function ProductManager() {
           <h1 className="text-3xl font-bold font-headline text-primary">Product Manager</h1>
           <p className="text-muted-foreground">Manage your application data directly</p>
         </div>
-        <Button onClick={() => refetch()} variant="outline" size="sm">
+        <div className="flex gap-2">
+          <Button onClick={handleImportFromGitHub} variant="default" size="sm" disabled={importing}>
+            {importing ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+            Import from GitHub
+          </Button>
+          <Button onClick={() => refetch()} variant="outline" size="sm">
             Refresh Data
-        </Button>
+          </Button>
+        </div>
       </div>
 
       <Card>
