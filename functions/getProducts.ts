@@ -8,14 +8,36 @@ Deno.serve(async (req) => {
         const products = await base44.asServiceRole.entities.Product.filter({});
         
         console.log('Fetched products count:', products.length);
+        if (products.length > 0) {
+            console.log('Sample product structure:', JSON.stringify(products[0], null, 2));
+        }
         
-        // Flatten products to include all fields at root level
-        const flattenedProducts = products.map(p => ({
-            id: p.id,
-            ...p.data,
-            created_date: p.created_date,
-            updated_date: p.updated_date
-        }));
+        // Flatten products - handle both nested and flat data structures
+        const flattenedProducts = products.map(p => {
+            const data = p.data || p;
+            return {
+                id: p.id,
+                title: data.title,
+                short_description: data.short_description,
+                pack: data.pack,
+                formats: data.formats,
+                main_image: data.main_image,
+                gallery_images: data.gallery_images || [],
+                long_description: data.long_description,
+                download_links: data.download_links || [],
+                youtube_links: data.youtube_links || [],
+                price: data.price,
+                buy_link: data.buy_link,
+                demo_link: data.demo_link,
+                page_slug: data.page_slug,
+                supported_audio_formats: data.supported_audio_formats,
+                supported_video_formats: data.supported_video_formats,
+                created_date: p.created_date,
+                updated_date: p.updated_date
+            };
+        });
+        
+        console.log('Sample flattened product:', JSON.stringify(flattenedProducts[0], null, 2));
         
         return Response.json(flattenedProducts);
     } catch (error) {
