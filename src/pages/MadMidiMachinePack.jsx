@@ -60,8 +60,8 @@ export default function MadMidiMachinePack() {
               </div>
 
               {/* Content */}
-              <div className="flex flex-col space-y-1.5 flex-grow p-4 bg-slate-200 dark:bg-muted">
-                <h2 className="tracking-tight text-xl font-bold font-headline text-accent-foreground truncate group-hover:text-primary transition-colors">
+              <div className="flex flex-col space-y-1.5 flex-grow p-4 bg-muted">
+                <h2 className="tracking-tight text-xl font-bold font-headline text-primary truncate transition-colors">
                   {product.name}
                 </h2>
                 <p className="text-sm text-foreground/80 h-10 line-clamp-2">
