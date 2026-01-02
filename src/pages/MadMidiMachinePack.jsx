@@ -1,74 +1,83 @@
 import React from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Music, Download } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function MadMidiMachinePack() {
+  const products = [
+    {
+      id: "betelgeuse",
+      name: "Betelgeuse",
+      description: "Arranger Module",
+      image: "https://fananteam.com/images/B1.jpg",
+      footer: "VST | VSTi | Windows 32bit/64bit | Stand-Alone",
+      link: "/Betelgeuse"
+    },
+    {
+      id: "truculentus",
+      name: "Truculentus",
+      description: "Multi Band Multi Distortion",
+      image: "https://fananteam.com/images/truculentus1.jpg",
+      footer: "VST | Windows 32bit/64bit",
+      link: "/Truculentus"
+    },
+    {
+      id: "playlisted-2",
+      name: "Playlisted 2",
+      description: "Media Playlist Player",
+      image: "https://fananteam.com/images/playlisted3.jpg",
+      footer: "VSTi | Windows 64bit | Mac | CLAP",
+      link: "/Playlisted2"
+    }
+  ];
+
   return (
-    <div className="container mx-auto px-4">
-      <div className="animate-fade-in space-y-12">
-        <div className="text-center">
-          <Music className="mx-auto h-12 w-12 text-primary mb-4" />
-          <h1 className="text-4xl font-bold text-primary">Mad MIDI Machines Pack</h1>
-          <p className="text-lg mt-2 text-muted-foreground">
-            Creative MIDI processing and generation tools
-          </p>
+    <div className="container mx-auto px-4 py-8 animate-fade-in space-y-8">
+      {/* Header Image */}
+      <div className="flex justify-center mb-8">
+        <div className="w-full max-w-lg h-auto">
+          <img
+            src="https://fananteam.com/images/mad%20midi%20machines.png"
+            alt="Mad MIDI Machines Pack Logo"
+            className="object-contain w-full h-auto"
+          />
         </div>
+      </div>
 
-        <Card className="shadow-xl">
-          <CardHeader>
-            <CardTitle className="text-3xl">Unleash Your MIDI Creativity</CardTitle>
-            <CardDescription className="text-lg">
-              A collection of innovative MIDI tools for experimental music production
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <img
-              src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=800&h=400&fit=crop"
-              alt="Mad MIDI Machines"
-              className="rounded-lg shadow-lg w-full object-cover"
-            />
-            
-            <p className="text-lg leading-relaxed">
-              The Mad MIDI Machines pack includes powerful MIDI processing plugins that transform your musical ideas into reality. Create complex patterns, randomize sequences, and explore new sonic territories.
-            </p>
+      {/* Products Grid */}
+      <div className="columns-1 md:columns-2 gap-8 space-y-8">
+        {products.map((product) => (
+          <div 
+            key={product.id}
+            className="rounded-lg border border-border bg-card text-card-foreground shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden break-inside-avoid group flex flex-col"
+          >
+            <Link to={product.link} className="flex flex-col h-full">
+              {/* Image Container */}
+              <div className="relative overflow-hidden bg-muted">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="object-contain w-full h-auto p-2 group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
 
-            <div className="grid md:grid-cols-2 gap-6 mt-8">
-              <div className="p-6 bg-secondary/30 rounded-lg">
-                <h3 className="text-xl font-semibold mb-3">Pattern Generator</h3>
-                <p>Create intricate MIDI patterns with intelligent algorithms</p>
+              {/* Content */}
+              <div className="flex flex-col space-y-1.5 flex-grow p-4 bg-slate-200 dark:bg-muted">
+                <h2 className="tracking-tight text-xl font-bold font-headline text-accent-foreground truncate group-hover:text-primary transition-colors">
+                  {product.name}
+                </h2>
+                <p className="text-sm text-foreground/80 h-10 line-clamp-2">
+                  {product.description}
+                </p>
               </div>
-              
-              <div className="p-6 bg-secondary/30 rounded-lg">
-                <h3 className="text-xl font-semibold mb-3">Note Randomizer</h3>
-                <p>Add controlled chaos to your sequences for happy accidents</p>
-              </div>
-              
-              <div className="p-6 bg-secondary/30 rounded-lg">
-                <h3 className="text-xl font-semibold mb-3">Arpeggiator Plus</h3>
-                <p>Advanced arpeggiation with custom patterns and rhythms</p>
-              </div>
-              
-              <div className="p-6 bg-secondary/30 rounded-lg">
-                <h3 className="text-xl font-semibold mb-3">MIDI Mapper</h3>
-                <p>Transform and route MIDI data in creative ways</p>
-              </div>
-            </div>
 
-            <div className="flex gap-4 justify-center mt-8">
-              <Button size="lg" className="bg-primary">
-                <Download className="mr-2 h-5 w-5" />
-                Download Demo
-              </Button>
-              <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
-                <Link to="/BuyNow">
-                  Buy Now - $29.99
-                </Link>
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+              {/* Footer */}
+              <div className="flex items-center p-3 border-t border-border bg-muted/30 mt-auto">
+                <p className="text-base text-muted-foreground text-center truncate w-full">
+                  {product.footer}
+                </p>
+              </div>
+            </Link>
+          </div>
+        ))}
       </div>
     </div>
   );
