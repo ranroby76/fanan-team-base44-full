@@ -31,28 +31,6 @@ css
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
   }
-
-  .dark {
-    --background: 0 0% 7%;
-    --foreground: 0 0% 93%;
-    --card: 0 0% 12%;
-    --card-foreground: 0 0% 93%;
-    --popover: 0 0% 12%;
-    --popover-foreground: 0 0% 93%;
-    --primary: 38 92% 55%;
-    --primary-foreground: 0 0% 7%;
-    --secondary: 38 80% 15%;
-    --secondary-foreground: 38 70% 75%;
-    --muted: 0 0% 20%;
-    --muted-foreground: 0 0% 60%;
-    --accent: 0 0% 93%;
-    --accent-foreground: 0 0% 7%;
-    --destructive: 0 70% 50%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
-    --ring: 38 92% 55%;
-  }
 }
 
 @layer base {
@@ -61,21 +39,5 @@ css
   }
   body {
     @apply bg-background text-foreground;
-    @apply transition-colors duration-300;
   }
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in {
-  animation: fade-in 0.5s ease-out;
 }

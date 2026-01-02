@@ -16,6 +16,30 @@ export default function Layout({ children, currentPageName }) {
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
+      <style>{`
+        :root {
+          --background: 0 0% 7%;
+          --foreground: 0 0% 93%;
+          --card: 0 0% 12%;
+          --card-foreground: 0 0% 93%;
+          --popover: 0 0% 12%;
+          --popover-foreground: 0 0% 93%;
+          --primary: 38 92% 55%;
+          --primary-foreground: 0 0% 7%;
+          --secondary: 38 80% 15%;
+          --secondary-foreground: 38 70% 75%;
+          --muted: 0 0% 20%;
+          --muted-foreground: 0 0% 60%;
+          --accent: 0 0% 93%;
+          --accent-foreground: 0 0% 7%;
+          --destructive: 0 70% 50%;
+          --destructive-foreground: 0 0% 98%;
+          --border: 0 0% 20%;
+          --input: 0 0% 20%;
+          --ring: 38 92% 55%;
+          --radius: 0.5rem;
+        }
+      `}</style>
       <header className="bg-primary text-primary-foreground shadow-lg sticky top-0 z-50">
         <nav className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
