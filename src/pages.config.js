@@ -7,6 +7,7 @@ import HowToBuy from './pages/HowToBuy';
 import MadMidiMachinePack from './pages/MadMidiMachinePack';
 import MaxPack from './pages/MaxPack';
 import PacksList from './pages/PacksList';
+import Playlisted2 from './pages/Playlisted2';
 import __Layout from './Layout.jsx';
 
 
@@ -20,6 +21,7 @@ export const PAGES = {
     "MadMidiMachinePack": MadMidiMachinePack,
     "MaxPack": MaxPack,
     "PacksList": PacksList,
+    "Playlisted2": Playlisted2,
 }
 
 export const pagesConfig = {
