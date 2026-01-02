@@ -59,10 +59,10 @@ export default function ProductCard({ product }) {
 
         {/* Content */}
         <div className="flex flex-col space-y-1.5 flex-grow p-4 bg-muted/50">
-          <h2 className="tracking-tight text-xl font-bold font-headline text-primary truncate transition-colors">
+          <h2 className="tracking-tight text-2xl font-bold font-headline text-primary truncate transition-colors">
             {product.title}
           </h2>
-          <p className="text-sm text-foreground/80 line-clamp-2 min-h-[2.5rem]">
+          <p className="text-base text-foreground/80 line-clamp-2 min-h-[3rem]">
             {product.short_description}
           </p>
         </div>
