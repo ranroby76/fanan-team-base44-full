@@ -130,11 +130,11 @@ export default function EditProduct({ product, onClose }) {
               <Input {...register("title", { required: true })} placeholder="Product Name" />
             </div>
 
-            {/* 2. Short Description */}
-            <div className="space-y-2">
+            {/* 2. Short Description (Hidden/Removed) */}
+            {/* <div className="space-y-2">
               <Label className="text-lg font-bold">Short Description</Label>
               <Input {...register("short_description")} placeholder="Brief description for cards" />
-            </div>
+            </div> */}
 
             {/* 3. Product Pack */}
             <div className="space-y-2">
@@ -201,14 +201,14 @@ export default function EditProduct({ product, onClose }) {
               ))}
             </div>
 
-            {/* 12. Product Description */}
+            {/* 12. About this Plugin (Main Description) */}
             <div className="space-y-2">
-              <Label className="text-lg font-bold">Product Description</Label>
-              <p className="text-sm text-muted-foreground">Full free text. Use "#" for list item, "##" for title.</p>
+              <Label className="text-lg font-bold">About this Plugin</Label>
+              <p className="text-sm text-muted-foreground">Main product description. Use "##" for titles and "#" for list items.</p>
               <textarea 
                 {...register("long_description")} 
                 className="flex min-h-[300px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                placeholder="# Feature 1&#10;# Feature 2&#10;&#10;## Technical Details&#10;Some text here..."
+                placeholder="## Overview&#10;This is a great plugin...&#10;&#10;## Key Features&#10;# Feature 1&#10;# Feature 2"
               />
             </div>
 
