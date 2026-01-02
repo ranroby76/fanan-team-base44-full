@@ -5,10 +5,9 @@ Deno.serve(async (req) => {
         const base44 = createClientFromRequest(req);
         
         // Fetch all products using service role for public access
-        const products = await base44.asServiceRole.entities.Product.list();
+        const products = await base44.asServiceRole.entities.Product.filter({});
         
         console.log('Fetched products count:', products.length);
-        console.log('Sample product:', JSON.stringify(products[0]));
         
         // Flatten products to include all fields at root level
         const flattenedProducts = products.map(p => ({
@@ -18,7 +17,6 @@ Deno.serve(async (req) => {
             updated_date: p.updated_date
         }));
         
-        console.log('Returning products:', flattenedProducts.length);
         return Response.json(flattenedProducts);
     } catch (error) {
         console.error("Error fetching products:", error);
