@@ -32,6 +32,7 @@ import Monica3 from './pages/Monica3';
 import PacksList from './pages/PacksList';
 import Playlisted from './pages/Playlisted';
 import Playlisted2 from './pages/Playlisted2';
+import ProductManager from './pages/ProductManager';
 import Quentin from './pages/Quentin';
 import RandRobin from './pages/RandRobin';
 import Randomidi from './pages/Randomidi';
@@ -54,7 +55,6 @@ import Yogi from './pages/Yogi';
 import Yowlseq2 from './pages/Yowlseq2';
 import Ziggy from './pages/Ziggy';
 import Zoe2 from './pages/Zoe2';
-import ProductManager from './pages/ProductManager';
 import __Layout from './Layout.jsx';
 
 
@@ -93,6 +93,7 @@ export const PAGES = {
     "PacksList": PacksList,
     "Playlisted": Playlisted,
     "Playlisted2": Playlisted2,
+    "ProductManager": ProductManager,
     "Quentin": Quentin,
     "RandRobin": RandRobin,
     "Randomidi": Randomidi,
@@ -115,7 +116,6 @@ export const PAGES = {
     "Yowlseq2": Yowlseq2,
     "Ziggy": Ziggy,
     "Zoe2": Zoe2,
-    "ProductManager": ProductManager,
 }
 
 export const pagesConfig = {
