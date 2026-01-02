@@ -67,15 +67,11 @@ export default function MaxPack() {
 
 
       {/* Products Grid */}
-      {products.length > 0 ? (
+      {products.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
           {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
-        </div>
-      ) : (
-        <div className="text-center py-12">
-          <p className="text-xl text-muted-foreground">No products found in this pack.</p>
         </div>
       )}
     </div>
