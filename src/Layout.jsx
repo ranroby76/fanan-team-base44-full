@@ -20,7 +20,7 @@ export default function Layout({ children, currentPageName }) {
         <nav className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link to="/" className="text-2xl font-bold text-primary-foreground hover:opacity-90 transition-colors">
-              Fanan Team
+              <img src="https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team-3/public/images/fanan_logo.png" alt="Fanan Team" className="h-10 w-auto" />
             </Link>
 
             <div className="hidden md:flex items-center space-x-6">
@@ -70,6 +70,7 @@ export default function Layout({ children, currentPageName }) {
 
       <footer className="bg-secondary text-secondary-foreground py-8 mt-12">
         <div className="container mx-auto px-4 text-center">
+          <img src="https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team-3/public/images/fanan_logo.png" alt="Fanan Team logo" className="mx-auto h-10 w-auto mb-3 opacity-90" />
           <p className="text-secondary-foreground">
             © {new Date().getFullYear()} Fanan Team. All rights reserved.
           </p>
