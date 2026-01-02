@@ -17,7 +17,7 @@ export default function Dashboard() {
 
   const { data: products, isLoading } = useQuery({
     queryKey: ['products'],
-    queryFn: () => base44.entities.Product.list({ limit: 100 }), // Get all products
+    queryFn: () => base44.entities.Product.list(undefined, 100), // Get all products with correct signature
     initialData: [],
   });
 
