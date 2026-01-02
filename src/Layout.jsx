@@ -30,7 +30,7 @@ export default function Layout({ children, currentPageName }) {
                   to={`/${item.page === 'Home' ? '' : item.page}`}
                   className={`hover:opacity-80 transition-colors ${
                     currentPageName === item.page ? "text-primary-foreground font-semibold" : "text-primary-foreground"
-                  }`
+                  }`}
                 >
                   {item.name}
                 </Link>
