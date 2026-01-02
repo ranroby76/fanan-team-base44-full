@@ -14,23 +14,6 @@ export default function BuyNow() {
     max: ""
   });
 
-  const [userCountry, setUserCountry] = React.useState("US");
-
-  React.useEffect(() => {
-    // Detect user's country by IP
-    fetch('https://ipapi.co/json/')
-      .then(res => res.json())
-      .then(data => {
-        if (data.country_code) {
-          setUserCountry(data.country_code);
-        }
-      })
-      .catch(() => {
-        // Fallback to US if detection fails
-        setUserCountry("US");
-      });
-  }, []);
-
   const handlePayPalApprove = (data, pack, price) => {
     // Handle successful payment
     const serial = "XXXX-XXXX-XXXX-XXXX";
@@ -43,8 +26,7 @@ export default function BuyNow() {
       "client-id": "AdoK3-mdDQxleLLbYSTCtVy1naeCPfP78ayxahlSAcwwhIEGtY6eEiaBJZrbFCKWdQ0g9seXWYTcO5zo",
       currency: "USD",
       intent: "capture",
-      vault: false,
-      "buyer-country": userCountry
+      vault: false
     }}>
     <div className="container mx-auto px-4 py-8">
       {/* Background Image */}
