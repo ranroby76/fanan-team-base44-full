@@ -8,7 +8,15 @@ Deno.serve(async (req) => {
         // Using service role to ensure public access
         const products = await base44.asServiceRole.entities.Product.list({ title: 1 }, 1000);
         
-        return Response.json(products);
+        // Flatten products to include all fields at root level
+        const flattenedProducts = products.map(p => ({
+            id: p.id,
+            ...p.data,
+            created_date: p.created_date,
+            updated_date: p.updated_date
+        }));
+        
+        return Response.json(flattenedProducts);
     } catch (error) {
         console.error("Error fetching products:", error);
         return Response.json({ error: error.message }, { status: 500 });
