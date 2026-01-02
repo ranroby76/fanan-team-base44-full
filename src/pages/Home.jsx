@@ -18,17 +18,17 @@ export default function Home() {
       </section>
 
       <section className="container mx-auto px-4 text-center">
-        <div className="bg-yellow-100 dark:bg-yellow-900/30 p-6 rounded-lg shadow-md border border-yellow-300 dark:border-yellow-700">
-          <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+        <div className="bg-secondary p-6 rounded-lg shadow-md border border-border">
+          <p className="text-lg font-semibold text-secondary-foreground">
             New to fanan team? Please, always read the "how to buy?" instructions before purchasing
           </p>
-          <p className="text-md mt-2 text-gray-700 dark:text-gray-300">
+          <p className="text-md mt-2 text-secondary-foreground/80">
             New folks, please, Always try the demo first before purchasing. Never buy before first testing a demo on your system
           </p>
         </div>
       </section>
 
-      <section className="w-full py-4 bg-gradient-to-r from-green-200 via-yellow-200 to-orange-200">
+      <section className="w-full py-4 bg-gradient-to-r from-primary/20 via-primary/30 to-primary/20">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center">
             <img
@@ -36,7 +36,7 @@ export default function Home() {
               alt="Promo graphic"
               className="hidden sm:block object-contain w-40 h-40"
             />
-            <h2 className="text-3xl font-bold text-slate-800 tracking-wider uppercase text-center px-4">
+            <h2 className="text-3xl font-bold text-foreground tracking-wider uppercase text-center px-4">
               WE BELIEVE EVERY SEASON IS SALES SEASON
             </h2>
             <img
@@ -48,7 +48,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="w-full py-12 bg-gray-800 text-white">
+      <section className="w-full py-12 bg-accent text-accent-foreground">
         <div className="container mx-auto px-4 flex flex-col md:flex-row items-center gap-8">
           <div className="md:w-1/2">
             <img
@@ -58,12 +58,12 @@ export default function Home() {
             />
           </div>
           <div className="md:w-1/2 text-center md:text-left">
-            <h2 className="text-4xl font-bold text-yellow-400">Playlisted Goes Online!</h2>
-            <p className="text-xl mt-4 text-gray-300">The external, video-supporting version of our beloved VSTi.</p>
-            <p className="mt-2 text-gray-400">
+            <h2 className="text-4xl font-bold text-primary">Playlisted Goes Online!</h2>
+            <p className="text-xl mt-4">The external, video-supporting version of our beloved VSTi.</p>
+            <p className="mt-2 text-muted-foreground">
               Discover the new online version of Playlisted! Build smart, shareable playlists from your favorite links with video support, and communicate directly with your audio interface's drivers for a seamless experience.
             </p>
-            <Button asChild size="lg" className="mt-6 bg-yellow-400 text-gray-900 hover:bg-yellow-300 font-bold">
+            <Button asChild size="lg" className="mt-6 bg-primary text-primary-foreground hover:bg-primary/90 font-bold">
               <a href="https://studio--playlisted-store.us-central1.hosted.app/" target="_blank" rel="noopener noreferrer">
                 Visit Playlisted <ArrowRight className="ml-2 h-5 w-5" />
               </a>

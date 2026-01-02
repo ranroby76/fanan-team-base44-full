@@ -30,8 +30,8 @@ export default function MaxPack() {
               className="rounded-lg shadow-lg w-full object-cover"
             />
             
-            <div className="bg-yellow-100 dark:bg-yellow-900/30 p-6 rounded-lg border border-yellow-300 dark:border-yellow-700">
-              <p className="text-lg font-semibold text-center">
+            <div className="bg-secondary p-6 rounded-lg border border-border">
+              <p className="text-lg font-semibold text-center text-secondary-foreground">
                 🎉 Existing customers: Use your old serial number to unlock MAX! Pack completely!
               </p>
             </div>
@@ -77,7 +77,7 @@ export default function MaxPack() {
                 <Download className="mr-2 h-5 w-5" />
                 Download Demo
               </Button>
-              <Button asChild size="lg" className="bg-yellow-400 text-gray-900 hover:bg-yellow-300">
+              <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
                 <Link to="/BuyNow">
                   Buy Now - $49.99
                 </Link>

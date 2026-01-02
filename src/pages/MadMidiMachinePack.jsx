@@ -61,7 +61,7 @@ export default function MadMidiMachinePack() {
                 <Download className="mr-2 h-5 w-5" />
                 Download Demo
               </Button>
-              <Button asChild size="lg" className="bg-yellow-400 text-gray-900 hover:bg-yellow-300">
+              <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
                 <Link to="/BuyNow">
                   Buy Now - $29.99
                 </Link>

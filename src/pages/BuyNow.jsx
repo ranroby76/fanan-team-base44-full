@@ -42,7 +42,7 @@ export default function BuyNow() {
                 onChange={(e) => setMachineIds({...machineIds, madMidi: e.target.value})}
               />
               <Button 
-                className="w-full bg-yellow-400 text-gray-900 hover:bg-yellow-300"
+                className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
                 onClick={() => handlePurchase('madMidi')}
               >
                 BUY NOW
@@ -66,7 +66,7 @@ export default function BuyNow() {
                 onChange={(e) => setMachineIds({...machineIds, max: e.target.value})}
               />
               <Button 
-                className="w-full bg-yellow-400 text-gray-900 hover:bg-yellow-300"
+                className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
                 onClick={() => handlePurchase('max')}
               >
                 BUY NOW

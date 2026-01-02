@@ -29,8 +29,8 @@ export default function FreePack() {
               className="rounded-lg shadow-lg w-full object-cover"
             />
             
-            <div className="bg-green-100 dark:bg-green-900/30 p-6 rounded-lg border border-green-300 dark:border-green-700">
-              <p className="text-lg font-semibold text-center">
+            <div className="bg-secondary p-6 rounded-lg border border-border">
+              <p className="text-lg font-semibold text-center text-secondary-foreground">
                 100% Free Forever - No Strings Attached!
               </p>
             </div>
