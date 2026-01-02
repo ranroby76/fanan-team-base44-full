@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { HelpCircle, ShieldCheck, DownloadCloud, ShoppingCart, UserCheck, FileWarning, Contact } from "lucide-react";
 import { Link } from "react-router-dom";
-import { createPageUrl } from "./utils";
 
 export default function HowToBuy() {
   return (
@@ -64,7 +63,7 @@ export default function HowToBuy() {
                 <ol className="list-decimal list-inside space-y-3 pl-4">
                   <li>Download any plugin from your desired bundle and open it in your favorite DAW.</li>
                   <li>Press the <strong>"REGISTER"</strong> button on the plugin interface to get your unique <strong>Machine ID</strong> number.</li>
-                  <li>Go to the <Link to={createPageUrl("BuyNow")} className="font-semibold text-primary hover:underline">"Buy Now"</Link> page on our site.</li>
+                  <li>Go to the <Link to="/BuyNow" className="font-semibold text-primary hover:underline">"Buy Now"</Link> page on our site.</li>
                   <li>Enter your Machine ID into the text box that matches your chosen bundle (e.g., for "Callisto VSTi", use the "MAX!" bundle's ID box).</li>
                   <li>Press <strong>"BUY NOW"</strong> and complete the purchase.</li>
                   <li>Once complete, you'll receive your purchase details and a matching <strong>serial number</strong> in your email.</li>
@@ -116,7 +115,7 @@ export default function HowToBuy() {
               Contact us for any additional information. We hope you enjoy our plugins!
             </p>
             <Button asChild className="bg-primary hover:bg-primary/90">
-              <Link to={createPageUrl("ContactUs")}>
+              <Link to="/ContactUs">
                 Contact Support
               </Link>
             </Button>

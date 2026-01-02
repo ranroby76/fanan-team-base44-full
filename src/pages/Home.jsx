@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
-import { createPageUrl } from "./utils";
 
 export default function Home() {
   return (
@@ -79,21 +78,21 @@ export default function Home() {
 
       <div className="container mx-auto px-4">
         <div className="space-y-8 flex flex-col items-center">
-          <Link to={createPageUrl("MadMidiMachinePack")} className="block group">
+          <Link to="/MadMidiMachinePack" className="block group">
             <img
               src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=700&h=104&fit=crop"
               alt="Mad MIDI Machines Pack"
               className="h-auto rounded-lg shadow-lg object-contain transition-transform duration-300 group-hover:scale-[1.02]"
             />
           </Link>
-          <Link to={createPageUrl("MaxPack")} className="block group">
+          <Link to="/MaxPack" className="block group">
             <img
               src="https://images.unsplash.com/photo-1487180144351-b8472da7d491?w=700&h=142&fit=crop"
               alt="Max! Pack"
               className="w-full h-auto rounded-lg shadow-lg object-contain transition-transform duration-300 group-hover:scale-[1.02]"
             />
           </Link>
-          <Link to={createPageUrl("FreePack")} className="block group w-10/12 md:w-auto">
+          <Link to="/FreePack" className="block group w-10/12 md:w-auto">
             <img
               src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=560&h=114&fit=crop"
               alt="Free Pack"
@@ -108,7 +107,7 @@ export default function Home() {
       </div>
 
       <section className="container mx-auto px-4 pt-8 text-center">
-        <Link to={createPageUrl("GuiMe")} className="block group">
+        <Link to="/GuiMe" className="block group">
           <div className="w-full max-w-4xl mx-auto">
             <img
               src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=1406&h=670&fit=crop"

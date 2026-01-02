@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
-import { createPageUrl } from "./utils";
 import { Button } from "@/components/ui/button";
 
 export default function Layout({ children, currentPageName }) {
@@ -20,7 +19,7 @@ export default function Layout({ children, currentPageName }) {
       <header className="bg-gray-900 text-white shadow-lg sticky top-0 z-50">
         <nav className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <Link to={createPageUrl("Home")} className="text-2xl font-bold text-yellow-400 hover:text-yellow-300 transition-colors">
+            <Link to="/" className="text-2xl font-bold text-yellow-400 hover:text-yellow-300 transition-colors">
               Fanan Team
             </Link>
 
@@ -28,7 +27,7 @@ export default function Layout({ children, currentPageName }) {
               {navigation.map((item) => (
                 <Link
                   key={item.page}
-                  to={createPageUrl(item.page)}
+                  to={`/${item.page === 'Home' ? '' : item.page}`}
                   className={`hover:text-yellow-400 transition-colors ${
                     currentPageName === item.page ? "text-yellow-400 font-semibold" : ""
                   }`}
@@ -51,7 +50,7 @@ export default function Layout({ children, currentPageName }) {
               {navigation.map((item) => (
                 <Link
                   key={item.page}
-                  to={createPageUrl(item.page)}
+                  to={`/${item.page === 'Home' ? '' : item.page}`}
                   className={`block py-2 hover:text-yellow-400 transition-colors ${
                     currentPageName === item.page ? "text-yellow-400 font-semibold" : ""
                   }`}

@@ -3,7 +3,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Music, Download } from "lucide-react";
 import { Link } from "react-router-dom";
-import { createPageUrl } from "./utils";
 
 export default function MadMidiMachinePack() {
   return (
@@ -63,7 +62,7 @@ export default function MadMidiMachinePack() {
                 Download Demo
               </Button>
               <Button asChild size="lg" className="bg-yellow-400 text-gray-900 hover:bg-yellow-300">
-                <Link to={createPageUrl("BuyNow")}>
+                <Link to="/BuyNow">
                   Buy Now - $29.99
                 </Link>
               </Button>
