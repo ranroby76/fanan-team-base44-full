@@ -29,13 +29,13 @@ export default function ProductPage({
 }) {
   // Fetch dynamic data if available
   const { data: dbProduct } = useQuery({
-    queryKey: ['product', productName],
+    queryKey: ['products', productName], // Use 'products' prefix to share cache invalidation with dashboard
     queryFn: async () => {
       // Try to find product by title
-      const products = await base44.entities.Product.list({ limit: 1000 }); // Simple list for now as no filter by title in list() directly usually unless filtered
+      const products = await base44.entities.Product.list({ limit: 1000 }); 
       return products.find(p => p.title === productName) || null;
     },
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 0, // Always fetch fresh data to reflect dashboard changes immediately
   });
 
   // Merge/Override props with DB data if exists

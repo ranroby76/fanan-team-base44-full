@@ -64,12 +64,12 @@ export default function EditProduct({ product, onClose }) {
   });
 
   const onSubmit = (data) => {
-    // Merge manual lists back
+    // Merge manual lists back and filter out empty items
     const finalData = {
       ...data,
-      features: featuresList,
-      gallery_images: galleryList,
-      versions: versionsList
+      features: featuresList.filter(f => f && f.trim() !== ""),
+      gallery_images: galleryList.filter(g => g && g.trim() !== ""),
+      versions: versionsList.filter(v => v.name && v.name.trim() !== "")
     };
     updateProductMutation.mutate(finalData);
   };
