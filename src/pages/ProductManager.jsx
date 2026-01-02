@@ -1,14 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Search, Edit, Plus, Loader2 } from "lucide-react";
+import { Search, Edit, Plus, Loader2, Lock } from "lucide-react";
 import EditProduct from "../components/dashboard/EditProduct";
 
 export default function ProductManager() {
+  const allowedAdmins = ["ranroby76@gmail.com", "ronbm19@gmail.com"];
+
+  // Check authentication
+  const { data: user, isLoading: authLoading } = useQuery({
+    queryKey: ['currentUser'],
+    queryFn: async () => {
+      try {
+        return await base44.auth.me();
+      } catch {
+        return null;
+      }
+    },
+    staleTime: 5 * 60 * 1000,
+  });
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!authLoading && !user) {
+      base44.auth.redirectToLogin(window.location.pathname);
+    }
+  }, [user, authLoading]);
+
+  // Check if user is allowed admin
+  const isAllowedAdmin = user && allowedAdmins.includes(user.email);
+
   const [selectedPack, setSelectedPack] = useState("all");
   const [editingProduct, setEditingProduct] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -43,6 +68,27 @@ export default function ProductManager() {
         return matchesSearch && matchesPack;
     })
     .sort((a, b) => a.title?.localeCompare(b.title));
+
+  // Show loading while checking auth
+  if (authLoading || !user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  // Show access denied if authenticated but not an allowed admin
+  if (!isAllowedAdmin) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4 text-center px-4">
+        <Lock className="w-16 h-16 text-muted-foreground" />
+        <h1 className="text-3xl font-bold">Access Denied</h1>
+        <p className="text-muted-foreground">You don't have permission to access this page.</p>
+        <Button onClick={() => base44.auth.logout("/")}>Logout</Button>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return (
