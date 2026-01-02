@@ -25,7 +25,8 @@ export default function BuyNow() {
     <PayPalScriptProvider options={{ 
       "client-id": "AdoK3-mdDQxleLLbYSTCtVy1naeCPfP78ayxahlSAcwwhIEGtY6eEiaBJZrbFCKWdQ0g9seXWYTcO5zo",
       currency: "USD",
-      intent: "capture"
+      intent: "capture",
+      vault: false
     }}>
     <div className="container mx-auto px-4 py-8">
       {/* Background Image */}
