@@ -1,33 +1,28 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { base44 } from "@/api/base44Client";
+import { useQuery } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
 
 export default function MadMidiMachinePack() {
-  const products = [
-    {
-      id: "betelgeuse",
-      name: "Betelgeuse",
-      description: "Arranger Module",
-      image: "https://fananteam.com/images/B1.jpg",
-      footer: "VST | VSTi | Windows 32bit/64bit | Stand-Alone",
-      link: "/Betelgeuse"
+  const { data: products, isLoading } = useQuery({
+    queryKey: ['products', 'Mad MIDI Machines'],
+    queryFn: async () => {
+      const all = await base44.entities.Product.list({ limit: 1000 });
+      return all
+        .filter(p => p.pack === "Mad MIDI Machines")
+        .sort((a, b) => a.title.localeCompare(b.title));
     },
-    {
-      id: "truculentus",
-      name: "Truculentus",
-      description: "Multi Band Multi Distortion",
-      image: "https://fananteam.com/images/truculentus1.jpg",
-      footer: "VST | Windows 32bit/64bit",
-      link: "/Truculentus"
-    },
-    {
-      id: "playlisted-2",
-      name: "Playlisted 2",
-      description: "Media Playlist Player",
-      image: "https://fananteam.com/images/playlisted3.jpg",
-      footer: "VSTi | Windows 64bit | Mac | CLAP",
-      link: "/Playlisted2"
-    }
-  ];
+    initialData: [],
+  });
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto px-4 py-8 animate-fade-in space-y-8">
@@ -49,12 +44,12 @@ export default function MadMidiMachinePack() {
             key={product.id}
             className="rounded-lg border border-border bg-card text-card-foreground shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden break-inside-avoid group flex flex-col"
           >
-            <Link to={product.link} className="flex flex-col h-full">
+            <Link to={product.page_slug ? `/${product.page_slug}` : "#"} className="flex flex-col h-full">
               {/* Image Container */}
               <div className="relative overflow-hidden bg-muted">
                 <img
-                  src={product.image}
-                  alt={product.name}
+                  src={product.main_image}
+                  alt={product.title}
                   className="object-contain w-full h-auto p-2 group-hover:scale-105 transition-transform duration-300"
                 />
               </div>
@@ -62,17 +57,17 @@ export default function MadMidiMachinePack() {
               {/* Content */}
               <div className="flex flex-col space-y-1.5 flex-grow p-4 bg-muted">
                 <h2 className="tracking-tight text-xl font-bold font-headline text-primary truncate transition-colors">
-                  {product.name}
+                  {product.title}
                 </h2>
                 <p className="text-sm text-foreground/80 h-10 line-clamp-2">
-                  {product.description}
+                  {product.short_description}
                 </p>
               </div>
 
               {/* Footer */}
               <div className="flex items-center p-3 border-t border-border bg-muted/30 mt-auto">
                 <p className="text-base text-muted-foreground text-center truncate w-full">
-                  {product.footer}
+                  {Array.isArray(product.formats) ? product.formats.join(" | ") : product.formats}
                 </p>
               </div>
             </Link>
