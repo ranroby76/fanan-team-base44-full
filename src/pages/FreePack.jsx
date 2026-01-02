@@ -4,148 +4,20 @@ import { Link } from "react-router-dom";
 export default function FreePack() {
   const products = [
     {
-      id: "blue-lue",
-      name: "Blue Lue",
-      description: "Slots Driven Drum Machine",
-      image: "https://fananteam.com/images/bluelue1.jpg",
+      id: "gala-se",
+      name: "Gala SE",
+      description: "Free Multi Instrument Ensemble",
+      image: "https://fananteam.com/images/galase1.jpg",
       footer: "VSTi | Windows 32bit/64bit",
-      link: "/BlueLue"
-    },
-    {
-      id: "999-gen2",
-      name: "999 gen2",
-      description: "Rhythmic Midi Arp",
-      image: "https://fananteam.com/images/9991.jpg",
-      footer: "VSTi | Windows 32bit/64bit",
-      link: "/999Gen2"
-    },
-    {
-      id: "anytext",
-      name: "AnyText",
-      description: "Textual Comments Generator",
-      image: "https://fananteam.com/images/anytext1.jpg",
-      footer: "VSTi | Windows 32bit/64bit",
-      link: "/AnyText"
-    },
-    {
-      id: "bella",
-      name: "Bella",
-      description: "Bell Machine",
-      image: "https://fananteam.com/images/bella1.jpg",
-      footer: "VSTi | Windows 32bit/64bit",
-      link: "/Bella"
-    },
-    {
-      id: "bjorn",
-      name: "Bjorn",
-      description: "Filter Module",
-      image: "https://fananteam.com/images/Bjorn1.jpg",
-      footer: "VST | Windows 32bit/64bit",
-      link: "/Bjorn"
-    },
-    {
-      id: "bonnie",
-      name: "Bonnie",
-      description: "Drum Slots Sampler",
-      image: "https://fananteam.com/images/bonnie1.jpg",
-      footer: "VSTi | Windows 32bit/64bit",
-      link: "/Bonnie"
-    },
-    {
-      id: "djup",
-      name: "Djup",
-      description: "Nordish Bass Module",
-      image: "https://fananteam.com/images/djup1.jpg",
-      footer: "VSTi | Windows 32bit/64bit",
-      link: "/Djup"
-    },
-    {
-      id: "kitton-3",
-      name: "Kitton 3",
-      description: "GM Compatible Drum Machine",
-      image: "https://fananteam.com/images/kitton31.jpg",
-      footer: "VSTi | Windows 32bit/64bit",
-      link: "/Kitton3"
-    },
-    {
-      id: "midmid",
-      name: "Midmid",
-      description: "Multi-Channel Midi Router",
-      image: "https://fananteam.com/images/midmid1.jpg",
-      footer: "VSTi | Windows 32bit/64bit",
-      link: "/Midmid"
-    },
-    {
-      id: "mini-ringo",
-      name: "Mini Ringo",
-      description: "Midi Groove",
-      image: "https://fananteam.com/images/mini%20ringo1.jpg",
-      footer: "VSTi | Windows 32bit/64bit",
-      link: "/MiniRingo"
-    },
-    {
-      id: "monica-3",
-      name: "Monica 3",
-      description: "90's Style Dual Layered Synth-Arp",
-      image: "https://fananteam.com/images/monica1.jpg",
-      footer: "VSTi | Windows 32bit/64bit",
-      link: "/Monica3"
-    },
-    {
-      id: "quentin",
-      name: "Quentin",
-      description: "Polyrhythmic synth",
-      image: "https://fananteam.com/images/quentin1.jpg",
-      footer: "VSTi | Windows 32bit/64bit",
-      link: "/Quentin"
+      link: "/GalaSE"
     },
     {
       id: "randomidi-free",
-      name: "Randomidi free",
+      name: "Randomidi Free",
       description: "Advanced Midi Controller and arp",
       image: "https://fananteam.com/images/randomidi1.jpg",
       footer: "VSTi | Windows 32bit/64bit",
       link: "/RandomidiFree"
-    },
-    {
-      id: "randrobin",
-      name: "RandRobin",
-      description: "Random Round Robin Module",
-      image: "https://fananteam.com/images/randomrobin1.jpg",
-      footer: "VSTi | Windows 32bit/64bit",
-      link: "/RandRobin"
-    },
-    {
-      id: "rebellion",
-      name: "Rebellion",
-      description: "Multi-Band Exciter",
-      image: "https://fananteam.com/images/rebellion1.jpg",
-      footer: "VST | Windows 32bit/64bit",
-      link: "/Rebellion"
-    },
-    {
-      id: "saxophia-gen2",
-      name: "Saxophia gen2",
-      description: "Ethnic saxophone module",
-      image: "https://fananteam.com/images/saxsophia1.jpg",
-      footer: "VSTi | Windows 32bit/64bit",
-      link: "/SaxophiaGen2"
-    },
-    {
-      id: "scandiclavia-2",
-      name: "ScandiClavia 2",
-      description: "Nordish Organ Module",
-      image: "https://fananteam.com/images/scandiclavia21.jpg",
-      footer: "VSTi | Windows 32bit/64bit",
-      link: "/ScandiClavia2"
-    },
-    {
-      id: "solina2k",
-      name: "Solina2k",
-      description: "Ensemble Machine",
-      image: "https://fananteam.com/images/solina2k1.jpg",
-      footer: "VST | Windows 32bit/64bit",
-      link: "/Solina2k"
     },
     {
       id: "spacelifter-3",
@@ -156,12 +28,124 @@ export default function FreePack() {
       link: "/Spacelifter3"
     },
     {
-      id: "spacelifter-4",
-      name: "Spacelifter 4",
-      description: "Modular Echo - Reverb",
-      image: "https://fananteam.com/images/spacelifter1.jpg",
+      id: "bjorn",
+      name: "Bjorn",
+      description: "Filter Module",
+      image: "https://fananteam.com/images/Bjorn1.jpg",
       footer: "VST | Windows 32bit/64bit",
-      link: "/Spacelifter4"
+      link: "/Bjorn"
+    },
+    {
+      id: "monica-3",
+      name: "Monica 3",
+      description: "90's Style Dual Layered Synth-Arp",
+      image: "https://fananteam.com/images/monica1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/Monica3"
+    },
+    {
+      id: "scandiclavia-2",
+      name: "ScandiClavia 2",
+      description: "Nordish Organ Module",
+      image: "https://fananteam.com/images/scandiclavia21.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/ScandiClavia2"
+    },
+    {
+      id: "mini-ringo",
+      name: "Mini Ringo",
+      description: "Midi Groove",
+      image: "https://fananteam.com/images/mini%20ringo1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/MiniRingo"
+    },
+    {
+      id: "bonnie",
+      name: "Bonnie",
+      description: "Drum Slots Sampler",
+      image: "https://fananteam.com/images/bonnie1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/Bonnie"
+    },
+    {
+      id: "solina2k",
+      name: "Solina2k",
+      description: "Ensemble Machine",
+      image: "https://fananteam.com/images/solina2k1.jpg",
+      footer: "VST | Windows 32bit/64bit",
+      link: "/Solina2k"
+    },
+    {
+      id: "majoris-free",
+      name: "Majoris Free",
+      description: "Synth Based Arranger",
+      image: "https://fananteam.com/images/majorisfree1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/MajorisFree"
+    },
+    {
+      id: "anytext",
+      name: "AnyText",
+      description: "Textual Comments Generator",
+      image: "https://fananteam.com/images/anytext1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/AnyText"
+    },
+    {
+      id: "djup",
+      name: "Djup",
+      description: "Nordish Bass Module",
+      image: "https://fananteam.com/images/djup1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/Djup"
+    },
+    {
+      id: "midmid",
+      name: "Midmid",
+      description: "Multi-Channel Midi Router",
+      image: "https://fananteam.com/images/midmid1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/Midmid"
+    },
+    {
+      id: "quentin",
+      name: "Quentin",
+      description: "Polyrhythmic synth",
+      image: "https://fananteam.com/images/quentin1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/Quentin"
+    },
+    {
+      id: "999-gen2",
+      name: "999 gen2",
+      description: "Rhythmic Midi Arp",
+      image: "https://fananteam.com/images/9991.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/999Gen2"
+    },
+    {
+      id: "kitton-3",
+      name: "Kitton 3",
+      description: "GM Compatible Drum Machine",
+      image: "https://fananteam.com/images/kitton31.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/Kitton3"
+    },
+    {
+      id: "saxophia-gen2",
+      name: "Saxophia gen2",
+      description: "Ethnic saxophone module",
+      image: "https://fananteam.com/images/saxsophia1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/SaxophiaGen2"
+    },
+    {
+      id: "rebellion",
+      name: "Rebellion",
+      description: "Multi-Band Exciter",
+      image: "https://fananteam.com/images/rebellion1.jpg",
+      footer: "VST | Windows 32bit/64bit",
+      link: "/Rebellion"
     },
     {
       id: "tropicana-fun",
@@ -172,12 +156,20 @@ export default function FreePack() {
       link: "/TropicanaFun"
     },
     {
-      id: "ymer",
-      name: "Ymer",
-      description: "Massive Distortion",
-      image: "https://fananteam.com/images/ymer1.jpg",
-      footer: "VST | Windows 32bit/64bit",
-      link: "/Ymer"
+      id: "bella",
+      name: "Bella",
+      description: "Bell Machine",
+      image: "https://fananteam.com/images/bella1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/Bella"
+    },
+    {
+      id: "blue-lue",
+      name: "Blue Lue",
+      description: "Slots Driven Drum Machine",
+      image: "https://fananteam.com/images/bluelue1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/BlueLue"
     }
   ];
 

@@ -4,22 +4,6 @@ import { Link } from "react-router-dom";
 export default function MaxPack() {
   const products = [
     {
-      id: "sultana-2",
-      name: "Sultana 2",
-      description: "Darbuka Machine",
-      image: "https://fananteam.com/images/sultana1.jpg",
-      footer: "VSTi | Windows 32bit/64bit",
-      link: "/Sultana2"
-    },
-    {
-      id: "kitton-stylist",
-      name: "Kitton Stylist",
-      description: "Advanced Stylist Sampler",
-      image: "https://fananteam.com/images/kittonstylist1.jpg",
-      footer: "VSTi | Windows 32bit/64bit",
-      link: "/KittonStylist"
-    },
-    {
       id: "callisto",
       name: "Callisto",
       description: "Arranger Module",
@@ -28,108 +12,12 @@ export default function MaxPack() {
       link: "/Callisto"
     },
     {
-      id: "concordia",
-      name: "Concordia",
-      description: "Ambient Accompaniment",
-      image: "https://fananteam.com/images/CONCORDIA1.jpg",
+      id: "zoe-2",
+      name: "Zoe 2",
+      description: "Drum Machine",
+      image: "https://fananteam.com/images/ZOE1.jpg",
       footer: "VSTi | Windows 32bit/64bit",
-      link: "/Concordia"
-    },
-    {
-      id: "gala-xl",
-      name: "Gala XL",
-      description: "Multi Instrument Ensemble",
-      image: "https://fananteam.com/images/gala1.jpg",
-      footer: "VSTi | Windows 32bit/64bit",
-      link: "/GalaXL"
-    },
-    {
-      id: "gala-duo",
-      name: "Gala Duo",
-      description: "Hybrid Multi - Instrument Ensemble",
-      image: "https://fananteam.com/images/galaduo1.png",
-      footer: "VSTi | Windows 32bit/64bit",
-      link: "/GalaDuo"
-    },
-    {
-      id: "arpomaniac",
-      name: "Arpomaniac",
-      description: "Rhythmic Synth",
-      image: "https://fananteam.com/images/arpomanica1.jpg",
-      footer: "VSTi | Windows 32bit/64bit",
-      link: "/Arpomaniac"
-    },
-    {
-      id: "anyimage",
-      name: "AnyImage",
-      description: "Image Album Generator",
-      image: "https://fananteam.com/images/anyimage1.jpg",
-      footer: "VST | Windows 32bit/64bit",
-      link: "/AnyImage"
-    },
-    {
-      id: "brunetta",
-      name: "Brunetta",
-      description: "Vocals Toolkit Multi-Fx",
-      image: "https://fananteam.com/images/Brunetta1.jpg",
-      footer: "VST | Windows 32bit/64bit",
-      link: "/Brunetta"
-    },
-    {
-      id: "tropicana",
-      name: "Tropicana",
-      description: "Caribbean Rhythmic Synth",
-      image: "https://fananteam.com/images/tropikana1.jpg",
-      footer: "VSTi | Windows 32bit/64bit",
-      link: "/Tropicana"
-    },
-    {
-      id: "ziggy",
-      name: "Ziggy",
-      description: "Advanced Bass Module",
-      image: "https://fananteam.com/images/zigi1.jpg",
-      footer: "VSTi | Windows 32bit/64bit",
-      link: "/Ziggy"
-    },
-    {
-      id: "scandisoul-2",
-      name: "ScandiSoul 2",
-      description: "Nord Soul Organ Module",
-      image: "https://fananteam.com/images/scandisoul1.jpg",
-      footer: "VSTi | Windows 32bit/64bit",
-      link: "/ScandiSoul2"
-    },
-    {
-      id: "playlisted",
-      name: "Playlisted",
-      description: "Playlist Player",
-      image: "https://fananteam.com/images/Playlisted1.png",
-      footer: "VSTi | Windows 32bit/64bit",
-      link: "/Playlisted"
-    },
-    {
-      id: "midiverus",
-      name: "Midiverus",
-      description: "Advanced Midi Hardware Router",
-      image: "https://fananteam.com/images/midiverus1.jpg",
-      footer: "VSTi | Windows 32bit/64bit",
-      link: "/Midiverus"
-    },
-    {
-      id: "midimotor",
-      name: "Midimotor",
-      description: "Motored Midi Controller",
-      image: "https://fananteam.com/images/midimotor1.jpg",
-      footer: "VSTi | Windows 32bit/64bit",
-      link: "/Midimotor"
-    },
-    {
-      id: "randomidi",
-      name: "Randomidi",
-      description: "Advanced Midi Controller and arp",
-      image: "https://fananteam.com/images/randomidi1.jpg",
-      footer: "VSTi | Windows 32bit/64bit",
-      link: "/Randomidi"
+      link: "/Zoe2"
     },
     {
       id: "ringo",
@@ -140,20 +28,76 @@ export default function MaxPack() {
       link: "/Ringo"
     },
     {
-      id: "rythmos",
-      name: "Rythmos",
-      description: "Pattern Midi Arp",
-      image: "https://fananteam.com/images/Rhythmos1.jpg",
-      footer: "VSTi | Windows 32bit/64bit",
-      link: "/Rythmos"
+      id: "anyimage",
+      name: "AnyImage",
+      description: "Image Album Generator",
+      image: "https://fananteam.com/images/anyimage1.jpg",
+      footer: "VST | Windows 32bit/64bit",
+      link: "/AnyImage"
     },
     {
-      id: "yogi",
-      name: "Yogi",
-      description: "Rhythmic Pad Machine",
-      image: "https://fananteam.com/images/yogi1.jpg",
+      id: "playlisted-2",
+      name: "Playlisted 2",
+      description: "Media Playlist Player",
+      image: "https://fananteam.com/images/playlisted3.jpg",
       footer: "VSTi | Windows 32bit/64bit",
-      link: "/Yogi"
+      link: "/Playlisted2"
+    },
+    {
+      id: "kitton-stylist",
+      name: "Kitton Stylist",
+      description: "Advanced Stylist Sampler",
+      image: "https://fananteam.com/images/kittonstylist1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/KittonStylist"
+    },
+    {
+      id: "ziggy",
+      name: "Ziggy",
+      description: "Advanced Bass Module",
+      image: "https://fananteam.com/images/zigi1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/Ziggy"
+    },
+    {
+      id: "gala-xl",
+      name: "Gala XL",
+      description: "Multi Instrument Ensemble",
+      image: "https://fananteam.com/images/gala1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/GalaXL"
+    },
+    {
+      id: "randomidi-xl",
+      name: "Randomidi XL",
+      description: "Advanced Midi Controller",
+      image: "https://fananteam.com/images/randomidi1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/Randomidi"
+    },
+    {
+      id: "brunetta",
+      name: "Brunetta",
+      description: "Vocals Toolkit Multi-Fx",
+      image: "https://fananteam.com/images/Brunetta1.jpg",
+      footer: "VST | Windows 32bit/64bit",
+      link: "/Brunetta"
+    },
+    {
+      id: "majoris",
+      name: "Majoris",
+      description: "Synth Based Arranger",
+      image: "https://fananteam.com/images/majoris1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/Majoris"
+    },
+    {
+      id: "scandisoul-2",
+      name: "ScandiSoul 2",
+      description: "Nord Soul Organ Module",
+      image: "https://fananteam.com/images/scandisoul1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/ScandiSoul2"
     },
     {
       id: "yowlseq-2",
@@ -164,12 +108,52 @@ export default function MaxPack() {
       link: "/Yowlseq2"
     },
     {
-      id: "zoe-2",
-      name: "Zoe 2",
-      description: "Drum Machine",
-      image: "https://fananteam.com/images/ZOE1.jpg",
+      id: "midimotor",
+      name: "Midimotor",
+      description: "Motored Midi Controller",
+      image: "https://fananteam.com/images/midimotor1.jpg",
       footer: "VSTi | Windows 32bit/64bit",
-      link: "/Zoe2"
+      link: "/Midimotor"
+    },
+    {
+      id: "midisquid",
+      name: "Midisquid",
+      description: "Midi Routing Solution",
+      image: "https://fananteam.com/images/midisquid1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/Midisquid"
+    },
+    {
+      id: "arpomaniac",
+      name: "Arpomaniac",
+      description: "Rhythmic Synth",
+      image: "https://fananteam.com/images/arpomanica1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/Arpomaniac"
+    },
+    {
+      id: "yogi",
+      name: "Yogi",
+      description: "Rhythmic Pad Machine",
+      image: "https://fananteam.com/images/yogi1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/Yogi"
+    },
+    {
+      id: "rythmos",
+      name: "Rythmos",
+      description: "Pattern Midi Arp",
+      image: "https://fananteam.com/images/Rhythmos1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/Rythmos"
+    },
+    {
+      id: "tropicana",
+      name: "Tropicana",
+      description: "Caribbean Rhythmic Synth",
+      image: "https://fananteam.com/images/tropikana1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/Tropicana"
     }
   ];
 
