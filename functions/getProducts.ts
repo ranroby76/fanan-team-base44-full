@@ -6,7 +6,7 @@ Deno.serve(async (req) => {
         
         // Fetch all products, sorted by title
         // Using service role to ensure public access
-        const products = await base44.asServiceRole.entities.Product.list({ title: 1 }, 1000);
+        const products = await base44.asServiceRole.entities.Product.list();
         
         // Flatten products to include all fields at root level
         const flattenedProducts = products.map(p => ({
