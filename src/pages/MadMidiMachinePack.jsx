@@ -8,7 +8,8 @@ export default function MadMidiMachinePack() {
   const { data: products, isLoading } = useQuery({
     queryKey: ['products', 'Mad MIDI Machines'],
     queryFn: async () => {
-      const all = await base44.entities.Product.list({ limit: 1000 });
+      // Use backend function to ensure public access
+      const { data: all } = await base44.functions.invoke('getProducts');
       return all
         .filter(p => p.pack === "Mad MIDI Machines")
         .sort((a, b) => a.title.localeCompare(b.title));

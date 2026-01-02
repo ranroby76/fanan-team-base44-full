@@ -8,7 +8,8 @@ export default function MaxPack() {
   const { data: products, isLoading } = useQuery({
     queryKey: ['products', 'Max! Pack'],
     queryFn: async () => {
-      const all = await base44.entities.Product.list({ limit: 1000 });
+      // Use backend function to ensure public access
+      const { data: all } = await base44.functions.invoke('getProducts');
       return all
         .filter(p => p.pack === "Max! Pack")
         .sort((a, b) => a.title.localeCompare(b.title));

@@ -32,8 +32,8 @@ export default function ProductPage({
   const { data: dbProduct } = useQuery({
     queryKey: ['products', slug || productName], // Use slug if available
     queryFn: async () => {
-      // Try to find product by slug or title
-      const products = await base44.entities.Product.list({ limit: 1000 }); 
+      // Try to find product by slug or title using backend function for public access
+      const { data: products } = await base44.functions.invoke('getProducts');
       if (slug) {
         const bySlug = products.find(p => p.page_slug === slug);
         if (bySlug) return bySlug;
