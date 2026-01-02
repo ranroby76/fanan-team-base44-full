@@ -88,11 +88,29 @@ Deno.serve(async (req) => {
     try {
         const base44 = createClientFromRequest(req);
         
-        // Use service role to bypass potential permission issues if user isn't admin yet (though they should be)
-        // Check existing to avoid duplicates
-        const existing = await base44.asServiceRole.entities.Product.list({ limit: 100 });
-        if (existing.length > 0) {
-            return Response.json({ message: "Products already seeded", count: existing.length });
+        // Parse body to check for reset flag
+        let shouldReset = false;
+        try {
+            const body = await req.json();
+            shouldReset = body.reset === true;
+        } catch (e) {
+            // No body or invalid json, ignore
+        }
+
+        if (shouldReset) {
+            // Delete all existing products first
+            // Note: Since we don't have bulk delete, we list all and delete one by one or create a better strategy.
+            // For ~50 items it's fine to fetch and delete.
+            const existing = await base44.asServiceRole.entities.Product.list({ limit: 1000 });
+            
+            // Parallel delete for speed
+            await Promise.all(existing.map(p => base44.asServiceRole.entities.Product.delete(p.id)));
+        } else {
+            // Default check existing to avoid duplicates if not resetting
+            const existing = await base44.asServiceRole.entities.Product.list({ limit: 100 });
+            if (existing.length > 0) {
+                return Response.json({ message: "Products already seeded (use reset=true to overwrite)", count: existing.length });
+            }
         }
 
         const result = await base44.asServiceRole.entities.Product.bulkCreate(products);
