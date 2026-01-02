@@ -15,6 +15,7 @@ export default function ProductManager() {
   const [error, setError] = useState("");
   const [importing, setImporting] = useState(false);
 
+  const [activeTab, setActiveTab] = useState("products");
   const [selectedPack, setSelectedPack] = useState("all");
   const [editingProduct, setEditingProduct] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -127,24 +128,46 @@ export default function ProductManager() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 min-h-screen">
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h1 className="text-3xl font-bold font-headline text-primary">Product Manager</h1>
-          <p className="text-muted-foreground">Manage your application data directly</p>
-        </div>
-        <div className="flex gap-2">
-          <Button onClick={handleImportFromGitHub} variant="default" size="sm" disabled={importing}>
-            {importing ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
-            Import from GitHub
-          </Button>
-          <Button onClick={() => refetch()} variant="outline" size="sm">
-            Refresh Data
-          </Button>
-        </div>
+    <div className="flex min-h-screen">
+      {/* Vertical Tab Sidebar */}
+      <div className="w-64 bg-card border-r border-border p-4 space-y-2">
+        <Button
+          variant={activeTab === "products" ? "default" : "ghost"}
+          className="w-full justify-start"
+          onClick={() => setActiveTab("products")}
+        >
+          Product Manager
+        </Button>
+        <Button
+          variant={activeTab === "pricing" ? "default" : "ghost"}
+          className="w-full justify-start"
+          onClick={() => setActiveTab("pricing")}
+        >
+          Set Price
+        </Button>
       </div>
 
-      <Card>
+      {/* Main Content Area */}
+      <div className="flex-1 px-4 py-8">
+        {activeTab === "products" && (
+          <>
+            <div className="flex justify-between items-center mb-8">
+              <div>
+                <h1 className="text-3xl font-bold font-headline text-primary">Product Manager</h1>
+                <p className="text-muted-foreground">Manage your application data directly</p>
+              </div>
+              <div className="flex gap-2">
+                <Button onClick={handleImportFromGitHub} variant="default" size="sm" disabled={importing}>
+                  {importing ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+                  Import from GitHub
+                </Button>
+                <Button onClick={() => refetch()} variant="outline" size="sm">
+                  Refresh Data
+                </Button>
+              </div>
+            </div>
+
+            <Card>
         <CardHeader className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div>
             <CardTitle>Products</CardTitle>
@@ -272,6 +295,58 @@ export default function ProductManager() {
           }} 
         />
       )}
+          </>
+        )}
+
+        {activeTab === "pricing" && (
+          <div className="max-w-2xl">
+            <div className="mb-8">
+              <h1 className="text-3xl font-bold font-headline text-primary">Set Pack Prices</h1>
+              <p className="text-muted-foreground">Update pricing for each pack</p>
+            </div>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Pack Pricing</CardTitle>
+                <CardDescription>Modify the prices for Mad MIDI Machines Pack and Max Pack</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold">Mad MIDI Machines Pack</label>
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl">$</span>
+                    <Input 
+                      type="number" 
+                      defaultValue="22.00"
+                      step="0.01"
+                      className="text-xl"
+                    />
+                  </div>
+                  <p className="text-xs text-muted-foreground">Current price: $22.00</p>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold">Max Pack</label>
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl">$</span>
+                    <Input 
+                      type="number" 
+                      defaultValue="12.00"
+                      step="0.01"
+                      className="text-xl"
+                    />
+                  </div>
+                  <p className="text-xs text-muted-foreground">Current price: $12.00</p>
+                </div>
+
+                <Button className="w-full" size="lg">
+                  Save Prices
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
