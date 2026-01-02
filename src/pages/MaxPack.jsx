@@ -66,6 +66,110 @@ export default function MaxPack() {
       image: "https://fananteam.com/images/anyimage1.jpg",
       footer: "VST | Windows 32bit/64bit",
       link: "/AnyImage"
+    },
+    {
+      id: "brunetta",
+      name: "Brunetta",
+      description: "Vocals Toolkit Multi-Fx",
+      image: "https://fananteam.com/images/Brunetta1.jpg",
+      footer: "VST | Windows 32bit/64bit",
+      link: "/Brunetta"
+    },
+    {
+      id: "tropicana",
+      name: "Tropicana",
+      description: "Caribbean Rhythmic Synth",
+      image: "https://fananteam.com/images/tropikana1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/Tropicana"
+    },
+    {
+      id: "ziggy",
+      name: "Ziggy",
+      description: "Advanced Bass Module",
+      image: "https://fananteam.com/images/zigi1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/Ziggy"
+    },
+    {
+      id: "scandisoul-2",
+      name: "ScandiSoul 2",
+      description: "Nord Soul Organ Module",
+      image: "https://fananteam.com/images/scandisoul1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/ScandiSoul2"
+    },
+    {
+      id: "playlisted",
+      name: "Playlisted",
+      description: "Playlist Player",
+      image: "https://fananteam.com/images/Playlisted1.png",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/Playlisted"
+    },
+    {
+      id: "midiverus",
+      name: "Midiverus",
+      description: "Advanced Midi Hardware Router",
+      image: "https://fananteam.com/images/midiverus1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/Midiverus"
+    },
+    {
+      id: "midimotor",
+      name: "Midimotor",
+      description: "Motored Midi Controller",
+      image: "https://fananteam.com/images/midimotor1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/Midimotor"
+    },
+    {
+      id: "randomidi",
+      name: "Randomidi",
+      description: "Advanced Midi Controller and arp",
+      image: "https://fananteam.com/images/randomidi1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/Randomidi"
+    },
+    {
+      id: "ringo",
+      name: "Ringo",
+      description: "Midi Groove Machine",
+      image: "https://fananteam.com/images/ringo1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/Ringo"
+    },
+    {
+      id: "rythmos",
+      name: "Rythmos",
+      description: "Pattern Midi Arp",
+      image: "https://fananteam.com/images/Rhythmos1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/Rythmos"
+    },
+    {
+      id: "yogi",
+      name: "Yogi",
+      description: "Rhythmic Pad Machine",
+      image: "https://fananteam.com/images/yogi1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/Yogi"
+    },
+    {
+      id: "yowlseq-2",
+      name: "Yowlseq 2",
+      description: "Vowel Phaser - Wah",
+      image: "https://fananteam.com/images/Yowlseq1.jpg",
+      footer: "VST | Windows 32bit/64bit",
+      link: "/Yowlseq2"
+    },
+    {
+      id: "zoe-2",
+      name: "Zoe 2",
+      description: "Drum Machine",
+      image: "https://fananteam.com/images/ZOE1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/Zoe2"
     }
   ];
 
@@ -99,7 +203,7 @@ export default function MaxPack() {
                 />
               </div>
 
-              {/* Content */}
+              {/* Content - WITH PROPER BANNER DESIGN (Dark Gray Background, Gold Text) */}
               <div className="flex flex-col space-y-1.5 flex-grow p-4 bg-muted">
                 <h2 className="tracking-tight text-xl font-bold font-headline text-primary truncate transition-colors">
                   {product.name}

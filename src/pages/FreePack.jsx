@@ -66,6 +66,118 @@ export default function FreePack() {
       image: "https://fananteam.com/images/kitton31.jpg",
       footer: "VSTi | Windows 32bit/64bit",
       link: "/Kitton3"
+    },
+    {
+      id: "midmid",
+      name: "Midmid",
+      description: "Multi-Channel Midi Router",
+      image: "https://fananteam.com/images/midmid1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/Midmid"
+    },
+    {
+      id: "mini-ringo",
+      name: "Mini Ringo",
+      description: "Midi Groove",
+      image: "https://fananteam.com/images/mini%20ringo1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/MiniRingo"
+    },
+    {
+      id: "monica-3",
+      name: "Monica 3",
+      description: "90's Style Dual Layered Synth-Arp",
+      image: "https://fananteam.com/images/monica1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/Monica3"
+    },
+    {
+      id: "quentin",
+      name: "Quentin",
+      description: "Polyrhythmic synth",
+      image: "https://fananteam.com/images/quentin1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/Quentin"
+    },
+    {
+      id: "randomidi-free",
+      name: "Randomidi free",
+      description: "Advanced Midi Controller and arp",
+      image: "https://fananteam.com/images/randomidi1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/RandomidiFree"
+    },
+    {
+      id: "randrobin",
+      name: "RandRobin",
+      description: "Random Round Robin Module",
+      image: "https://fananteam.com/images/randomrobin1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/RandRobin"
+    },
+    {
+      id: "rebellion",
+      name: "Rebellion",
+      description: "Multi-Band Exciter",
+      image: "https://fananteam.com/images/rebellion1.jpg",
+      footer: "VST | Windows 32bit/64bit",
+      link: "/Rebellion"
+    },
+    {
+      id: "saxophia-gen2",
+      name: "Saxophia gen2",
+      description: "Ethnic saxophone module",
+      image: "https://fananteam.com/images/saxsophia1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/SaxophiaGen2"
+    },
+    {
+      id: "scandiclavia-2",
+      name: "ScandiClavia 2",
+      description: "Nordish Organ Module",
+      image: "https://fananteam.com/images/scandiclavia21.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/ScandiClavia2"
+    },
+    {
+      id: "solina2k",
+      name: "Solina2k",
+      description: "Ensemble Machine",
+      image: "https://fananteam.com/images/solina2k1.jpg",
+      footer: "VST | Windows 32bit/64bit",
+      link: "/Solina2k"
+    },
+    {
+      id: "spacelifter-3",
+      name: "Spacelifter 3",
+      description: "Modular Echo Reverb",
+      image: "https://fananteam.com/images/spacelifter1.jpg",
+      footer: "VST | Windows 32bit/64bit",
+      link: "/Spacelifter3"
+    },
+    {
+      id: "spacelifter-4",
+      name: "Spacelifter 4",
+      description: "Modular Echo - Reverb",
+      image: "https://fananteam.com/images/spacelifter1.jpg",
+      footer: "VST | Windows 32bit/64bit",
+      link: "/Spacelifter4"
+    },
+    {
+      id: "tropicana-fun",
+      name: "Tropicana Fun",
+      description: "Caribbean Rhythmic Synth",
+      image: "https://fananteam.com/images/TROPIKANA%20FUN1.jpg",
+      footer: "VSTi | Windows 32bit/64bit",
+      link: "/TropicanaFun"
+    },
+    {
+      id: "ymer",
+      name: "Ymer",
+      description: "Massive Distortion",
+      image: "https://fananteam.com/images/ymer1.jpg",
+      footer: "VST | Windows 32bit/64bit",
+      link: "/Ymer"
     }
   ];
 
@@ -99,7 +211,7 @@ export default function FreePack() {
                 />
               </div>
 
-              {/* Content */}
+              {/* Content - WITH PROPER BANNER DESIGN (Dark Gray Background, Gold Text) */}
               <div className="flex flex-col space-y-1.5 flex-grow p-4 bg-muted">
                 <h2 className="tracking-tight text-xl font-bold font-headline text-primary truncate transition-colors">
                   {product.name}
