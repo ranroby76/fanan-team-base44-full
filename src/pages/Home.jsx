@@ -10,7 +10,7 @@ export default function Home() {
       <section className="relative flex justify-center w-full mx-auto">
         <div className="w-full">
           <img
-            src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=1846&h=739&fit=crop"
+            src="https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team-3/public/images/SITE%20TOP.png"
             alt="Site Top Banner"
             className="object-cover w-full h-auto"
           />
