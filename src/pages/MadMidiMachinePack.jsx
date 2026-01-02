@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Loader2, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ProductCard from "@/components/ProductCard";
+import PackBannerGallery from "@/components/PackBannerGallery";
 
 export default function MadMidiMachinePack() {
   const { data: products, isLoading, error, refetch } = useQuery({
@@ -62,6 +63,9 @@ export default function MadMidiMachinePack() {
           />
         </div>
       </div>
+
+      {/* Product Gallery Banner */}
+      <PackBannerGallery products={products} />
 
       {/* Products Grid */}
       {products.length > 0 ? (
