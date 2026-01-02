@@ -70,15 +70,16 @@ export default function Dashboard() {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-col space-y-3 mb-6 bg-muted/20 p-4 rounded-lg border">
-                <span className="text-sm font-medium text-muted-foreground">Filter by Pack:</span>
-                <div className="flex flex-wrap gap-2">
+              <div className="mb-6 p-6 border-2 rounded-xl bg-background/50 shadow-sm">
+                <h3 className="text-md font-bold mb-4 text-foreground uppercase tracking-wide">Select Pack to View:</h3>
+                <div className="flex flex-wrap gap-4">
                   {packs.map(pack => (
                     <Button
                       key={pack}
-                      variant={selectedPack === pack ? "default" : "secondary"}
+                      size="lg"
+                      variant={selectedPack === pack ? "default" : "outline"}
                       onClick={() => setSelectedPack(pack)}
-                      className={`flex-1 md:flex-none transition-all ${selectedPack === pack ? 'shadow-md scale-105' : 'hover:bg-secondary/80'}`}
+                      className={`flex-1 md:flex-none text-base font-semibold border-2 ${selectedPack === pack ? 'shadow-lg scale-105' : 'opacity-70 hover:opacity-100'}`}
                     >
                       {pack}
                     </Button>
