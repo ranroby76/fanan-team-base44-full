@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import emailjs from "@emailjs/browser";
 
 export default function BuyNow() {
   const [machineIds, setMachineIds] = React.useState({
@@ -26,11 +27,34 @@ export default function BuyNow() {
       .catch(err => console.error('Location detection failed:', err));
   }, []);
 
-  const handlePayPalApprove = (data, pack, price) => {
-    // Handle successful payment
-    const serial = "XXXX-XXXX-XXXX-XXXX";
+  const handlePayPalApprove = async (data, pack, price, packName, details) => {
+    // Generate serial number
+    const serial = `${Math.random().toString(36).substr(2, 4).toUpperCase()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}`;
     setSerials({...serials, [pack]: serial});
-    alert(`Payment successful! Your serial: ${serial} will be sent to your email.`);
+
+    // Send email via EmailJS
+    try {
+      const customerEmail = details.payer.email_address;
+      const customerName = details.payer.name.given_name || "Customer";
+
+      await emailjs.send(
+        import.meta.env.VITE_NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+        {
+          to_email: customerEmail,
+          to_name: customerName,
+          amount: price.toFixed(2),
+          serial_number: serial,
+          pack_name: packName
+        },
+        import.meta.env.VITE_NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+      );
+      
+      alert(`Payment successful! Your serial: ${serial} has been sent to ${customerEmail}`);
+    } catch (error) {
+      console.error("Email send error:", error);
+      alert(`Payment successful! Your serial: ${serial}\n(Email notification failed, but your serial is displayed here)`);
+    }
   };
 
   return (
@@ -125,7 +149,7 @@ export default function BuyNow() {
                   }}
                   onApprove={(data, actions) => {
                     return actions.order.capture().then((details) => {
-                      handlePayPalApprove(data, 'madMidi', 22.00);
+                      handlePayPalApprove(data, 'madMidi', 22.00, 'Mad MIDI Machines Pack', details);
                     });
                   }}
                   onError={(err) => {
@@ -199,7 +223,7 @@ export default function BuyNow() {
                   }}
                   onApprove={(data, actions) => {
                     return actions.order.capture().then((details) => {
-                      handlePayPalApprove(data, 'max', 12.00);
+                      handlePayPalApprove(data, 'max', 12.00, 'Max Pack', details);
                     });
                   }}
                   onError={(err) => {
