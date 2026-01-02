@@ -9,25 +9,10 @@ import { Search, Edit, Plus, Loader2, Lock } from "lucide-react";
 import EditProduct from "../components/dashboard/EditProduct";
 
 export default function ProductManager() {
-  const allowedAdmins = ["ranroby76@gmail.com", "ronbm19@gmail.com"];
-
-  // Check authentication
-  const { data: user, isLoading: authLoading } = useQuery({
-    queryKey: ['currentUser'],
-    queryFn: async () => {
-      try {
-        return await base44.auth.me();
-      } catch {
-        return null;
-      }
-    },
-    staleTime: 5 * 60 * 1000,
-  });
-
-
-
-  // Check if user is allowed admin
-  const isAllowedAdmin = user && allowedAdmins.includes(user.email);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [password, setPassword] = useState("");
+  const [verifying, setVerifying] = useState(false);
+  const [error, setError] = useState("");
 
   const [selectedPack, setSelectedPack] = useState("all");
   const [editingProduct, setEditingProduct] = useState(null);
@@ -64,53 +49,53 @@ export default function ProductManager() {
     })
     .sort((a, b) => a.title?.localeCompare(b.title));
 
-  // Show loading while checking auth
-  if (authLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
-      </div>
-    );
-  }
+  const handleVerifyPassword = async (e) => {
+    e.preventDefault();
+    setVerifying(true);
+    setError("");
 
-  // Show login buttons if not authenticated
-  if (!user) {
+    try {
+      const response = await base44.functions.invoke('verifyVipPass', { password });
+      if (response.data.success) {
+        setIsAuthenticated(true);
+      } else {
+        setError("Incorrect password");
+      }
+    } catch (err) {
+      setError("Incorrect password");
+    } finally {
+      setVerifying(false);
+    }
+  };
+
+  // Show password input if not authenticated
+  if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-6 px-4">
         <Lock className="w-16 h-16 text-primary" />
         <div className="space-y-4 text-center">
           <h1 className="text-3xl font-bold">VIP Access</h1>
-          <p className="text-muted-foreground">Sign in to access product management</p>
+          <p className="text-muted-foreground">Enter password to access product management</p>
         </div>
-        <div className="flex flex-col gap-3 w-full max-w-sm">
+        <form onSubmit={handleVerifyPassword} className="w-full max-w-sm space-y-4">
+          <Input
+            type="password"
+            placeholder="Enter VIP password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full"
+            disabled={verifying}
+          />
+          {error && <p className="text-sm text-destructive">{error}</p>}
           <Button 
-            onClick={() => base44.auth.redirectToLogin(window.location.pathname)} 
+            type="submit"
             size="lg"
             className="w-full"
+            disabled={verifying || !password}
           >
-            Sign In with Email
+            {verifying ? <Loader2 className="w-4 h-4 animate-spin" /> : "Access"}
           </Button>
-          <Button 
-            onClick={() => base44.auth.redirectToLogin(window.location.pathname)} 
-            size="lg"
-            variant="outline"
-            className="w-full"
-          >
-            Sign In with Google
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
-  // Show access denied if authenticated but not an allowed admin
-  if (!isAllowedAdmin) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-4 text-center px-4">
-        <Lock className="w-16 h-16 text-muted-foreground" />
-        <h1 className="text-3xl font-bold">Access Denied</h1>
-        <p className="text-muted-foreground">You don't have permission to access this page.</p>
-        <Button onClick={() => base44.auth.logout("/")}>Logout</Button>
+        </form>
       </div>
     );
   }
