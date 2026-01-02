@@ -4,6 +4,7 @@ import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import ProductCard from "@/components/ProductCard";
 
 export default function MaxPack() {
   const { data: products, isLoading, error, refetch } = useQuery({
@@ -51,13 +52,13 @@ export default function MaxPack() {
 
   return (
     <div className="container mx-auto px-4 py-8 animate-fade-in space-y-8">
-      {/* Header Image */}
-      <div className="flex justify-center mb-8">
-        <div className="w-full max-w-lg h-auto">
+      {/* Header Image - Full Width Banner */}
+      <div className="flex justify-center mb-10">
+        <div className="w-full max-w-4xl h-auto">
           <img
             src="https://fananteam.com/images/pro%20pack.png"
             alt="Max! Pack Logo"
-            className="object-contain w-full h-auto"
+            className="object-contain w-full h-auto shadow-xl rounded-lg bg-black/20"
           />
         </div>
       </div>
@@ -66,42 +67,7 @@ export default function MaxPack() {
       {products.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {products.map((product) => (
-            <div 
-              key={product.id}
-              className="rounded-lg border border-border bg-card text-card-foreground shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col h-full"
-            >
-              <Link to={product.page_slug ? `/${product.page_slug}` : "#"} className="flex flex-col h-full">
-                {/* Image Container */}
-                <div className="aspect-video relative overflow-hidden bg-muted flex items-center justify-center">
-                  {product.main_image ? (
-                    <img
-                      src={product.main_image}
-                      alt={product.title}
-                      className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
-                    />
-                  ) : (
-                    <div className="text-muted-foreground text-sm">No Image</div>
-                  )}
-                </div>
-
-                {/* Content */}
-                <div className="flex flex-col space-y-1.5 flex-grow p-4 bg-muted/50">
-                  <h2 className="tracking-tight text-xl font-bold font-headline text-primary truncate transition-colors">
-                    {product.title}
-                  </h2>
-                  <p className="text-sm text-foreground/80 line-clamp-2 min-h-[2.5rem]">
-                    {product.short_description}
-                  </p>
-                </div>
-
-                {/* Footer */}
-                <div className="flex items-center p-3 border-t border-border bg-muted/30 mt-auto">
-                  <p className="text-xs text-muted-foreground text-center truncate w-full">
-                    {Array.isArray(product.formats) ? product.formats.join(" | ") : product.formats}
-                  </p>
-                </div>
-              </Link>
-            </div>
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
       ) : (
