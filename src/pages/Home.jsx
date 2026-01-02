@@ -100,7 +100,7 @@ export default function Home() {
       <div className="container mx-auto px-4">
         <div className="space-y-6 flex flex-col items-center">
           <Link to="/MadMidiMachinePack" className="group w-full max-w-2xl">
-            <div className="h-32 bg-secondary/80 rounded-full border-2 border-primary/20 hover:border-primary transition-all duration-300 shadow-md hover:shadow-xl flex items-center justify-center p-4 overflow-hidden relative">
+            <div className="h-32 bg-zinc-900 rounded-full border-2 border-primary/20 hover:border-primary transition-all duration-300 shadow-md hover:shadow-xl flex items-center justify-center p-4 overflow-hidden relative">
               <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <img
                 src="https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team-3/public/images/mad%20midi%20machines.png"
@@ -111,7 +111,7 @@ export default function Home() {
           </Link>
 
           <Link to="/MaxPack" className="group w-full max-w-2xl">
-            <div className="h-32 bg-secondary/80 rounded-full border-2 border-primary/20 hover:border-primary transition-all duration-300 shadow-md hover:shadow-xl flex items-center justify-center p-4 overflow-hidden relative">
+            <div className="h-32 bg-zinc-900 rounded-full border-2 border-primary/20 hover:border-primary transition-all duration-300 shadow-md hover:shadow-xl flex items-center justify-center p-4 overflow-hidden relative">
               <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <img
                 src="https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team-3/public/images/pro%20pack.png"
@@ -122,7 +122,7 @@ export default function Home() {
           </Link>
 
           <Link to="/FreePack" className="group w-full max-w-2xl">
-            <div className="h-32 bg-secondary/80 rounded-full border-2 border-primary/20 hover:border-primary transition-all duration-300 shadow-md hover:shadow-xl flex items-center justify-center p-4 overflow-hidden relative">
+            <div className="h-32 bg-zinc-900 rounded-full border-2 border-primary/20 hover:border-primary transition-all duration-300 shadow-md hover:shadow-xl flex items-center justify-center p-4 overflow-hidden relative">
               <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <img
                 src="https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team-3/public/images/free%20pack.png"
