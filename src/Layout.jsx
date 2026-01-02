@@ -19,7 +19,8 @@ export default function Layout({ children, currentPageName }) {
     { name: "How to Buy", page: "HowToBuy", path: "/HowToBuy", icon: HelpCircle },
     { name: "Buy Now", page: "BuyNow", path: "/BuyNow", icon: ShoppingCart },
     { name: "Contact Us", page: "ContactUs", path: "/ContactUs", icon: Mail },
-  ];
+    { name: "Manager", page: "ProductManager", path: "/ProductManager", icon: List },
+    ];
 
   const productLinks = [
     { name: "Mad MIDI Machines", path: "/MadMidiMachinePack" },

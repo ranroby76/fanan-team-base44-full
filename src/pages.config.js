@@ -54,6 +54,7 @@ import Yogi from './pages/Yogi';
 import Yowlseq2 from './pages/Yowlseq2';
 import Ziggy from './pages/Ziggy';
 import Zoe2 from './pages/Zoe2';
+import ProductManager from './pages/ProductManager';
 import __Layout from './Layout.jsx';
 
 
@@ -114,6 +115,7 @@ export const PAGES = {
     "Yowlseq2": Yowlseq2,
     "Ziggy": Ziggy,
     "Zoe2": Zoe2,
+    "ProductManager": ProductManager,
 }
 
 export const pagesConfig = {
