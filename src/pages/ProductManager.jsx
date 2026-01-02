@@ -25,7 +25,18 @@ export default function ProductManager() {
 
   const packs = ["Mad MIDI Machines", "Max! Pack", "Free Pack"];
 
-  const filteredProducts = products
+  // Deduplicate products by title to avoid showing duplicates from double seeding
+  const uniqueProducts = React.useMemo(() => {
+    const seen = new Set();
+    return products.filter(p => {
+      if (!p.title) return false;
+      const duplicate = seen.has(p.title);
+      seen.add(p.title);
+      return !duplicate;
+    });
+  }, [products]);
+
+  const filteredProducts = uniqueProducts
     .filter(p => {
         const matchesSearch = p.title?.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesPack = selectedPack === "all" || p.pack === selectedPack;
