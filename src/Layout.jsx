@@ -8,29 +8,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { base44 } from "@/api/base44Client";
-import { useQuery } from "@tanstack/react-query";
 
 export default function Layout({ children, currentPageName }) {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
-
-  // Allowed admin emails
-  const allowedAdmins = ["ranroby76@gmail.com", "ronbm19@gmail.com"];
-
-  // Check if current user is an allowed admin
-  const { data: user } = useQuery({
-    queryKey: ['currentUser'],
-    queryFn: async () => {
-      try {
-        return await base44.auth.me();
-      } catch {
-        return null;
-      }
-    },
-    staleTime: 5 * 60 * 1000,
-  });
-
-  const isAllowedAdmin = user && allowedAdmins.includes(user.email);
 
   // Navigation structure matching reference
   const mainNavLinks = [
@@ -39,12 +19,8 @@ export default function Layout({ children, currentPageName }) {
     { name: "How to Buy", page: "HowToBuy", path: "/HowToBuy", icon: HelpCircle },
     { name: "Buy Now", page: "BuyNow", path: "/BuyNow", icon: ShoppingCart },
     { name: "Contact Us", page: "ContactUs", path: "/ContactUs", icon: Mail },
+    { name: "VIP Login", page: "ProductManager", path: "/ProductManager", icon: List },
   ];
-
-  // Add VIP Login only for allowed admins
-  if (isAllowedAdmin) {
-    mainNavLinks.push({ name: "VIP Login", page: "ProductManager", path: "/ProductManager", icon: List });
-  }
 
   const productLinks = [
     { name: "Mad MIDI Machines", path: "/MadMidiMachinePack" },
