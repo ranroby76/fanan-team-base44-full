@@ -11,6 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 
 export default function ProductPage({ 
   productName, 
+  slug, // Add slug support for more reliable lookup
   productDescription, 
   productImage, 
   galleryImages = [], 
@@ -29,10 +30,14 @@ export default function ProductPage({
 }) {
   // Fetch dynamic data if available
   const { data: dbProduct } = useQuery({
-    queryKey: ['products', productName], // Use 'products' prefix to share cache invalidation with dashboard
+    queryKey: ['products', slug || productName], // Use slug if available
     queryFn: async () => {
-      // Try to find product by title
+      // Try to find product by slug or title
       const products = await base44.entities.Product.list({ limit: 1000 }); 
+      if (slug) {
+        const bySlug = products.find(p => p.page_slug === slug);
+        if (bySlug) return bySlug;
+      }
       return products.find(p => p.title === productName) || null;
     },
     staleTime: 0, // Always fetch fresh data to reflect dashboard changes immediately
@@ -190,12 +195,13 @@ export default function ProductPage({
 
               <Separator className="bg-primary/20" />
 
-              {(finalProduct.formats.audio || finalProduct.formats.video || (Array.isArray(finalProduct.formats.list) && finalProduct.formats.list.length > 0)) && (
+              {/* Safe check for formats using optional chaining */}
+              {(finalProduct.formats?.audio || finalProduct.formats?.video || (Array.isArray(finalProduct.formats?.list) && finalProduct.formats.list.length > 0)) && (
                 <div>
                   <h3 className="text-xl font-headline text-primary font-semibold mb-3">Supported Formats</h3>
                   
                   {/* Format List (VST, Windows, etc.) */}
-                  {Array.isArray(finalProduct.formats.list) && finalProduct.formats.list.length > 0 && (
+                  {Array.isArray(finalProduct.formats?.list) && finalProduct.formats.list.length > 0 && (
                      <div className="flex flex-wrap gap-2 mb-4">
                         {finalProduct.formats.list.map(f => (
                            <span key={f} className="bg-secondary/50 text-secondary-foreground px-3 py-1 rounded-full text-sm font-semibold border border-secondary">
@@ -205,14 +211,14 @@ export default function ProductPage({
                      </div>
                   )}
 
-                  <div className={`grid ${finalProduct.formats.audio && finalProduct.formats.video ? 'grid-cols-2' : 'grid-cols-1'} gap-4`}>
-                    {finalProduct.formats.audio && (
+                  <div className={`grid ${finalProduct.formats?.audio && finalProduct.formats?.video ? 'grid-cols-2' : 'grid-cols-1'} gap-4`}>
+                    {finalProduct.formats?.audio && (
                       <div className="bg-secondary/30 p-3 rounded border border-secondary">
                         <strong className="block text-primary mb-1">Audio</strong>
                         <span className="text-sm">{finalProduct.formats.audio}</span>
                       </div>
                     )}
-                    {finalProduct.formats.video && (
+                    {finalProduct.formats?.video && (
                       <div className="bg-secondary/30 p-3 rounded border border-secondary">
                         <strong className="block text-primary mb-1">Video</strong>
                         <span className="text-sm">{finalProduct.formats.video}</span>

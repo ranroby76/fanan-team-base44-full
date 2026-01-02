@@ -5,6 +5,7 @@ export default function Gen999Gen2() {
   return (
     <ProductPage
       productName="999 gen2"
+      slug="999Gen2"
       productDescription="Rhythmic Midi Arp"
       productImage="https://fananteam.com/images/9991.jpg"
       packName="Free Pack"
