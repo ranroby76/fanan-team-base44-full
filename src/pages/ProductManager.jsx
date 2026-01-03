@@ -128,12 +128,11 @@ export default function ProductManager() {
 
   const handleSavePrices = async () => {
     try {
-      await Promise.all([
-        savePriceMutation.mutateAsync({ packName: "Mad MIDI Machines", price: madMidiPrice }),
-        savePriceMutation.mutateAsync({ packName: "Max Pack", price: maxPackPrice })
-      ]);
+      await savePriceMutation.mutateAsync({ packName: "Mad MIDI Machines", price: madMidiPrice });
+      await savePriceMutation.mutateAsync({ packName: "Max Pack", price: maxPackPrice });
     } catch (error) {
       // Error already handled in mutation
+      console.error("Save error:", error);
     }
   };
 
