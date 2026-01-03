@@ -88,7 +88,7 @@ export default function BuyNow() {
 
   return (
     <PayPalScriptProvider options={{ 
-      "client-id": "AdoK3-mdDQxleLLbYSTCtVy1naeCPfP78ayxahlSAcwwhIEGtY6eEiaBJZrbFCKWdQ0g9seXWYTcO5zo",
+      "client-id": import.meta.env.VITE_PAYPAL_CLIENT_ID,
       currency: "USD",
       intent: "capture",
       vault: false
