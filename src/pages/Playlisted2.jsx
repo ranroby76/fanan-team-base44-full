@@ -4,6 +4,7 @@ import ProductPage from "../components/ProductPage";
 export default function Playlisted2() {
   return (
     <ProductPage
+      slug="playlisted-2"
       productName="Playlisted 2"
       productDescription="Media Playlist Player"
       productImage="https://fananteam.com/images/playlisted3.jpg"
