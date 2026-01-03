@@ -19,14 +19,22 @@ export default function BuyNow() {
 
   const [userCountry, setUserCountry] = React.useState(null);
   const [paypalError, setPaypalError] = React.useState(null);
+  const [paypalClientId, setPaypalClientId] = React.useState(null);
 
-  // Debug PayPal client ID
+  // Fetch PayPal client ID from backend
   React.useEffect(() => {
-    const clientId = import.meta.env.VITE_PAYPAL_CLIENT_ID;
-    console.log("PayPal Client ID:", clientId ? "Set" : "Not set");
-    if (!clientId) {
-      setPaypalError("PayPal client ID not configured");
-    }
+    base44.functions.invoke('getPayPalClientId')
+      .then(response => {
+        if (response.data.clientId) {
+          setPaypalClientId(response.data.clientId);
+        } else {
+          setPaypalError("PayPal client ID not configured");
+        }
+      })
+      .catch(err => {
+        console.error("Failed to get PayPal client ID:", err);
+        setPaypalError("Failed to load PayPal configuration");
+      });
   }, []);
 
   const { data: prices = [] } = useQuery({
@@ -111,22 +119,14 @@ export default function BuyNow() {
     }
   };
 
-  const paypalClientId = import.meta.env.VITE_PAYPAL_CLIENT_ID;
-
-  console.log("PayPal Client ID from env:", paypalClientId ? "Found" : "Missing");
-  console.log("Full env check:", import.meta.env);
-
   if (!paypalClientId) {
     return (
       <div className="container mx-auto px-4 py-8">
-        <div className="max-w-2xl mx-auto bg-destructive/10 border border-destructive p-6 rounded-lg">
-          <h2 className="text-xl font-bold text-destructive mb-4">Configuration Error</h2>
-          <p className="text-foreground mb-4">
-            PayPal Client ID is not configured. Please contact the site administrator.
-          </p>
-          <p className="text-sm text-muted-foreground">
-            The VITE_PAYPAL_CLIENT_ID environment variable is missing.
-          </p>
+        <div className="max-w-2xl mx-auto bg-card border p-6 rounded-lg">
+          <h2 className="text-xl font-bold mb-4">Loading PayPal...</h2>
+          {paypalError && (
+            <p className="text-destructive">{paypalError}</p>
+          )}
         </div>
       </div>
     );
