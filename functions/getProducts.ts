@@ -33,6 +33,7 @@ Deno.serve(async (req) => {
                 page_slug: data.page_slug,
                 supported_audio_formats: data.supported_audio_formats,
                 supported_video_formats: data.supported_video_formats,
+                is_hidden: data.is_hidden || false,
                 created_date: p.created_date,
                 updated_date: p.updated_date
             };
