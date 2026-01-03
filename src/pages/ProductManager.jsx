@@ -19,6 +19,10 @@ export default function ProductManager() {
   const [selectedPack, setSelectedPack] = useState("all");
   const [editingProduct, setEditingProduct] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [madMidiPrice, setMadMidiPrice] = useState("22.00");
+  const [maxPackPrice, setMaxPackPrice] = useState("12.00");
+
+  const queryClient = useQueryClient();
 
   const { data: products, isLoading, refetch } = useQuery({
     queryKey: ['products-admin'],
@@ -317,12 +321,12 @@ export default function ProductManager() {
                     <span className="text-2xl">$</span>
                     <Input 
                       type="number" 
-                      defaultValue="22.00"
+                      value={madMidiPrice}
+                      onChange={(e) => setMadMidiPrice(e.target.value)}
                       step="0.01"
                       className="text-xl"
                     />
                   </div>
-                  <p className="text-xs text-muted-foreground">Current price: $22.00</p>
                 </div>
 
                 <div className="space-y-2">
@@ -331,15 +335,21 @@ export default function ProductManager() {
                     <span className="text-2xl">$</span>
                     <Input 
                       type="number" 
-                      defaultValue="12.00"
+                      value={maxPackPrice}
+                      onChange={(e) => setMaxPackPrice(e.target.value)}
                       step="0.01"
                       className="text-xl"
                     />
                   </div>
-                  <p className="text-xs text-muted-foreground">Current price: $12.00</p>
                 </div>
 
-                <Button className="w-full" size="lg">
+                <Button 
+                  className="w-full" 
+                  size="lg"
+                  onClick={handleSavePrices}
+                  disabled={savePriceMutation.isLoading}
+                >
+                  {savePriceMutation.isLoading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
                   Save Prices
                 </Button>
               </CardContent>
