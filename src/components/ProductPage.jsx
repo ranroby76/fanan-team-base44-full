@@ -44,6 +44,16 @@ export default function ProductPage({
     enabled: !!(slug || productName), // Only fetch when we have slug or productName
   });
 
+  // Fetch pack prices
+  const { data: packPrices } = useQuery({
+    queryKey: ['packPrices'],
+    queryFn: async () => {
+      const prices = await base44.asServiceRole.entities.PackPrice.list();
+      return prices;
+    },
+    staleTime: 60000, // Cache for 1 minute
+  });
+
   // Merge/Override props with DB data if exists
   const finalProduct = dbProduct ? {
     name: dbProduct.title,
@@ -82,6 +92,10 @@ export default function ProductPage({
     youtubeLinks: [],
     demoLimitations: null
   };
+
+  // Get pack price if available
+  const packPrice = packPrices?.find(p => p.pack_name === finalProduct.pack);
+  const displayPrice = packPrice ? `$${packPrice.price.toFixed(2)}` : finalProduct.price;
 
   const [mainImage, setMainImage] = useState(finalProduct.image || productImage);
   
@@ -323,9 +337,9 @@ export default function ProductPage({
           {/* Pricing & Actions Card */}
           <Card className="shadow-xl border-2 border-primary sticky top-24">
             <CardContent className="p-6 space-y-6">
-              {finalProduct.price && (
+              {displayPrice && (
                 <div className="text-center">
-                  <p className="text-4xl font-bold text-primary">{finalProduct.price}</p>
+                  <p className="text-4xl font-bold text-primary">{displayPrice}</p>
                 </div>
               )}
 
