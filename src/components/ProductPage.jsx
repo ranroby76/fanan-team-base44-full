@@ -160,15 +160,45 @@ export default function ProductPage({
                 <h2 className="font-semibold tracking-tight font-headline text-2xl text-primary mb-4">About this Plugin</h2>
                 <div className="space-y-4 text-foreground/90 leading-relaxed">
                   {finalProduct.longDescription ? (
-                    <div className="prose prose-invert prose-p:text-foreground/90 prose-headings:text-primary max-w-none">
-                       {/* Render simplified markdown manually */}
-                       {finalProduct.longDescription.split('\n').map((line, i) => {
-                         if (line.startsWith('## ')) return <h2 key={i} className="text-xl font-bold mt-4 mb-2">{line.replace('## ', '')}</h2>;
-                         if (line.startsWith('# ')) return <li key={i} className="list-disc ml-4 my-1">{line.replace('# ', '')}</li>;
-                         // Handle existing HTML content if old data exists
-                         if (line.trim().startsWith('<') && line.trim().endsWith('>')) return <div key={i} dangerouslySetInnerHTML={{ __html: line }} />;
-                         return line.trim() ? <p key={i} className="mb-2">{line}</p> : <br key={i}/>;
-                       })}
+                    <div className="space-y-3">
+                       {(() => {
+                         const lines = finalProduct.longDescription.split('\n');
+                         const elements = [];
+                         let currentList = [];
+                         
+                         lines.forEach((line, i) => {
+                           const trimmed = line.trim();
+                           
+                           if (trimmed.startsWith('##')) {
+                             // Close any open list
+                             if (currentList.length > 0) {
+                               elements.push(<ul key={`list-${i}`} className="list-disc ml-6 space-y-2 my-3">{currentList}</ul>);
+                               currentList = [];
+                             }
+                             elements.push(<h3 key={i} className="text-xl font-bold text-primary mt-6 mb-3">{trimmed.replace(/^##\s*/, '')}</h3>);
+                           } else if (trimmed.startsWith('#')) {
+                             currentList.push(<li key={i} className="text-foreground/90">{trimmed.replace(/^#\s*/, '')}</li>);
+                           } else if (trimmed) {
+                             // Close any open list
+                             if (currentList.length > 0) {
+                               elements.push(<ul key={`list-${i}`} className="list-disc ml-6 space-y-2 my-3">{currentList}</ul>);
+                               currentList = [];
+                             }
+                             elements.push(<p key={i} className="text-foreground/90 leading-relaxed">{trimmed}</p>);
+                           } else if (currentList.length > 0) {
+                             // Empty line closes the list
+                             elements.push(<ul key={`list-${i}`} className="list-disc ml-6 space-y-2 my-3">{currentList}</ul>);
+                             currentList = [];
+                           }
+                         });
+                         
+                         // Close any remaining list
+                         if (currentList.length > 0) {
+                           elements.push(<ul key="list-final" className="list-disc ml-6 space-y-2 my-3">{currentList}</ul>);
+                         }
+                         
+                         return elements;
+                       })()}
                     </div>
                   ) : (
                     <p>{finalProduct.description}</p>
