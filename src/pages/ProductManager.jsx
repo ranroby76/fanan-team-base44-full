@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Search, Edit, Plus, Loader2, Lock } from "lucide-react";
+import { toast } from "sonner";
 import EditProduct from "../components/dashboard/EditProduct";
 
 export default function ProductManager() {
@@ -32,6 +33,36 @@ export default function ProductManager() {
         return res;
     },
     initialData: [],
+  });
+
+  const { data: prices = [] } = useQuery({
+    queryKey: ["packPrices"],
+    queryFn: () => base44.entities.PackPrice.list(),
+    enabled: isAuthenticated,
+    onSuccess: (data) => {
+      const madMidi = data.find(p => p.pack_name === "Mad MIDI Machines");
+      const maxPack = data.find(p => p.pack_name === "Max Pack");
+      if (madMidi) setMadMidiPrice(madMidi.price.toString());
+      if (maxPack) setMaxPackPrice(maxPack.price.toString());
+    }
+  });
+
+  const savePriceMutation = useMutation({
+    mutationFn: async ({ packName, price }) => {
+      const existing = prices.find(p => p.pack_name === packName);
+      if (existing) {
+        return base44.entities.PackPrice.update(existing.id, { price: parseFloat(price) });
+      } else {
+        return base44.entities.PackPrice.create({ pack_name: packName, price: parseFloat(price) });
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["packPrices"]);
+      toast.success("Prices saved successfully!");
+    },
+    onError: (error) => {
+      toast.error("Failed to save prices: " + error.message);
+    }
   });
 
   const packs = ["Mad MIDI Machines", "Max! Pack", "Free Pack"];
@@ -88,6 +119,17 @@ export default function ProductManager() {
       alert('Import failed: ' + err.message);
     } finally {
       setImporting(false);
+    }
+  };
+
+  const handleSavePrices = async () => {
+    try {
+      await Promise.all([
+        savePriceMutation.mutateAsync({ packName: "Mad MIDI Machines", price: madMidiPrice }),
+        savePriceMutation.mutateAsync({ packName: "Max Pack", price: maxPackPrice })
+      ]);
+    } catch (error) {
+      // Error already handled in mutation
     }
   };
 
