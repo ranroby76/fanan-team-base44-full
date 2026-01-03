@@ -30,7 +30,6 @@ export default function EditProduct({ product, onClose }) {
     title: product.title || "",
     short_description: product.short_description || "",
     pack: product.pack || "Mad MIDI Machines",
-    price: product.price || "$22.00",
     buy_link: product.buy_link || "/BuyNow",
     demo_link: product.demo_link || "",
     page_slug: product.page_slug || "",
@@ -240,12 +239,8 @@ export default function EditProduct({ product, onClose }) {
               ))}
             </div>
 
-            {/* Other Fields - Price, Links, Slug */}
+            {/* Other Fields - Links, Slug */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t">
-              <div className="space-y-2">
-                <Label>Price</Label>
-                <Input {...register("price")} />
-              </div>
               <div className="space-y-2">
                 <Label>Buy Link</Label>
                 <Input {...register("buy_link")} />
