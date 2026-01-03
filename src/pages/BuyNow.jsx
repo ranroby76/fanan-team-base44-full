@@ -88,7 +88,7 @@ export default function BuyNow() {
         serial = serialNumber.toString();
       }
       
-      setSerials({...serials, [pack]: serial});
+      setSerials(prev => ({...prev, [pack]: serial}));
 
       // Send email via EmailJS
       try {
