@@ -1,3 +1,4 @@
+import _999Gen2 from './pages/999-gen2';
 import AnyImage from './pages/AnyImage';
 import AnyText from './pages/AnyText';
 import Arpomaniac from './pages/Arpomaniac';
@@ -41,26 +42,26 @@ import Truculentus from './pages/Truculentus';
 import Ymer from './pages/Ymer';
 import Yogi from './pages/Yogi';
 import Ziggy from './pages/Ziggy';
-import kittonStylist from './pages/kitton-stylist';
-import scandisoul2 from './pages/scandisoul-2';
-import sultana2 from './pages/sultana-2';
-import yowlseq2 from './pages/yowlseq-2';
-import zoe2 from './pages/zoe-2';
-import _999Gen2 from './pages/999-gen2';
 import blueLue from './pages/blue-lue';
 import galaSe from './pages/gala-se';
 import kitton3 from './pages/kitton-3';
+import kittonStylist from './pages/kitton-stylist';
 import miniRingo from './pages/mini-ringo';
 import monica3 from './pages/monica-3';
 import randomidiFree from './pages/randomidi-free';
 import saxophiaGen2 from './pages/saxophia-gen2';
 import scandiclavia2 from './pages/scandiclavia-2';
+import scandisoul2 from './pages/scandisoul-2';
 import spacelifter4 from './pages/spacelifter-4';
+import sultana2 from './pages/sultana-2';
 import tropicanaFun from './pages/tropicana-fun';
+import yowlseq2 from './pages/yowlseq-2';
+import zoe2 from './pages/zoe-2';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
+    "999-gen2": _999Gen2,
     "AnyImage": AnyImage,
     "AnyText": AnyText,
     "Arpomaniac": Arpomaniac,
@@ -104,22 +105,21 @@ export const PAGES = {
     "Ymer": Ymer,
     "Yogi": Yogi,
     "Ziggy": Ziggy,
-    "kitton-stylist": kittonStylist,
-    "scandisoul-2": scandisoul2,
-    "sultana-2": sultana2,
-    "yowlseq-2": yowlseq2,
-    "zoe-2": zoe2,
-    "999-gen2": _999Gen2,
     "blue-lue": blueLue,
     "gala-se": galaSe,
     "kitton-3": kitton3,
+    "kitton-stylist": kittonStylist,
     "mini-ringo": miniRingo,
     "monica-3": monica3,
     "randomidi-free": randomidiFree,
     "saxophia-gen2": saxophiaGen2,
     "scandiclavia-2": scandiclavia2,
+    "scandisoul-2": scandisoul2,
     "spacelifter-4": spacelifter4,
+    "sultana-2": sultana2,
     "tropicana-fun": tropicanaFun,
+    "yowlseq-2": yowlseq2,
+    "zoe-2": zoe2,
 }
 
 export const pagesConfig = {

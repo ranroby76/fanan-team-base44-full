@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Search, Edit, Plus, Loader2, Lock, Trash2, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import EditProduct from "../components/dashboard/EditProduct";
+import AddPackForm from "../components/dashboard/AddPackForm";
 
 export default function ProductManager() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -22,6 +23,7 @@ export default function ProductManager() {
   const [searchTerm, setSearchTerm] = useState("");
   const [madMidiPrice, setMadMidiPrice] = useState("22.00");
   const [maxPackPrice, setMaxPackPrice] = useState("12.00");
+  const [showAddPackForm, setShowAddPackForm] = useState(false);
 
   const queryClient = useQueryClient();
 
@@ -105,7 +107,12 @@ export default function ProductManager() {
     });
   };
 
-  const packs = ["Mad MIDI Machines", "Max! Pack", "Free Pack"];
+  // Get all unique packs from both hardcoded and database
+  const packs = React.useMemo(() => {
+    const hardcodedPacks = ["Mad MIDI Machines", "Max! Pack", "Free Pack"];
+    const dbPacks = (prices || []).map(p => p.pack_name);
+    return [...new Set([...hardcodedPacks, ...dbPacks])];
+  }, [prices]);
 
   // Deduplicate products by title to avoid showing duplicates from double seeding
   const uniqueProducts = React.useMemo(() => {
@@ -295,7 +302,10 @@ export default function ProductManager() {
                     />
                 </div>
                 <Button onClick={() => setEditingProduct({})} size="sm">
-                <Plus className="w-4 h-4 mr-2" /> Add New
+                <Plus className="w-4 h-4 mr-2" /> Add New Product
+                </Button>
+                <Button onClick={() => setShowAddPackForm(true)} size="sm" variant="outline">
+                <Plus className="w-4 h-4 mr-2" /> Add New Pack
                 </Button>
             </div>
           </div>
@@ -402,6 +412,12 @@ export default function ProductManager() {
               setEditingProduct(null);
               refetch();
           }} 
+        />
+      )}
+
+      {showAddPackForm && (
+        <AddPackForm 
+          onClose={() => setShowAddPackForm(false)} 
         />
       )}
           </>

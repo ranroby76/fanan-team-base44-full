@@ -11,7 +11,7 @@ import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Save, ArrowLeft } from "lucide-react";
 import { base44 } from "@/api/base44Client";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 // Helper to ensure array has fixed size with empty placeholders
@@ -23,6 +23,18 @@ const ensureArraySize = (arr, size, fill) => {
 
 export default function EditProduct({ product, onClose }) {
   const queryClient = useQueryClient();
+
+  // Fetch all packs from database
+  const { data: packs = [] } = useQuery({
+    queryKey: ['packPrices'],
+    queryFn: () => base44.entities.PackPrice.list(),
+  });
+
+  const allPackNames = React.useMemo(() => {
+    const hardcoded = ["Mad MIDI Machines", "Max! Pack", "Free Pack"];
+    const dbPacks = packs.map(p => p.pack_name);
+    return [...new Set([...hardcoded, ...dbPacks])];
+  }, [packs]);
   
   // Prepare default values
   const defaultValues = {
@@ -147,9 +159,11 @@ export default function EditProduct({ product, onClose }) {
                       <SelectValue placeholder="Select Pack" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Mad MIDI Machines">Mad MIDI Machines</SelectItem>
-                      <SelectItem value="Max! Pack">Max! Pack</SelectItem>
-                      <SelectItem value="Free Pack">Free Pack</SelectItem>
+                      {allPackNames.map(packName => (
+                        <SelectItem key={packName} value={packName}>
+                          {packName}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 )}
