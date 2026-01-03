@@ -347,7 +347,7 @@ export default function ProductPage({
                     {finalProduct.demoLink && (
                       <Button asChild variant="outline" className="w-full h-12 text-base font-semibold border-primary/50 hover:bg-primary/10 hover:text-primary transition-all">
                         <a href={finalProduct.demoLink} target="_blank" rel="noopener noreferrer">
-                          <Download className="mr-2 h-5 w-5" /> Download Demo
+                          <Download className="mr-2 h-5 w-5" /> Download
                         </a>
                       </Button>
                     )}
