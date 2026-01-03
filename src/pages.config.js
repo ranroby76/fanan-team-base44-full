@@ -1,11 +1,9 @@
-import _999Gen2 from './pages/999Gen2';
 import AnyImage from './pages/AnyImage';
 import AnyText from './pages/AnyText';
 import Arpomaniac from './pages/Arpomaniac';
 import Bella from './pages/Bella';
 import Betelgeuse from './pages/Betelgeuse';
 import Bjorn from './pages/Bjorn';
-import BlueLue from './pages/BlueLue';
 import Bonnie from './pages/Bonnie';
 import Brunetta from './pages/Brunetta';
 import BuyNow from './pages/BuyNow';
@@ -20,14 +18,11 @@ import GalaXL from './pages/GalaXL';
 import GuiMe from './pages/GuiMe';
 import Home from './pages/Home';
 import HowToBuy from './pages/HowToBuy';
-import Kitton3 from './pages/Kitton3';
 import MadMidiMachinePack from './pages/MadMidiMachinePack';
 import MaxPack from './pages/MaxPack';
 import Midimotor from './pages/Midimotor';
 import Midiverus from './pages/Midiverus';
 import Midmid from './pages/Midmid';
-import MiniRingo from './pages/MiniRingo';
-import Monica3 from './pages/Monica3';
 import PacksList from './pages/PacksList';
 import Playlisted from './pages/Playlisted';
 import Playlisted2 from './pages/Playlisted2';
@@ -35,17 +30,12 @@ import ProductManager from './pages/ProductManager';
 import Quentin from './pages/Quentin';
 import RandRobin from './pages/RandRobin';
 import Randomidi from './pages/Randomidi';
-import RandomidiFree from './pages/RandomidiFree';
 import Rebellion from './pages/Rebellion';
 import Ringo from './pages/Ringo';
 import Rythmos from './pages/Rythmos';
-import SaxophiaGen2 from './pages/SaxophiaGen2';
-import ScandiClavia2 from './pages/ScandiClavia2';
 import Solina2k from './pages/Solina2k';
 import Spacelifter3 from './pages/Spacelifter3';
-import Spacelifter4 from './pages/Spacelifter4';
 import Tropicana from './pages/Tropicana';
-import TropicanaFun from './pages/TropicanaFun';
 import Truculentus from './pages/Truculentus';
 import Ymer from './pages/Ymer';
 import Yogi from './pages/Yogi';
@@ -56,18 +46,27 @@ import zoe2 from './pages/zoe-2';
 import yowlseq2 from './pages/yowlseq-2';
 import sultana2 from './pages/sultana-2';
 import scandisoul2 from './pages/scandisoul-2';
+import _999Gen2 from './pages/999-gen2';
+import blueLue from './pages/blue-lue';
+import galaSe from './pages/gala-se';
+import kitton3 from './pages/kitton-3';
+import miniRingo from './pages/mini-ringo';
+import monica3 from './pages/monica-3';
+import randomidiFree from './pages/randomidi-free';
+import saxophiaGen2 from './pages/saxophia-gen2';
+import scandiclavia2 from './pages/scandiclavia-2';
+import spacelifter4 from './pages/spacelifter-4';
+import tropicanaFun from './pages/tropicana-fun';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
-    "999Gen2": _999Gen2,
     "AnyImage": AnyImage,
     "AnyText": AnyText,
     "Arpomaniac": Arpomaniac,
     "Bella": Bella,
     "Betelgeuse": Betelgeuse,
     "Bjorn": Bjorn,
-    "BlueLue": BlueLue,
     "Bonnie": Bonnie,
     "Brunetta": Brunetta,
     "BuyNow": BuyNow,
@@ -82,14 +81,11 @@ export const PAGES = {
     "GuiMe": GuiMe,
     "Home": Home,
     "HowToBuy": HowToBuy,
-    "Kitton3": Kitton3,
     "MadMidiMachinePack": MadMidiMachinePack,
     "MaxPack": MaxPack,
     "Midimotor": Midimotor,
     "Midiverus": Midiverus,
     "Midmid": Midmid,
-    "MiniRingo": MiniRingo,
-    "Monica3": Monica3,
     "PacksList": PacksList,
     "Playlisted": Playlisted,
     "Playlisted2": Playlisted2,
@@ -97,17 +93,12 @@ export const PAGES = {
     "Quentin": Quentin,
     "RandRobin": RandRobin,
     "Randomidi": Randomidi,
-    "RandomidiFree": RandomidiFree,
     "Rebellion": Rebellion,
     "Ringo": Ringo,
     "Rythmos": Rythmos,
-    "SaxophiaGen2": SaxophiaGen2,
-    "ScandiClavia2": ScandiClavia2,
     "Solina2k": Solina2k,
     "Spacelifter3": Spacelifter3,
-    "Spacelifter4": Spacelifter4,
     "Tropicana": Tropicana,
-    "TropicanaFun": TropicanaFun,
     "Truculentus": Truculentus,
     "Ymer": Ymer,
     "Yogi": Yogi,
@@ -118,6 +109,17 @@ export const PAGES = {
     "yowlseq-2": yowlseq2,
     "sultana-2": sultana2,
     "scandisoul-2": scandisoul2,
+    "999-gen2": _999Gen2,
+    "blue-lue": blueLue,
+    "gala-se": galaSe,
+    "kitton-3": kitton3,
+    "mini-ringo": miniRingo,
+    "monica-3": monica3,
+    "randomidi-free": randomidiFree,
+    "saxophia-gen2": saxophiaGen2,
+    "scandiclavia-2": scandiclavia2,
+    "spacelifter-4": spacelifter4,
+    "tropicana-fun": tropicanaFun,
 }
 
 export const pagesConfig = {
