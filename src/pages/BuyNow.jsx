@@ -111,7 +111,26 @@ export default function BuyNow() {
     }
   };
 
-  const paypalClientId = import.meta.env.VITE_PAYPAL_CLIENT_ID || "AeS3ypZDD4gRxIljkDRB-4TvN_elLYlGOqXjYpj8b0FwHIrqZMd5hRMlFjWEBVPc5TtqAG3sJwb_z4LD";
+  const paypalClientId = import.meta.env.VITE_PAYPAL_CLIENT_ID;
+
+  console.log("PayPal Client ID from env:", paypalClientId ? "Found" : "Missing");
+  console.log("Full env check:", import.meta.env);
+
+  if (!paypalClientId) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-2xl mx-auto bg-destructive/10 border border-destructive p-6 rounded-lg">
+          <h2 className="text-xl font-bold text-destructive mb-4">Configuration Error</h2>
+          <p className="text-foreground mb-4">
+            PayPal Client ID is not configured. Please contact the site administrator.
+          </p>
+          <p className="text-sm text-muted-foreground">
+            The VITE_PAYPAL_CLIENT_ID environment variable is missing.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <PayPalScriptProvider 
