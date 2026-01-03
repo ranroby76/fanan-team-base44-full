@@ -265,6 +265,11 @@ export default function BuyNow() {
             
             {machineIds.max.length >= 3 && (
               <div className="mt-4">
+                {paypalError && (
+                  <div className="mb-3 p-3 bg-destructive/10 text-destructive text-sm rounded">
+                    {paypalError}
+                  </div>
+                )}
                 {userCountry && (
                   <div className="flex items-center justify-center gap-2 mb-3 text-sm text-muted-foreground">
                     <span className="text-2xl">{String.fromCodePoint(0x1F1E6 + userCountry.charCodeAt(0) - 65, 0x1F1E6 + userCountry.charCodeAt(1) - 65)}</span>
