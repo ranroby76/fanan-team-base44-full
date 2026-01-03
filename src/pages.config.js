@@ -45,16 +45,17 @@ import ScandiSoul2 from './pages/ScandiSoul2';
 import Solina2k from './pages/Solina2k';
 import Spacelifter3 from './pages/Spacelifter3';
 import Spacelifter4 from './pages/Spacelifter4';
-import Sultana2 from './pages/Sultana2';
 import Tropicana from './pages/Tropicana';
 import TropicanaFun from './pages/TropicanaFun';
 import Truculentus from './pages/Truculentus';
 import Ymer from './pages/Ymer';
 import Yogi from './pages/Yogi';
-import Yowlseq2 from './pages/Yowlseq2';
 import Ziggy from './pages/Ziggy';
-import Zoe2 from './pages/Zoe2';
 import kittonStylist from './pages/kitton-stylist';
+import Midisquid from './pages/Midisquid';
+import zoe2 from './pages/zoe-2';
+import yowlseq2 from './pages/yowlseq-2';
+import sultana2 from './pages/sultana-2';
 import __Layout from './Layout.jsx';
 
 
@@ -106,16 +107,17 @@ export const PAGES = {
     "Solina2k": Solina2k,
     "Spacelifter3": Spacelifter3,
     "Spacelifter4": Spacelifter4,
-    "Sultana2": Sultana2,
     "Tropicana": Tropicana,
     "TropicanaFun": TropicanaFun,
     "Truculentus": Truculentus,
     "Ymer": Ymer,
     "Yogi": Yogi,
-    "Yowlseq2": Yowlseq2,
     "Ziggy": Ziggy,
-    "Zoe2": Zoe2,
     "kitton-stylist": kittonStylist,
+    "Midisquid": Midisquid,
+    "zoe-2": zoe2,
+    "yowlseq-2": yowlseq2,
+    "sultana-2": sultana2,
 }
 
 export const pagesConfig = {
