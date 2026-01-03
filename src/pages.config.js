@@ -41,7 +41,6 @@ import Ringo from './pages/Ringo';
 import Rythmos from './pages/Rythmos';
 import SaxophiaGen2 from './pages/SaxophiaGen2';
 import ScandiClavia2 from './pages/ScandiClavia2';
-import ScandiSoul2 from './pages/ScandiSoul2';
 import Solina2k from './pages/Solina2k';
 import Spacelifter3 from './pages/Spacelifter3';
 import Spacelifter4 from './pages/Spacelifter4';
@@ -56,6 +55,7 @@ import Midisquid from './pages/Midisquid';
 import zoe2 from './pages/zoe-2';
 import yowlseq2 from './pages/yowlseq-2';
 import sultana2 from './pages/sultana-2';
+import scandisoul2 from './pages/scandisoul-2';
 import __Layout from './Layout.jsx';
 
 
@@ -103,7 +103,6 @@ export const PAGES = {
     "Rythmos": Rythmos,
     "SaxophiaGen2": SaxophiaGen2,
     "ScandiClavia2": ScandiClavia2,
-    "ScandiSoul2": ScandiSoul2,
     "Solina2k": Solina2k,
     "Spacelifter3": Spacelifter3,
     "Spacelifter4": Spacelifter4,
@@ -118,6 +117,7 @@ export const PAGES = {
     "zoe-2": zoe2,
     "yowlseq-2": yowlseq2,
     "sultana-2": sultana2,
+    "scandisoul-2": scandisoul2,
 }
 
 export const pagesConfig = {
