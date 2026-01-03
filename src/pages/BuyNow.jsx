@@ -45,44 +45,59 @@ export default function BuyNow() {
   }, []);
 
   const handlePayPalApprove = async (data, pack, price, packName, details) => {
-    // Calculate serial number from machine ID based on pack
-    const machineId = parseInt(machineIds[pack]);
-    let serial;
-    
-    if (pack === 'madMidi') {
-      // Mad MIDI Machines formula
-      const serialNumber = Math.floor(((((((machineId + 8354) * 2) + 1691) * 2) - 9097) * 0.1));
-      serial = serialNumber.toString();
-    } else if (pack === 'max') {
-      // Max Pack formula
-      const serialNumber = ((((machineId + 7541) * 2) + 2001) * 2) - 9002;
-      serial = serialNumber.toString();
-    }
-    
-    setSerials({...serials, [pack]: serial});
-
-    // Send email via EmailJS
     try {
-      const customerEmail = details.payer.email_address;
-      const customerName = details.payer.name.given_name || "Customer";
+      // Verify payment on backend
+      const verification = await base44.functions.invoke('verifyPayPalPayment', {
+        orderId: data.orderID
+      });
 
-      await emailjs.send(
-        import.meta.env.VITE_NEXT_PUBLIC_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
-        {
-          to_email: customerEmail,
-          to_name: customerName,
-          amount: price.toFixed(2),
-          serial_number: serial,
-          pack_name: packName
-        },
-        import.meta.env.VITE_NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
-      );
+      if (!verification.data.success) {
+        alert("Payment verification failed. Please contact support.");
+        return;
+      }
+
+      // Calculate serial number from machine ID based on pack
+      const machineId = parseInt(machineIds[pack]);
+      let serial;
       
-      alert(`Payment successful! Your serial: ${serial} has been sent to ${customerEmail}`);
+      if (pack === 'madMidi') {
+        // Mad MIDI Machines formula
+        const serialNumber = Math.floor(((((((machineId + 8354) * 2) + 1691) * 2) - 9097) * 0.1));
+        serial = serialNumber.toString();
+      } else if (pack === 'max') {
+        // Max Pack formula
+        const serialNumber = ((((machineId + 7541) * 2) + 2001) * 2) - 9002;
+        serial = serialNumber.toString();
+      }
+      
+      setSerials({...serials, [pack]: serial});
+
+      // Send email via EmailJS
+      try {
+        const customerEmail = verification.data.payer.email;
+        const customerName = verification.data.payer.name || "Customer";
+
+        await emailjs.send(
+          import.meta.env.VITE_NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+          import.meta.env.VITE_NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+          {
+            to_email: customerEmail,
+            to_name: customerName,
+            amount: verification.data.amount,
+            serial_number: serial,
+            pack_name: packName
+          },
+          import.meta.env.VITE_NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+        );
+        
+        alert(`Payment successful! Your serial: ${serial} has been sent to ${customerEmail}`);
+      } catch (error) {
+        console.error("Email send error:", error);
+        alert(`Payment successful! Your serial: ${serial}\n(Email notification failed, but your serial is displayed here)`);
+      }
     } catch (error) {
-      console.error("Email send error:", error);
-      alert(`Payment successful! Your serial: ${serial}\n(Email notification failed, but your serial is displayed here)`);
+      console.error("Payment processing error:", error);
+      alert("Payment processing failed. Please contact support with order ID: " + data.orderID);
     }
   };
 
