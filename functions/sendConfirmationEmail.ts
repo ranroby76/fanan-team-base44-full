@@ -21,8 +21,9 @@ Deno.serve(async (req) => {
             <p>Best regards,<br>Fanan Team</p>
         `;
 
-        // Send email using Base44's built-in integration
+        // Send email using Base44's built-in integration with from_name
         await base44.asServiceRole.integrations.Core.SendEmail({
+            from_name: "Fanan Team Store",
             to: customerEmail,
             subject: `Your ${packName} Serial Number`,
             body: emailBody
