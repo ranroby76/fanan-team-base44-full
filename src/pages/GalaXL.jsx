@@ -4,6 +4,7 @@ import ProductPage from "../components/ProductPage";
 export default function GalaXL() {
   return (
     <ProductPage
+      slug="GalaXL"
       productName="Gala XL"
       productDescription="Multi Instrument Ensemble"
       productImage="https://fananteam.com/images/gala1.jpg"
