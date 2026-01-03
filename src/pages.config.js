@@ -21,6 +21,7 @@ import HowToBuy from './pages/HowToBuy';
 import MadMidiMachinePack from './pages/MadMidiMachinePack';
 import MaxPack from './pages/MaxPack';
 import Midimotor from './pages/Midimotor';
+import Midisquid from './pages/Midisquid';
 import Midiverus from './pages/Midiverus';
 import Midmid from './pages/Midmid';
 import PacksList from './pages/PacksList';
@@ -41,11 +42,10 @@ import Ymer from './pages/Ymer';
 import Yogi from './pages/Yogi';
 import Ziggy from './pages/Ziggy';
 import kittonStylist from './pages/kitton-stylist';
-import Midisquid from './pages/Midisquid';
-import zoe2 from './pages/zoe-2';
-import yowlseq2 from './pages/yowlseq-2';
-import sultana2 from './pages/sultana-2';
 import scandisoul2 from './pages/scandisoul-2';
+import sultana2 from './pages/sultana-2';
+import yowlseq2 from './pages/yowlseq-2';
+import zoe2 from './pages/zoe-2';
 import _999Gen2 from './pages/999-gen2';
 import blueLue from './pages/blue-lue';
 import galaSe from './pages/gala-se';
@@ -84,6 +84,7 @@ export const PAGES = {
     "MadMidiMachinePack": MadMidiMachinePack,
     "MaxPack": MaxPack,
     "Midimotor": Midimotor,
+    "Midisquid": Midisquid,
     "Midiverus": Midiverus,
     "Midmid": Midmid,
     "PacksList": PacksList,
@@ -104,11 +105,10 @@ export const PAGES = {
     "Yogi": Yogi,
     "Ziggy": Ziggy,
     "kitton-stylist": kittonStylist,
-    "Midisquid": Midisquid,
-    "zoe-2": zoe2,
-    "yowlseq-2": yowlseq2,
-    "sultana-2": sultana2,
     "scandisoul-2": scandisoul2,
+    "sultana-2": sultana2,
+    "yowlseq-2": yowlseq2,
+    "zoe-2": zoe2,
     "999-gen2": _999Gen2,
     "blue-lue": blueLue,
     "gala-se": galaSe,

@@ -24,7 +24,7 @@ export default function MaxPack() {
       });
 
       return uniqueData
-        .filter(p => p.pack === "Max! Pack")
+        .filter(p => p.pack === "Max! Pack" && !p.is_hidden)
         .sort((a, b) => a.title.localeCompare(b.title));
     },
     initialData: [],
