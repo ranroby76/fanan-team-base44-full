@@ -29,6 +29,7 @@ Deno.serve(async (req) => {
                 price: data.price,
                 buy_link: data.buy_link,
                 demo_link: data.demo_link,
+                demo_limitations: data.demo_limitations,
                 page_slug: data.page_slug,
                 supported_audio_formats: data.supported_audio_formats,
                 supported_video_formats: data.supported_video_formats,
