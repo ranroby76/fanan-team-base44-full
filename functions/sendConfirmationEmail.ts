@@ -1,3 +1,5 @@
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+
 Deno.serve(async (req) => {
     try {
         const { customerEmail, customerName, amount, serialNumber, packName } = await req.json();
@@ -6,51 +8,36 @@ Deno.serve(async (req) => {
             return Response.json({ error: 'Missing required fields' }, { status: 400 });
         }
 
-        const serviceId = Deno.env.get("NEXT_PUBLIC_EMAILJS_SERVICE_ID");
-        const templateId = Deno.env.get("NEXT_PUBLIC_EMAILJS_TEMPLATE_ID");
-        const publicKey = Deno.env.get("NEXT_PUBLIC_EMAILJS_PUBLIC_KEY");
-        const privateKey = Deno.env.get("EMAILJS_PRIVATE_KEY");
-        
-        if (!serviceId || !templateId || !publicKey) {
-            console.error("EmailJS credentials not set");
-            return Response.json({ error: 'Email service not configured' }, { status: 500 });
-        }
+        const base44 = createClientFromRequest(req);
 
-        // Send email via EmailJS REST API
-        const emailResponse = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                service_id: serviceId,
-                template_id: templateId,
-                user_id: publicKey,
-                accessToken: privateKey || undefined,
-                template_params: {
-                    to_email: customerEmail,
-                    to_name: customerName || 'Customer',
-                    amount: amount,
-                    serial_number: serialNumber,
-                    pack_name: packName
-                }
-            })
+        // Prepare email body
+        const emailBody = `
+            <h2>Thank you for your purchase!</h2>
+            <p>Dear ${customerName},</p>
+            <p>Your payment of $${amount} for <strong>${packName}</strong> has been confirmed.</p>
+            <p><strong>Your Serial Number: ${serialNumber}</strong></p>
+            <p>Please copy this serial number and use it to activate your product.</p>
+            <p>If you have any questions, please contact us.</p>
+            <p>Best regards,<br>Fanan Team</p>
+        `;
+
+        // Send email using Base44's built-in integration
+        await base44.asServiceRole.integrations.Core.SendEmail({
+            to: customerEmail,
+            subject: `Your ${packName} Serial Number`,
+            body: emailBody
         });
 
-        if (!emailResponse.ok) {
-            const errorText = await emailResponse.text();
-            console.error("EmailJS error:", errorText);
-            return Response.json({ 
-                success: false, 
-                error: 'Failed to send email',
-                details: errorText 
-            }, { status: 500 });
-        }
-
-        return Response.json({ success: true });
+        return Response.json({ 
+            success: true,
+            message: 'Email sent successfully'
+        });
 
     } catch (error) {
-        console.error("Email send error:", error);
-        return Response.json({ error: error.message }, { status: 500 });
+        console.error("Email send error:", error.message);
+        return Response.json({ 
+            success: false,
+            error: error.message 
+        }, { status: 500 });
     }
 });
