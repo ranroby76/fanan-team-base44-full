@@ -40,7 +40,7 @@ export default function ProductPage({
       }
       return products.find(p => p.title === productName) || null;
     },
-    staleTime: 0, // Always fetch fresh data to reflect dashboard changes immediately
+    staleTime: 300000, // Cache for 5 minutes for better performance
   });
 
   // Merge/Override props with DB data if exists
