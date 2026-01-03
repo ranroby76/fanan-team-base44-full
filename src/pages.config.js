@@ -8,6 +8,7 @@ import Bjorn from './pages/Bjorn';
 import BlueLue from './pages/BlueLue';
 import Bonnie from './pages/Bonnie';
 import Brunetta from './pages/Brunetta';
+import BuyNow from './pages/BuyNow';
 import Callisto from './pages/Callisto';
 import Concordia from './pages/Concordia';
 import ContactUs from './pages/ContactUs';
@@ -54,7 +55,6 @@ import Yogi from './pages/Yogi';
 import Yowlseq2 from './pages/Yowlseq2';
 import Ziggy from './pages/Ziggy';
 import Zoe2 from './pages/Zoe2';
-import BuyNow from './pages/BuyNow';
 import __Layout from './Layout.jsx';
 
 
@@ -69,6 +69,7 @@ export const PAGES = {
     "BlueLue": BlueLue,
     "Bonnie": Bonnie,
     "Brunetta": Brunetta,
+    "BuyNow": BuyNow,
     "Callisto": Callisto,
     "Concordia": Concordia,
     "ContactUs": ContactUs,
@@ -115,7 +116,6 @@ export const PAGES = {
     "Yowlseq2": Yowlseq2,
     "Ziggy": Ziggy,
     "Zoe2": Zoe2,
-    "BuyNow": BuyNow,
 }
 
 export const pagesConfig = {

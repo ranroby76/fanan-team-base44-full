@@ -28,8 +28,10 @@ export default function BuyNow() {
   }, []);
 
   const handlePayPalApprove = async (data, pack, price, packName, details) => {
-    // Generate serial number
-    const serial = `${Math.random().toString(36).substr(2, 4).toUpperCase()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}`;
+    // Calculate serial number from machine ID
+    const machineId = parseInt(machineIds[pack]);
+    const serialNumber = Math.floor(((((((machineId + 8354) * 2) + 1691) * 2) - 9097) * 0.1));
+    const serial = serialNumber.toString();
     setSerials({...serials, [pack]: serial});
 
     // Send email via EmailJS
