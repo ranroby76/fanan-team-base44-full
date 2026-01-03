@@ -18,6 +18,16 @@ export default function BuyNow() {
   });
 
   const [userCountry, setUserCountry] = React.useState(null);
+  const [paypalError, setPaypalError] = React.useState(null);
+
+  // Debug PayPal client ID
+  React.useEffect(() => {
+    const clientId = import.meta.env.VITE_PAYPAL_CLIENT_ID;
+    console.log("PayPal Client ID:", clientId ? "Set" : "Not set");
+    if (!clientId) {
+      setPaypalError("PayPal client ID not configured");
+    }
+  }, []);
 
   const { data: prices = [] } = useQuery({
     queryKey: ["packPrices"],
