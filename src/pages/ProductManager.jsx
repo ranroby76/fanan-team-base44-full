@@ -39,13 +39,17 @@ export default function ProductManager() {
     queryKey: ["packPrices"],
     queryFn: () => base44.entities.PackPrice.list(),
     enabled: isAuthenticated,
-    onSuccess: (data) => {
-      const madMidi = data.find(p => p.pack_name === "Mad MIDI Machines");
-      const maxPack = data.find(p => p.pack_name === "Max Pack");
+  });
+
+  // Update local state when prices data changes
+  React.useEffect(() => {
+    if (prices && prices.length > 0) {
+      const madMidi = prices.find(p => p.pack_name === "Mad MIDI Machines");
+      const maxPack = prices.find(p => p.pack_name === "Max Pack");
       if (madMidi) setMadMidiPrice(madMidi.price.toString());
       if (maxPack) setMaxPackPrice(maxPack.price.toString());
     }
-  });
+  }, [prices]);
 
   const savePriceMutation = useMutation({
     mutationFn: async ({ packName, price }) => {
