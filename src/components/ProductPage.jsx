@@ -62,7 +62,8 @@ export default function ProductPage({
     longDescription: dbProduct.long_description,
     pack: dbProduct.pack,
     downloadLinks: dbProduct.download_links || [],
-    youtubeLinks: dbProduct.youtube_links || []
+    youtubeLinks: dbProduct.youtube_links || [],
+    demoLimitations: dbProduct.demo_limitations
   } : {
     name: productName,
     description: productDescription,
@@ -77,7 +78,8 @@ export default function ProductPage({
     longDescription: longDescription,
     pack: packName,
     downloadLinks: [],
-    youtubeLinks: []
+    youtubeLinks: [],
+    demoLimitations: null
   };
 
   const [mainImage, setMainImage] = useState(finalProduct.image || productImage);
@@ -318,12 +320,12 @@ export default function ProductPage({
                 </div>
               )}
 
-              {finalProduct.demoLink && (
+              {finalProduct.demoLink && finalProduct.demoLimitations && (
                 <div className="bg-secondary/50 p-3 rounded-lg text-center border border-secondary">
                   <h4 className="font-semibold text-secondary-foreground flex items-center justify-center gap-2 text-sm mb-1">
                     <Info className="w-4 h-4" /> Demo Limitations
                   </h4>
-                  <p className="text-xs text-secondary-foreground/80">Occasional silence / Limited features</p>
+                  <p className="text-xs text-secondary-foreground/80">{finalProduct.demoLimitations}</p>
                 </div>
               )}
 

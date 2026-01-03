@@ -254,6 +254,10 @@ export default function EditProduct({ product, onClose }) {
                 <Label>Demo Link</Label>
                 <Input {...register("demo_link")} />
               </div>
+              <div className="space-y-2">
+                <Label>Demo Limitations Text</Label>
+                <Input {...register("demo_limitations")} placeholder="e.g. Occasional silence / Limited features" />
+              </div>
                <div className="space-y-2">
                 <Label>Page Slug (Internal ID)</Label>
                 <Input {...register("page_slug")} placeholder="e.g. Playlisted2" />
