@@ -199,7 +199,7 @@ export default function BuyNow() {
                 placeholder=""
                 value={serials.madMidi}
                 readOnly
-                className="bg-muted"
+                className={serials.madMidi ? "bg-green-900/50 border-green-600" : "bg-muted"}
               />
             </div>
             
@@ -278,7 +278,7 @@ export default function BuyNow() {
                 placeholder=""
                 value={serials.max}
                 readOnly
-                className="bg-muted"
+                className={serials.max ? "bg-green-900/50 border-green-600" : "bg-muted"}
               />
             </div>
             
