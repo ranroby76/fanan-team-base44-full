@@ -389,9 +389,9 @@ export default function ProductManager() {
                   className="w-full" 
                   size="lg"
                   onClick={handleSavePrices}
-                  disabled={savePriceMutation.isLoading}
+                  disabled={savePriceMutation.isPending}
                 >
-                  {savePriceMutation.isLoading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+                  {savePriceMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
                   Save Prices
                 </Button>
               </CardContent>
