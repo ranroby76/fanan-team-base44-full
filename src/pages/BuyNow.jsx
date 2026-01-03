@@ -28,10 +28,20 @@ export default function BuyNow() {
   }, []);
 
   const handlePayPalApprove = async (data, pack, price, packName, details) => {
-    // Calculate serial number from machine ID
+    // Calculate serial number from machine ID based on pack
     const machineId = parseInt(machineIds[pack]);
-    const serialNumber = Math.floor(((((((machineId + 8354) * 2) + 1691) * 2) - 9097) * 0.1));
-    const serial = serialNumber.toString();
+    let serial;
+    
+    if (pack === 'madMidi') {
+      // Mad MIDI Machines formula
+      const serialNumber = Math.floor(((((((machineId + 8354) * 2) + 1691) * 2) - 9097) * 0.1));
+      serial = serialNumber.toString();
+    } else if (pack === 'max') {
+      // Max Pack formula
+      const serialNumber = ((((machineId + 7541) * 2) + 2001) * 2) - 9002;
+      serial = serialNumber.toString();
+    }
+    
     setSerials({...serials, [pack]: serial});
 
     // Send email via EmailJS
