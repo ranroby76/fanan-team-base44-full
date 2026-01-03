@@ -17,24 +17,22 @@ Deno.serve(async (req) => {
             return Response.json({ error: 'Email service not configured' }, { status: 500 });
         }
 
-        // Send email via EmailJS API
-        const emailResponse = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+        // Send email via EmailJS API using form data
+        const formData = new FormData();
+        formData.append('service_id', serviceId);
+        formData.append('template_id', templateId);
+        formData.append('user_id', publicKey);
+        formData.append('template_params', JSON.stringify({
+            to_email: customerEmail,
+            to_name: customerName || 'Customer',
+            amount: amount,
+            serial_number: serialNumber,
+            pack_name: packName
+        }));
+
+        const emailResponse = await fetch('https://api.emailjs.com/api/v1.0/email/send-form', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                service_id: serviceId,
-                template_id: templateId,
-                user_id: publicKey,
-                template_params: {
-                    to_email: customerEmail,
-                    to_name: customerName || 'Customer',
-                    amount: amount,
-                    serial_number: serialNumber,
-                    pack_name: packName
-                }
-            })
+            body: formData
         });
 
         if (!emailResponse.ok) {
