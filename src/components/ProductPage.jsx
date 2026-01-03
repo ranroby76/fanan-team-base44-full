@@ -92,6 +92,16 @@ export default function ProductPage({
 
   const allImages = finalProduct.gallery && finalProduct.gallery.length > 0 ? finalProduct.gallery : [finalProduct.image].filter(Boolean);
 
+  // If product is hidden, show message
+  if (dbProduct?.is_hidden) {
+    return (
+      <div className="container mx-auto px-4 py-8 text-center">
+        <h1 className="text-3xl font-bold text-muted-foreground mb-4">Product Not Available</h1>
+        <p className="text-muted-foreground">This product is currently hidden.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto px-4 py-8 animate-fade-in">
       {/* Top Breadcrumb/Logo */}
