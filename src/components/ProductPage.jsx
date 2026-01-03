@@ -320,13 +320,13 @@ export default function ProductPage({
                 </div>
               )}
 
-              {finalProduct.demoLink && (
+              {finalProduct.demoLimitations && (
                 <div className="bg-secondary/50 p-3 rounded-lg text-center border border-secondary">
                   <h4 className="font-semibold text-secondary-foreground flex items-center justify-center gap-2 text-sm mb-1">
                     <Info className="w-4 h-4" /> Demo Limitations
                   </h4>
                   <p className="text-xs text-secondary-foreground/80">
-                    {finalProduct.demoLimitations || "Occasional silence / Limited features"}
+                    {finalProduct.demoLimitations}
                   </p>
                 </div>
               )}
