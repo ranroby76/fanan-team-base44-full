@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Search, Edit, Plus, Loader2, Lock } from "lucide-react";
+import { Search, Edit, Plus, Loader2, Lock, Trash2, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import EditProduct from "../components/dashboard/EditProduct";
 
@@ -68,6 +68,42 @@ export default function ProductManager() {
       toast.error("Failed to save prices: " + error.message);
     }
   });
+
+  const deleteProductMutation = useMutation({
+    mutationFn: (productId) => base44.entities.Product.delete(productId),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['products-admin']);
+      toast.success("Product deleted successfully!");
+    },
+    onError: (error) => {
+      toast.error("Failed to delete product: " + error.message);
+    }
+  });
+
+  const toggleHideMutation = useMutation({
+    mutationFn: ({ productId, isHidden }) => 
+      base44.entities.Product.update(productId, { is_hidden: !isHidden }),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['products-admin']);
+      toast.success("Product visibility updated!");
+    },
+    onError: (error) => {
+      toast.error("Failed to update visibility: " + error.message);
+    }
+  });
+
+  const handleDeleteProduct = (product) => {
+    if (confirm(`Are you sure you want to delete "${product.title}"?`)) {
+      deleteProductMutation.mutate(product.id);
+    }
+  };
+
+  const handleToggleHide = (product) => {
+    toggleHideMutation.mutate({ 
+      productId: product.id, 
+      isHidden: product.is_hidden 
+    });
+  };
 
   const packs = ["Mad MIDI Machines", "Max! Pack", "Free Pack"];
 
@@ -273,17 +309,16 @@ export default function ProductManager() {
                   <TableHead>Title</TableHead>
                   <TableHead>Pack</TableHead>
                   <TableHead className="hidden md:table-cell">Formats</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead className="w-[150px] text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredProducts.map((product) => (
                   <TableRow 
                     key={product.id} 
-                    className="cursor-pointer hover:bg-muted/50"
-                    onClick={() => setEditingProduct(product)}
+                    className={`hover:bg-muted/50 ${product.is_hidden ? 'opacity-50' : ''}`}
                   >
-                    <TableCell>
+                    <TableCell onClick={() => setEditingProduct(product)} className="cursor-pointer">
                       {product.main_image ? (
                         <img 
                           src={product.main_image} 
@@ -294,16 +329,17 @@ export default function ProductManager() {
                         <div className="h-10 w-10 bg-muted rounded flex items-center justify-center text-xs">No Img</div>
                       )}
                     </TableCell>
-                    <TableCell className="font-medium">
+                    <TableCell className="font-medium cursor-pointer" onClick={() => setEditingProduct(product)}>
                         {product.title}
+                        {product.is_hidden && <span className="ml-2 text-xs text-muted-foreground">(Hidden)</span>}
                         <div className="text-xs text-muted-foreground md:hidden">{product.pack}</div>
                     </TableCell>
-                    <TableCell className="hidden md:table-cell">
+                    <TableCell className="hidden md:table-cell cursor-pointer" onClick={() => setEditingProduct(product)}>
                         <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
                             {product.pack}
                         </span>
                     </TableCell>
-                    <TableCell className="hidden md:table-cell">
+                    <TableCell className="hidden md:table-cell cursor-pointer" onClick={() => setEditingProduct(product)}>
                       <div className="flex flex-wrap gap-1 max-w-[200px]">
                         {(product.formats || []).slice(0, 3).map(fmt => (
                           <span key={fmt} className="text-xs border px-1 rounded text-muted-foreground">
@@ -316,9 +352,33 @@ export default function ProductManager() {
                       </div>
                     </TableCell>
                     <TableCell className="text-right">
-                      <Button variant="ghost" size="icon">
-                        <Edit className="w-4 h-4" />
-                      </Button>
+                      <div className="flex gap-1 justify-end" onClick={(e) => e.stopPropagation()}>
+                        <Button 
+                          variant="ghost" 
+                          size="icon"
+                          onClick={() => setEditingProduct(product)}
+                          title="Edit"
+                        >
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                        <Button 
+                          variant="ghost" 
+                          size="icon"
+                          onClick={() => handleToggleHide(product)}
+                          title={product.is_hidden ? "Show" : "Hide"}
+                        >
+                          {product.is_hidden ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+                        </Button>
+                        <Button 
+                          variant="ghost" 
+                          size="icon"
+                          onClick={() => handleDeleteProduct(product)}
+                          className="text-destructive hover:text-destructive"
+                          title="Delete"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))}
