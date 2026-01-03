@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import emailjs from "@emailjs/browser";
+import { base44 } from "@/api/base44Client";
+import { useQuery } from "@tanstack/react-query";
 
 export default function BuyNow() {
   const [machineIds, setMachineIds] = React.useState({
@@ -16,6 +18,21 @@ export default function BuyNow() {
   });
 
   const [userCountry, setUserCountry] = React.useState(null);
+
+  const { data: prices = [] } = useQuery({
+    queryKey: ["packPrices"],
+    queryFn: () => base44.entities.PackPrice.list(),
+  });
+
+  const madMidiPrice = React.useMemo(() => {
+    const price = prices.find(p => p.pack_name === "Mad MIDI Machines");
+    return price ? price.price : 22.00;
+  }, [prices]);
+
+  const maxPackPrice = React.useMemo(() => {
+    const price = prices.find(p => p.pack_name === "Max Pack");
+    return price ? price.price : 12.00;
+  }, [prices]);
 
   React.useEffect(() => {
     // Detect user's location
@@ -110,7 +127,7 @@ export default function BuyNow() {
             />
           </div>
           
-          <p className="text-5xl font-bold text-primary text-center mb-6">$22.00</p>
+          <p className="text-5xl font-bold text-primary text-center mb-6">${madMidiPrice.toFixed(2)}</p>
           
           <div className="space-y-4">
             <div>
@@ -152,7 +169,7 @@ export default function BuyNow() {
                     return actions.order.create({
                       purchase_units: [{
                         amount: {
-                          value: "22.00",
+                          value: madMidiPrice.toFixed(2),
                           currency_code: "USD"
                         },
                         description: "Mad MIDI Machines Pack"
@@ -161,7 +178,7 @@ export default function BuyNow() {
                   }}
                   onApprove={(data, actions) => {
                     return actions.order.capture().then((details) => {
-                      handlePayPalApprove(data, 'madMidi', 22.00, 'Mad MIDI Machines Pack', details);
+                      handlePayPalApprove(data, 'madMidi', madMidiPrice, 'Mad MIDI Machines Pack', details);
                     });
                   }}
                   onError={(err) => {
@@ -184,7 +201,7 @@ export default function BuyNow() {
             />
           </div>
           
-          <p className="text-5xl font-bold text-primary text-center mb-6">$12.00</p>
+          <p className="text-5xl font-bold text-primary text-center mb-6">${maxPackPrice.toFixed(2)}</p>
           
           <div className="space-y-4">
             <div>
@@ -226,7 +243,7 @@ export default function BuyNow() {
                     return actions.order.create({
                       purchase_units: [{
                         amount: {
-                          value: "12.00",
+                          value: maxPackPrice.toFixed(2),
                           currency_code: "USD"
                         },
                         description: "Max Pack"
@@ -235,7 +252,7 @@ export default function BuyNow() {
                   }}
                   onApprove={(data, actions) => {
                     return actions.order.capture().then((details) => {
-                      handlePayPalApprove(data, 'max', 12.00, 'Max Pack', details);
+                      handlePayPalApprove(data, 'max', maxPackPrice, 'Max Pack', details);
                     });
                   }}
                   onError={(err) => {
