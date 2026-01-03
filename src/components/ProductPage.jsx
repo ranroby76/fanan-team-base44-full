@@ -271,16 +271,14 @@ export default function ProductPage({
                     );
                     })()}
 
-                    {finalProduct.demoLimitations && (
                     <div className="bg-secondary/50 p-4 rounded-lg text-center border border-secondary">
-                    <h4 className="font-semibold text-secondary-foreground flex items-center justify-center gap-2 text-base mb-2">
-                    <Info className="w-5 h-5" /> Demo Limitations
-                    </h4>
-                    <p className="text-sm text-secondary-foreground/90">
-                    {finalProduct.demoLimitations}
-                    </p>
+                      <h4 className="font-semibold text-secondary-foreground flex items-center justify-center gap-2 text-base mb-2">
+                        <Info className="w-5 h-5" /> Demo Limitations
+                      </h4>
+                      <p className="text-sm text-secondary-foreground/90">
+                        {finalProduct.demoLimitations || "None"}
+                      </p>
                     </div>
-                    )}
 
                     {finalProduct.versions && finalProduct.versions.length > 0 && finalProduct.versions.some(v => v.name) && (
                 <div className="bg-primary/5 p-4 rounded-lg border border-primary/10">
