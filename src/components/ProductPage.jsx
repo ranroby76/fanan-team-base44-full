@@ -30,7 +30,7 @@ export default function ProductPage({
 }) {
   // Fetch dynamic data if available
   const { data: dbProduct } = useQuery({
-    queryKey: ['products', slug || productName], // Use slug if available
+    queryKey: ['product', slug || productName], // Unique key per product
     queryFn: async () => {
       // Try to find product by slug or title using backend function for public access
       const { data: products } = await base44.functions.invoke('getProducts');
@@ -40,7 +40,8 @@ export default function ProductPage({
       }
       return products.find(p => p.title === productName) || null;
     },
-    staleTime: 300000, // Cache for 5 minutes for better performance
+    staleTime: 0, // Always fetch fresh data
+    enabled: !!(slug || productName), // Only fetch when we have slug or productName
   });
 
   // Merge/Override props with DB data if exists
@@ -84,12 +85,10 @@ export default function ProductPage({
 
   const [mainImage, setMainImage] = useState(finalProduct.image || productImage);
   
-  // Update main image if dbProduct loads and differs (optional, but good for UX)
+  // Reset main image when product changes
   React.useEffect(() => {
-    if (finalProduct.image && finalProduct.image !== mainImage) {
-      setMainImage(finalProduct.image);
-    }
-  }, [finalProduct.image]);
+    setMainImage(finalProduct.image || productImage);
+  }, [finalProduct.image, productImage, slug, productName]);
 
   const allImages = finalProduct.gallery && finalProduct.gallery.length > 0 ? finalProduct.gallery : [finalProduct.image].filter(Boolean);
 
