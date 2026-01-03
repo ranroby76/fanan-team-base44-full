@@ -21,7 +21,6 @@ import GuiMe from './pages/GuiMe';
 import Home from './pages/Home';
 import HowToBuy from './pages/HowToBuy';
 import Kitton3 from './pages/Kitton3';
-import KittonStylist from './pages/KittonStylist';
 import MadMidiMachinePack from './pages/MadMidiMachinePack';
 import MaxPack from './pages/MaxPack';
 import Midimotor from './pages/Midimotor';
@@ -55,6 +54,7 @@ import Yogi from './pages/Yogi';
 import Yowlseq2 from './pages/Yowlseq2';
 import Ziggy from './pages/Ziggy';
 import Zoe2 from './pages/Zoe2';
+import kittonStylist from './pages/kitton-stylist';
 import __Layout from './Layout.jsx';
 
 
@@ -82,7 +82,6 @@ export const PAGES = {
     "Home": Home,
     "HowToBuy": HowToBuy,
     "Kitton3": Kitton3,
-    "KittonStylist": KittonStylist,
     "MadMidiMachinePack": MadMidiMachinePack,
     "MaxPack": MaxPack,
     "Midimotor": Midimotor,
@@ -116,6 +115,7 @@ export const PAGES = {
     "Yowlseq2": Yowlseq2,
     "Ziggy": Ziggy,
     "Zoe2": Zoe2,
+    "kitton-stylist": kittonStylist,
 }
 
 export const pagesConfig = {
