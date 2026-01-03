@@ -111,13 +111,20 @@ export default function BuyNow() {
     }
   };
 
+  const paypalClientId = import.meta.env.VITE_PAYPAL_CLIENT_ID || "AeS3ypZDD4gRxIljkDRB-4TvN_elLYlGOqXjYpj8b0FwHIrqZMd5hRMlFjWEBVPc5TtqAG3sJwb_z4LD";
+
   return (
-    <PayPalScriptProvider options={{ 
-      "client-id": import.meta.env.VITE_PAYPAL_CLIENT_ID || "AeS3ypZDD4gRxIljkDRB-4TvN_elLYlGOqXjYpj8b0FwHIrqZMd5hRMlFjWEBVPc5TtqAG3sJwb_z4LD",
-      currency: "USD",
-      intent: "capture",
-      vault: false
-    }}>
+    <PayPalScriptProvider 
+      options={{ 
+        "client-id": paypalClientId,
+        currency: "USD",
+        intent: "capture"
+      }}
+      onError={(err) => {
+        console.error("PayPal SDK Error:", err);
+        setPaypalError("PayPal failed to load");
+      }}
+    >
     <div className="container mx-auto px-4 py-8">
       {/* Background Image */}
       <div className="relative mb-8 rounded-lg overflow-hidden">
