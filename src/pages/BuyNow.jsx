@@ -89,6 +89,21 @@ export default function BuyNow() {
       
       setSerials(prev => ({...prev, [pack]: serial}));
 
+      // Save purchase to database
+      try {
+        await base44.asServiceRole.entities.Purchase.create({
+          customer_email: verification.data.payer.email,
+          customer_name: verification.data.payer.name || "Customer",
+          pack_name: packName,
+          serial_number: serial,
+          machine_id: machineId.toString(),
+          amount_paid: parseFloat(verification.data.amount),
+          paypal_order_id: data.orderID
+        });
+      } catch (error) {
+        console.error("Failed to save purchase:", error);
+      }
+
       // Send email via backend
       try {
         const customerEmail = verification.data.payer.email;
