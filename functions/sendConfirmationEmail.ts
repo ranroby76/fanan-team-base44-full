@@ -6,45 +6,54 @@ Deno.serve(async (req) => {
             return Response.json({ error: 'Missing required fields' }, { status: 400 });
         }
 
-        const serviceId = Deno.env.get("NEXT_PUBLIC_EMAILJS_SERVICE_ID");
-        const templateId = Deno.env.get("NEXT_PUBLIC_EMAILJS_TEMPLATE_ID");
-        const publicKey = Deno.env.get("NEXT_PUBLIC_EMAILJS_PUBLIC_KEY");
-        const privateKey = Deno.env.get("EMAILJS_PRIVATE_KEY");
+        const apiKey = Deno.env.get("SENDGRID_API_KEY");
         
-        if (!serviceId || !templateId || !publicKey || !privateKey) {
-            console.error("EmailJS credentials not set");
+        if (!apiKey) {
+            console.error("SendGrid API key not set");
             return Response.json({ error: 'Email service not configured' }, { status: 500 });
         }
 
-        // Send email via EmailJS REST API with private key
-        const emailResponse = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+        // Prepare email content
+        const emailData = {
+            personalizations: [{
+                to: [{ email: customerEmail, name: customerName || 'Customer' }],
+                subject: `Your ${packName} Serial Number`
+            }],
+            from: {
+                email: "noreply@fananteam.com",
+                name: "Fanan Team Store"
+            },
+            content: [{
+                type: "text/html",
+                value: `
+                    <h2>Thank you for your purchase!</h2>
+                    <p>Dear ${customerName || 'Customer'},</p>
+                    <p>Your payment of $${amount} for <strong>${packName}</strong> has been confirmed.</p>
+                    <p><strong>Your Serial Number: ${serialNumber}</strong></p>
+                    <p>Please copy this serial number and use it to activate your product.</p>
+                    <p>If you have any questions, please contact us.</p>
+                    <p>Best regards,<br>Fanan Team</p>
+                `
+            }]
+        };
+
+        // Send email via SendGrid API
+        const emailResponse = await fetch('https://api.sendgrid.com/v3/mail/send', {
             method: 'POST',
             headers: {
+                'Authorization': `Bearer ${apiKey}`,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                service_id: serviceId,
-                template_id: templateId,
-                user_id: publicKey,
-                accessToken: privateKey,
-                template_params: {
-                    to_email: customerEmail,
-                    to_name: customerName || 'Customer',
-                    amount: amount,
-                    serial_number: serialNumber,
-                    pack_name: packName
-                }
-            })
+            body: JSON.stringify(emailData)
         });
 
-        const responseText = await emailResponse.text();
-        
         if (!emailResponse.ok) {
-            console.error("EmailJS error:", responseText);
+            const errorText = await emailResponse.text();
+            console.error("SendGrid error:", errorText);
             return Response.json({ 
                 success: false, 
                 error: 'Failed to send email',
-                details: responseText 
+                details: errorText 
             }, { status: 500 });
         }
 
