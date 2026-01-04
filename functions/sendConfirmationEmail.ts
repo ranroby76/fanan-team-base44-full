@@ -16,36 +16,35 @@ Deno.serve(async (req) => {
             return Response.json({ error: 'Email service not configured' }, { status: 500 });
         }
 
-        // Prepare form data for server-side EmailJS call
-        const formData = new URLSearchParams();
-        formData.append('service_id', serviceId);
-        formData.append('template_id', templateId);
-        formData.append('user_id', publicKey);
-        formData.append('accessToken', privateKey);
-        formData.append('template_params', JSON.stringify({
-            to_email: customerEmail,
-            to_name: customerName || 'Customer',
-            amount: amount,
-            serial_number: serialNumber,
-            pack_name: packName
-        }));
-
-        // Send email via EmailJS REST API
-        const emailResponse = await fetch('https://api.emailjs.com/api/v1.0/email/send-form', {
+        // Send email via EmailJS REST API with private key
+        const emailResponse = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
+                'Content-Type': 'application/json'
             },
-            body: formData.toString()
+            body: JSON.stringify({
+                service_id: serviceId,
+                template_id: templateId,
+                user_id: publicKey,
+                accessToken: privateKey,
+                template_params: {
+                    to_email: customerEmail,
+                    to_name: customerName || 'Customer',
+                    amount: amount,
+                    serial_number: serialNumber,
+                    pack_name: packName
+                }
+            })
         });
 
+        const responseText = await emailResponse.text();
+        
         if (!emailResponse.ok) {
-            const errorText = await emailResponse.text();
-            console.error("EmailJS error:", errorText);
+            console.error("EmailJS error:", responseText);
             return Response.json({ 
                 success: false, 
                 error: 'Failed to send email',
-                details: errorText 
+                details: responseText 
             }, { status: 500 });
         }
 
