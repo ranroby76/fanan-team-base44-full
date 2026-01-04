@@ -1,5 +1,6 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { base44 } from "@/api/base44Client";
 import { Menu, X, Home, VenetianMask, List, HelpCircle, ShoppingCart, Mail, Package, ChevronDown, User, LogIn, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -103,6 +104,39 @@ export default function Layout({ children, currentPageName }) {
                   </Link>
                 </Button>
               ))}
+
+              {user ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="hover:bg-primary-foreground/10 text-primary-foreground gap-2">
+                      <User size={18} />
+                      <span>{user.full_name || user.email}</span>
+                      <ChevronDown size={14} />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="bg-primary text-primary-foreground border-primary-foreground/20">
+                    <DropdownMenuItem asChild className="focus:bg-primary-foreground/20 focus:text-primary-foreground cursor-pointer">
+                      <Link to="/MyPurchases">My Purchases</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem 
+                      onClick={() => base44.auth.logout()} 
+                      className="focus:bg-primary-foreground/20 focus:text-primary-foreground cursor-pointer"
+                    >
+                      <LogOut size={14} className="mr-2" />
+                      Logout
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <Button 
+                  variant="ghost" 
+                  onClick={() => base44.auth.redirectToLogin(window.location.pathname)}
+                  className="hover:bg-primary-foreground/10 text-primary-foreground gap-2"
+                >
+                  <LogIn size={18} />
+                  <span>Login</span>
+                </Button>
+              )}
             </div>
 
             <button
@@ -147,6 +181,37 @@ export default function Layout({ children, currentPageName }) {
                   <item.icon size={18} /> {item.name}
                 </Link>
               ))}
+
+              {user ? (
+                <>
+                  <Link
+                    to="/MyPurchases"
+                    className="block py-2 px-4 hover:bg-primary-foreground/10 rounded transition-colors text-primary-foreground flex items-center gap-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <Package size={18} /> My Purchases
+                  </Link>
+                  <button
+                    onClick={() => {
+                      base44.auth.logout();
+                      setMobileMenuOpen(false);
+                    }}
+                    className="block w-full text-left py-2 px-4 hover:bg-primary-foreground/10 rounded transition-colors text-primary-foreground flex items-center gap-2"
+                  >
+                    <LogOut size={18} /> Logout
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={() => {
+                    base44.auth.redirectToLogin(window.location.pathname);
+                    setMobileMenuOpen(false);
+                  }}
+                  className="block w-full text-left py-2 px-4 hover:bg-primary-foreground/10 rounded transition-colors text-primary-foreground flex items-center gap-2"
+                >
+                  <LogIn size={18} /> Login
+                </button>
+              )}
             </div>
           )}
         </nav>
