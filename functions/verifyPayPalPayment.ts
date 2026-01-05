@@ -68,7 +68,13 @@ Deno.serve(async (req) => {
         // Save purchase to database
         if (packName && serialNumber) {
             try {
-                await base44.asServiceRole.entities.Purchase.create({
+                console.log("Saving purchase:", {
+                    email: orderDetails.payer.email_address,
+                    pack: packName,
+                    serial: serialNumber
+                });
+                
+                const savedPurchase = await base44.asServiceRole.entities.Purchase.create({
                     customer_email: orderDetails.payer.email_address,
                     customer_name: orderDetails.payer.name.given_name || "Customer",
                     pack_name: packName,
@@ -77,9 +83,14 @@ Deno.serve(async (req) => {
                     amount_paid: parseFloat(orderDetails.purchase_units[0].amount.value),
                     paypal_order_id: orderDetails.id
                 });
+                
+                console.log("Purchase saved successfully:", savedPurchase.id);
             } catch (error) {
-                console.error("Failed to save purchase:", error);
+                console.error("Failed to save purchase:", error.message);
+                console.error("Full error:", error);
             }
+        } else {
+            console.log("Missing packName or serialNumber - purchase not saved");
         }
 
         // Return verified payment details
