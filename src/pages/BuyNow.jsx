@@ -63,16 +63,6 @@ export default function BuyNow() {
 
   const handlePayPalApprove = async (data, pack, price, packName, details) => {
     try {
-      // Verify payment on backend
-      const verification = await base44.functions.invoke('verifyPayPalPayment', {
-        orderId: data.orderID
-      });
-
-      if (!verification.data.success) {
-        alert("Payment verification failed. Please contact support.");
-        return;
-      }
-
       // Calculate serial number from machine ID based on pack
       const machineId = parseInt(machineIds[pack]);
       let serial;
@@ -89,19 +79,17 @@ export default function BuyNow() {
       
       setSerials(prev => ({...prev, [pack]: serial}));
 
-      // Save purchase to database
-      try {
-        await base44.asServiceRole.entities.Purchase.create({
-          customer_email: verification.data.payer.email,
-          customer_name: verification.data.payer.name || "Customer",
-          pack_name: packName,
-          serial_number: serial,
-          machine_id: machineId.toString(),
-          amount_paid: parseFloat(verification.data.amount),
-          paypal_order_id: data.orderID
-        });
-      } catch (error) {
-        console.error("Failed to save purchase:", error);
+      // Verify payment and save purchase on backend
+      const verification = await base44.functions.invoke('verifyPayPalPayment', {
+        orderId: data.orderID,
+        packName,
+        serialNumber: serial,
+        machineId: machineId.toString()
+      });
+
+      if (!verification.data.success) {
+        alert("Payment verification failed. Please contact support.");
+        return;
       }
 
       // Send email via backend

@@ -25,6 +25,7 @@ import Midimotor from './pages/Midimotor';
 import Midisquid from './pages/Midisquid';
 import Midiverus from './pages/Midiverus';
 import Midmid from './pages/Midmid';
+import MyPurchases from './pages/MyPurchases';
 import PacksList from './pages/PacksList';
 import Playlisted from './pages/Playlisted';
 import Playlisted2 from './pages/Playlisted2';
@@ -57,7 +58,6 @@ import sultana2 from './pages/sultana-2';
 import tropicanaFun from './pages/tropicana-fun';
 import yowlseq2 from './pages/yowlseq-2';
 import zoe2 from './pages/zoe-2';
-import MyPurchases from './pages/MyPurchases';
 import __Layout from './Layout.jsx';
 
 
@@ -89,6 +89,7 @@ export const PAGES = {
     "Midisquid": Midisquid,
     "Midiverus": Midiverus,
     "Midmid": Midmid,
+    "MyPurchases": MyPurchases,
     "PacksList": PacksList,
     "Playlisted": Playlisted,
     "Playlisted2": Playlisted2,
@@ -121,7 +122,6 @@ export const PAGES = {
     "tropicana-fun": tropicanaFun,
     "yowlseq-2": yowlseq2,
     "zoe-2": zoe2,
-    "MyPurchases": MyPurchases,
 }
 
 export const pagesConfig = {
