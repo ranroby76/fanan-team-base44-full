@@ -26,7 +26,7 @@ export default function MyPurchases() {
     queryKey: ['myPurchases', user?.email],
     queryFn: async () => {
       if (!user?.email) return [];
-      const allPurchases = await base44.asServiceRole.entities.Purchase.filter({ customer_email: user.email }, '-created_date');
+      const allPurchases = await base44.entities.Purchase.filter({ customer_email: user.email }, '-created_date');
       return allPurchases;
     },
     enabled: !!user?.email
