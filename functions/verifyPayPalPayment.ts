@@ -3,9 +3,11 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
 Deno.serve(async (req) => {
     try {
         const payload = await req.json();
+        console.log("Received payload:", payload);
         const { orderId } = payload;
         
         if (!orderId) {
+            console.error("Missing orderId in payload:", payload);
             return Response.json({ error: 'Order ID is required' }, { status: 400 });
         }
 
