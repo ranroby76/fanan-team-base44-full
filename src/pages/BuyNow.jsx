@@ -141,6 +141,16 @@ export default function BuyNow() {
         setPaypalError("PayPal failed to load");
       }}
     >
+    <>
+    <style>{`
+      @keyframes blink {
+        0%, 50%, 100% { opacity: 1; }
+        25%, 75% { opacity: 0.3; }
+      }
+      .blink-text {
+        animation: blink 1.5s ease-in-out infinite;
+      }
+    `}</style>
     <div className="container mx-auto px-4 py-8">
       {/* Background Image */}
       <div className="relative mb-8 rounded-lg overflow-hidden">
@@ -179,7 +189,7 @@ export default function BuyNow() {
           
           <div className="space-y-4">
             <div>
-              <p className="text-sm font-semibold text-destructive mb-2">ENTER YOUR ID HERE FIRST!</p>
+              <p className="text-sm font-semibold text-destructive mb-2 blink-text">ENTER YOUR ID HERE FIRST!</p>
               <p className="text-xs text-muted-foreground mb-3">Find this in the plugin's "REGISTER" window.</p>
               <Input
                 placeholder="enter your id here"
@@ -258,7 +268,7 @@ export default function BuyNow() {
           
           <div className="space-y-4">
             <div>
-              <p className="text-sm font-semibold text-destructive mb-2">ENTER YOUR ID HERE FIRST!</p>
+              <p className="text-sm font-semibold text-destructive mb-2 blink-text">ENTER YOUR ID HERE FIRST!</p>
               <p className="text-xs text-muted-foreground mb-3">Find this in the plugin's "REGISTER" window.</p>
               <Input
                 placeholder="enter your id here"
@@ -335,6 +345,7 @@ export default function BuyNow() {
         </p>
       </div>
     </div>
+    </>
     </PayPalScriptProvider>
   );
 }
