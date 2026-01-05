@@ -106,27 +106,32 @@ export default function Layout({ children, currentPageName }) {
               ))}
 
               {user ? (
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="hover:bg-primary-foreground/10 text-primary-foreground gap-2">
-                      <User size={18} />
-                      <span>{user.full_name || user.email}</span>
-                      <ChevronDown size={14} />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="bg-primary text-primary-foreground border-primary-foreground/20">
-                    <DropdownMenuItem asChild className="focus:bg-primary-foreground/20 focus:text-primary-foreground cursor-pointer">
-                      <Link to="/MyPurchases">My Purchases</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem 
-                      onClick={() => base44.auth.logout()} 
-                      className="focus:bg-primary-foreground/20 focus:text-primary-foreground cursor-pointer"
-                    >
-                      <LogOut size={14} className="mr-2" />
-                      Logout
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                <>
+                  <Button variant="ghost" asChild className={`hover:bg-primary-foreground/10 text-primary-foreground ${currentPageName === 'MyPurchases' ? 'bg-primary-foreground/10' : ''}`}>
+                    <Link to="/MyPurchases" className="flex items-center gap-2">
+                      <Package size={18} />
+                      <span>My Purchases</span>
+                    </Link>
+                  </Button>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" className="hover:bg-primary-foreground/10 text-primary-foreground gap-2">
+                        <User size={18} />
+                        <span>{user.full_name || user.email}</span>
+                        <ChevronDown size={14} />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="bg-primary text-primary-foreground border-primary-foreground/20">
+                      <DropdownMenuItem 
+                        onClick={() => base44.auth.logout()} 
+                        className="focus:bg-primary-foreground/20 focus:text-primary-foreground cursor-pointer"
+                      >
+                        <LogOut size={14} className="mr-2" />
+                        Logout
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </>
               ) : (
                 <Button 
                   variant="ghost" 
