@@ -2,7 +2,8 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
 
 Deno.serve(async (req) => {
     try {
-        const { orderId } = await req.json();
+        const payload = await req.json();
+        const { orderId } = payload;
         
         if (!orderId) {
             return Response.json({ error: 'Order ID is required' }, { status: 400 });
@@ -57,6 +58,28 @@ Deno.serve(async (req) => {
                 error: 'Payment not completed',
                 status: orderDetails.status 
             }, { status: 400 });
+        }
+
+        const base44 = createClientFromRequest(req);
+
+        // Get additional data from request to save purchase
+        const { packName, serialNumber, machineId } = payload;
+        
+        // Save purchase to database
+        if (packName && serialNumber) {
+            try {
+                await base44.asServiceRole.entities.Purchase.create({
+                    customer_email: orderDetails.payer.email_address,
+                    customer_name: orderDetails.payer.name.given_name || "Customer",
+                    pack_name: packName,
+                    serial_number: serialNumber,
+                    machine_id: machineId || "",
+                    amount_paid: parseFloat(orderDetails.purchase_units[0].amount.value),
+                    paypal_order_id: orderDetails.id
+                });
+            } catch (error) {
+                console.error("Failed to save purchase:", error);
+            }
         }
 
         // Return verified payment details
