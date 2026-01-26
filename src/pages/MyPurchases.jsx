@@ -1,14 +1,15 @@
 import React from "react";
 import { base44 } from "@/api/base44Client";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Package, Calendar, Key, Mail, LogIn } from "lucide-react";
+import { Package, Calendar, Key, Mail, LogIn, Trash2 } from "lucide-react";
 import { format } from "date-fns";
 
 export default function MyPurchases() {
   const [user, setUser] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
+  const queryClient = useQueryClient();
 
   React.useEffect(() => {
     base44.auth.me()
@@ -31,6 +32,19 @@ export default function MyPurchases() {
     },
     enabled: !!user?.email
   });
+
+  const deleteMutation = useMutation({
+    mutationFn: (purchaseId) => base44.entities.Purchase.delete(purchaseId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['myPurchases'] });
+    }
+  });
+
+  const handleDelete = (purchaseId) => {
+    if (confirm('Are you sure you want to delete this purchase?')) {
+      deleteMutation.mutate(purchaseId);
+    }
+  };
 
   if (loading) {
     return (
@@ -92,9 +106,19 @@ export default function MyPurchases() {
                       <Package className="w-5 h-5" />
                       {purchase.pack_name}
                     </span>
-                    <span className="text-lg font-bold text-primary">
-                      ${purchase.amount_paid.toFixed(2)}
-                    </span>
+                    <div className="flex items-center gap-3">
+                      <span className="text-lg font-bold text-primary">
+                        ${purchase.amount_paid.toFixed(2)}
+                      </span>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleDelete(purchase.id)}
+                        className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-6 space-y-4">
