@@ -13,6 +13,7 @@ import { Save, ArrowLeft } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
+import ImageUploader from "../ImageUploader";
 
 // Helper to ensure array has fixed size with empty placeholders
 const ensureArraySize = (arr, size, fill) => {
@@ -187,9 +188,13 @@ export default function EditProduct({ product, onClose }) {
               </div>
             </div>
 
+            {/* Image Uploader */}
+            <ImageUploader />
+
             {/* 5-11. Images 1-7 */}
             <div className="space-y-4 border p-4 rounded-lg">
               <h3 className="text-lg font-bold">Images</h3>
+              <p className="text-sm text-muted-foreground">Use the uploader above to get reliable URLs, then paste them here</p>
               
               <div className="space-y-2">
                 <Label>Image 1 (Main)</Label>
