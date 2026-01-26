@@ -35,6 +35,7 @@ export default function ProductManager() {
         return res;
     },
     initialData: [],
+    enabled: isAuthenticated,
   });
 
   const { data: prices = [] } = useQuery({
