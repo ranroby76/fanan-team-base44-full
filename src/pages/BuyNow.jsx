@@ -65,6 +65,12 @@ export default function BuyNow() {
     try {
       // Calculate serial number from machine ID based on pack
       const machineId = parseInt(machineIds[pack]);
+      
+      if (isNaN(machineId) || machineId <= 0) {
+        alert("Invalid Machine ID. Please enter a valid numeric ID.");
+        return;
+      }
+      
       let serial;
       
       if (pack === 'madMidi') {
