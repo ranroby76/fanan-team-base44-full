@@ -9,6 +9,25 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 
+// Helper to convert GitHub URLs to raw format
+const fixImageUrl = (url) => {
+  if (!url) return url;
+  const githubRawBase = "https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team/public/images/";
+  
+  // If it's just a filename, prepend the GitHub raw URL
+  if (!url.includes('http') && !url.includes('/')) {
+    return githubRawBase + url;
+  }
+  
+  // If it's a GitHub tree URL, convert to raw
+  if (url.includes('github.com') && url.includes('/tree/')) {
+    const filename = url.split('/').pop();
+    return githubRawBase + filename;
+  }
+  
+  return url;
+};
+
 export default function ProductPage({ 
   productName, 
   slug, // Add slug support for more reliable lookup
@@ -58,8 +77,8 @@ export default function ProductPage({
   const finalProduct = dbProduct ? {
     name: dbProduct.title,
     description: dbProduct.short_description,
-    image: dbProduct.main_image,
-    gallery: dbProduct.gallery_images && dbProduct.gallery_images.length > 0 ? dbProduct.gallery_images : [],
+    image: fixImageUrl(dbProduct.main_image),
+    gallery: dbProduct.gallery_images && dbProduct.gallery_images.length > 0 ? dbProduct.gallery_images.map(fixImageUrl) : [],
     features: dbProduct.features || [],
     formats: {
       audio: dbProduct.supported_audio_formats,
@@ -78,8 +97,8 @@ export default function ProductPage({
   } : {
     name: productName,
     description: productDescription,
-    image: productImage,
-    gallery: galleryImages,
+    image: fixImageUrl(productImage),
+    gallery: galleryImages.map(fixImageUrl),
     features: features,
     formats: supportedFormats,
     versions: versions,
