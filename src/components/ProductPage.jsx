@@ -138,6 +138,9 @@ export default function ProductPage({
                     src={mainImage}
                     alt={`Main view of ${finalProduct.name}`}
                     className="object-contain p-2 w-full h-auto transition-transform duration-300 group-hover:scale-[1.02]"
+                    onError={(e) => {
+                      e.target.src = 'https://via.placeholder.com/400x300?text=Image+Not+Available';
+                    }}
                   />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors" />
                 </button>
@@ -147,6 +150,9 @@ export default function ProductPage({
                   src={mainImage}
                   alt="Full view"
                   className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
+                  onError={(e) => {
+                    e.target.src = 'https://via.placeholder.com/400x300?text=Image+Not+Available';
+                  }}
                 />
               </DialogContent>
             </Dialog>
@@ -168,6 +174,9 @@ export default function ProductPage({
                         src={img}
                         alt={`Thumbnail ${idx + 1}`}
                         className="object-cover w-full h-full"
+                        onError={(e) => {
+                          e.target.src = 'https://via.placeholder.com/100x100?text=N/A';
+                        }}
                       />
                     </button>
                   ))}
