@@ -141,13 +141,15 @@ export default function ProductManager() {
 
     try {
       const response = await base44.functions.invoke('verifyVipPass', { password });
+      console.log("VIP verification response:", response.data);
       if (response.data.success) {
         setIsAuthenticated(true);
       } else {
         setError("Incorrect password");
       }
     } catch (err) {
-      setError("Incorrect password");
+      console.error("VIP verification error:", err);
+      setError("Error verifying password");
     } finally {
       setVerifying(false);
     }
