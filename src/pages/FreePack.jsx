@@ -57,7 +57,7 @@ export default function FreePack() {
       <div className="flex justify-center mb-10">
         <div className="w-full max-w-4xl h-auto">
           <img
-            src="https://fananteam.com/images/free%20pack.png"
+            src="https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team/public/images/free%20pack.png"
             alt="Free Pack Logo"
             className="object-contain w-full h-auto shadow-xl rounded-lg bg-black/20"
           />

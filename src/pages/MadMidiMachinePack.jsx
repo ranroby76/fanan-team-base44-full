@@ -57,7 +57,7 @@ export default function MadMidiMachinePack() {
       <div className="flex justify-center mb-10">
         <div className="w-full max-w-4xl h-auto">
           <img
-            src="https://fananteam.com/images/mad%20midi%20machines.png"
+            src="https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team/public/images/mad%20midi%20machines.png"
             alt="Mad MIDI Machines Pack Logo"
             className="object-contain w-full h-auto shadow-xl rounded-lg bg-black/20"
           />
