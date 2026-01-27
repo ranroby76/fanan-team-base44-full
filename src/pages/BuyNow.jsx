@@ -161,7 +161,7 @@ export default function BuyNow() {
       {/* Background Image */}
       <div className="relative mb-8 rounded-lg overflow-hidden">
         <img 
-          src="https://fananteam.com/images/A5.jpg" 
+          src="https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team/public/images/buy_now_back.jpg" 
           alt="Synthesizer background" 
           className="w-full h-64 object-cover"
         />
@@ -173,7 +173,7 @@ export default function BuyNow() {
       {/* Store Logo */}
       <div className="flex justify-center mb-12">
         <img 
-          src="https://fananteam.com/images/A6.png" 
+          src="https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team/public/images/fanan_store_logo.png" 
           alt="Fanan Store" 
           className="h-20 w-auto"
         />
@@ -185,7 +185,7 @@ export default function BuyNow() {
         <div className="bg-card border border-border rounded-lg p-8 shadow-xl">
           <div className="flex justify-center mb-6">
             <img 
-              src="https://fananteam.com/images/mad%20midi%20machines.png" 
+              src="https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team/public/images/mad%20midi%20machines.png" 
               alt="Mad MIDI Machines Pack" 
               className="h-24 w-auto"
             />
@@ -264,7 +264,7 @@ export default function BuyNow() {
         <div className="bg-card border border-border rounded-lg p-8 shadow-xl">
           <div className="flex justify-center mb-6">
             <img 
-              src="https://fananteam.com/images/pro%20pack.png" 
+              src="https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team/public/images/pro%20pack.png" 
               alt="Max Pack" 
               className="h-24 w-auto"
             />
