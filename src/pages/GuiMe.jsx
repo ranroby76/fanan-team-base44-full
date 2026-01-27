@@ -6,7 +6,7 @@ export default function GuiMe() {
       {/* Header Banner */}
       <div className="mb-10">
         <img 
-          src="https://fananteam.com/images/A1.png" 
+          src="https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team/public/images/gui-me-logo.png" 
           alt="GUI Me Banner" 
           className="w-full h-auto rounded-lg shadow-xl"
         />
