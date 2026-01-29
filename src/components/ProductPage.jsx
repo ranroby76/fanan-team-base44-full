@@ -113,7 +113,11 @@ export default function ProductPage({
   };
 
   // Get pack price if available - prioritize pack price over individual product price
-  const packPrice = packPrices?.find(p => p.pack_name === finalProduct.pack);
+  // Handle pack name variations (e.g., "Max Pack" vs "Max! Pack")
+  const packPrice = packPrices?.find(p => 
+    p.pack_name === finalProduct.pack || 
+    p.pack_name.replace(/[!]/g, '') === finalProduct.pack.replace(/[!]/g, '')
+  );
   const displayPrice = finalProduct.pack === "Free Pack" ? "Free" : (packPrice ? `$${packPrice.price.toFixed(2)}` : (finalProduct.price || price));
 
   const [mainImage, setMainImage] = useState(finalProduct.image || productImage);
