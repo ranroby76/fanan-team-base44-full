@@ -14,6 +14,8 @@ export default function MaxPack() {
       const { data } = await base44.functions.invoke('getProducts');
       if (!Array.isArray(data)) throw new Error("Invalid data format received");
 
+      console.log('Max Pack - Raw data:', data.filter(p => p.pack === "Max! Pack").map(p => `${p.title}: display_order=${p.display_order}`));
+
       // Deduplicate products
       const seen = new Set();
       const uniqueData = data.filter(p => {
@@ -23,13 +25,22 @@ export default function MaxPack() {
         return true;
       });
 
-      return uniqueData
+      const sorted = uniqueData
         .filter(p => p.pack === "Max! Pack" && !p.is_hidden)
-        .sort((a, b) => (a.display_order || 999) - (b.display_order || 999));
+        .sort((a, b) => {
+          const orderA = typeof a.display_order === 'number' ? a.display_order : 999;
+          const orderB = typeof b.display_order === 'number' ? b.display_order : 999;
+          return orderA - orderB;
+        });
+      
+      console.log('Max Pack - After sort:', sorted.map(p => `${p.title}: display_order=${p.display_order}`));
+      return sorted;
     },
     initialData: [],
     staleTime: 0,
-    refetchOnWindowFocus: true
+    cacheTime: 0,
+    refetchOnWindowFocus: true,
+    refetchOnMount: 'always'
   });
 
   if (isLoading) {
