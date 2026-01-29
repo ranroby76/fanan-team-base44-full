@@ -34,6 +34,7 @@ Deno.serve(async (req) => {
                 supported_audio_formats: data.supported_audio_formats,
                 supported_video_formats: data.supported_video_formats,
                 is_hidden: data.is_hidden || false,
+                display_order: data.display_order,
                 created_date: p.created_date,
                 updated_date: p.updated_date
             };
