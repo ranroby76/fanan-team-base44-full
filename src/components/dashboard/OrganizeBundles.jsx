@@ -35,9 +35,9 @@ export default function OrganizeBundles({ products, packs }) {
       return { packName, orderedProducts, updates };
     },
     onSuccess: async (data) => {
-      // Invalidate and refetch to ensure fresh data
-      await queryClient.invalidateQueries(['products-admin']);
-      await queryClient.refetchQueries(['products-admin']);
+      // Invalidate ALL product queries (admin and public pack pages)
+      await queryClient.invalidateQueries({ queryKey: ['products'] });
+      await queryClient.refetchQueries({ queryKey: ['products'] });
       
       // Update local state with confirmed order
       setPackProducts(prev => ({
