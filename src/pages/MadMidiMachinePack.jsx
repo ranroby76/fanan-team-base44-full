@@ -25,7 +25,7 @@ export default function MadMidiMachinePack() {
 
       return uniqueData
         .filter(p => p.pack === "Mad MIDI Machines" && !p.is_hidden)
-        .sort((a, b) => a.title.localeCompare(b.title));
+        .sort((a, b) => (a.display_order || 999) - (b.display_order || 999));
     },
     initialData: [],
     staleTime: 0,

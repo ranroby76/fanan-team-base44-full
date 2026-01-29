@@ -25,7 +25,7 @@ export default function FreePack() {
 
       return uniqueData
         .filter(p => p.pack === "Free Pack" && !p.is_hidden)
-        .sort((a, b) => a.title.localeCompare(b.title));
+        .sort((a, b) => (a.display_order || 999) - (b.display_order || 999));
     },
     initialData: [],
     staleTime: 0,
