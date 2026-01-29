@@ -25,29 +25,32 @@ export default function OrganizeBundles({ products, packs }) {
 
   const saveOrderMutation = useMutation({
     mutationFn: async ({ packName, orderedProducts }) => {
-      // Update display_order for each product sequentially to ensure order
-      const updates = [];
+      console.log(`Saving order for ${packName}:`, orderedProducts.map((p, i) => `[${i}] ${p.title}`));
+      
+      // Update display_order for each product
       for (let i = 0; i < orderedProducts.length; i++) {
-        const update = await base44.entities.Product.update(orderedProducts[i].id, { display_order: i });
-        updates.push(update);
+        const product = orderedProducts[i];
+        console.log(`Updating ${product.title} (${product.id}) to display_order: ${i}`);
+        await base44.entities.Product.update(product.id, { display_order: i });
       }
-      console.log(`Saved ${updates.length} products for ${packName}:`, updates.map((u, i) => `${u.title}: ${i}`));
-      return { packName, orderedProducts, updates };
+      
+      // Verify the updates by fetching fresh data
+      const { data: freshProducts } = await base44.functions.invoke('getProducts');
+      const packProducts = freshProducts.filter(p => p.pack === packName);
+      console.log(`After save - ${packName} products:`, packProducts.map(p => `${p.title}: display_order=${p.display_order}`));
+      
+      return { packName };
     },
     onSuccess: async (data) => {
-      // Invalidate ALL product queries (admin and public pack pages)
-      await queryClient.invalidateQueries({ queryKey: ['products'] });
-      await queryClient.refetchQueries({ queryKey: ['products'] });
+      console.log('Save successful, invalidating caches...');
       
-      // Update local state with confirmed order
-      setPackProducts(prev => ({
-        ...prev,
-        [data.packName]: data.updates.map((p, i) => ({ ...p, display_order: i }))
-      }));
+      // Clear all product-related caches
+      queryClient.removeQueries({ queryKey: ['products'] });
       
-      toast.success(`Order saved for ${data.packName}!`);
+      toast.success(`Order saved for ${data.packName}! Refresh the pack page to see changes.`);
     },
     onError: (error) => {
+      console.error('Save failed:', error);
       toast.error("Failed to save order: " + error.message);
     }
   });
