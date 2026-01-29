@@ -44,10 +44,12 @@ export default function OrganizeBundles({ products, packs }) {
     onSuccess: async (data) => {
       console.log('Save successful, invalidating caches...');
       
-      // Clear all product-related caches
-      queryClient.removeQueries({ queryKey: ['products'] });
+      // Clear all product-related caches - use predicate to match any query starting with 'products'
+      queryClient.invalidateQueries({ 
+        predicate: (query) => query.queryKey[0] === 'products' 
+      });
       
-      toast.success(`Order saved for ${data.packName}! Refresh the pack page to see changes.`);
+      toast.success(`Order saved for ${data.packName}!`);
     },
     onError: (error) => {
       console.error('Save failed:', error);
