@@ -3,7 +3,7 @@ import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Package, Calendar, Key, Mail, LogIn, Trash2, Download } from "lucide-react";
+import { Package, Calendar, Key, Mail, LogIn, Trash2 } from "lucide-react";
 import { format } from "date-fns";
 
 export default function MyPurchases() {
@@ -46,22 +46,22 @@ export default function MyPurchases() {
     }
   };
 
-  const handleDownloadReceipt = async (purchase) => {
-    try {
-      const response = await base44.functions.invoke('generateReceipt', { purchaseId: purchase.id });
-      const blob = new Blob([response.data], { type: 'application/pdf' });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `Fanan-Team-Receipt-${purchase.id}.pdf`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      a.remove();
-    } catch (error) {
-      alert('Failed to generate receipt: ' + error.message);
-    }
-  };
+  // const handleDownloadReceipt = async (purchase) => {
+  //   try {
+  //     const response = await base44.functions.invoke('generateReceipt', { purchaseId: purchase.id });
+  //     const blob = new Blob([response.data], { type: 'application/pdf' });
+  //     const url = window.URL.createObjectURL(blob);
+  //     const a = document.createElement('a');
+  //     a.href = url;
+  //     a.download = `Fanan-Team-Receipt-${purchase.id}.pdf`;
+  //     document.body.appendChild(a);
+  //     a.click();
+  //     window.URL.revokeObjectURL(url);
+  //     a.remove();
+  //   } catch (error) {
+  //     alert('Failed to generate receipt: ' + error.message);
+  //   }
+  // };
 
   if (loading) {
     return (
@@ -162,20 +162,9 @@ export default function MyPurchases() {
                     </div>
                   )}
 
-                  <div className="flex items-center justify-between pt-2 border-t">
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <Calendar className="w-3 h-3" />
-                      Purchased on {format(new Date(purchase.created_date), 'PPP')}
-                    </div>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleDownloadReceipt(purchase)}
-                      className="gap-2"
-                    >
-                      <Download className="w-4 h-4" />
-                      Download Receipt
-                    </Button>
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground pt-2 border-t">
+                    <Calendar className="w-3 h-3" />
+                    Purchased on {format(new Date(purchase.created_date), 'PPP')}
                   </div>
                 </CardContent>
               </Card>
