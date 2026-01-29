@@ -9,6 +9,7 @@ import { Search, Edit, Plus, Loader2, Lock, Trash2, Eye, EyeOff } from "lucide-r
 import { toast } from "sonner";
 import EditProduct from "../components/dashboard/EditProduct";
 import AddPackForm from "../components/dashboard/AddPackForm";
+import OrganizeBundles from "../components/dashboard/OrganizeBundles";
 
 export default function ProductManager() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -239,6 +240,13 @@ export default function ProductManager() {
           onClick={() => setActiveTab("pricing")}
         >
           Set Price
+        </Button>
+        <Button
+          variant={activeTab === "bundles" ? "default" : "ghost"}
+          className="w-full justify-start"
+          onClick={() => setActiveTab("bundles")}
+        >
+          Organize Bundles
         </Button>
       </div>
 
@@ -479,6 +487,10 @@ export default function ProductManager() {
               </CardContent>
             </Card>
           </div>
+        )}
+
+        {activeTab === "bundles" && (
+          <OrganizeBundles products={uniqueProducts} packs={packs} />
         )}
       </div>
     </div>
