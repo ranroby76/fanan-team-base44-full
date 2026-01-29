@@ -67,7 +67,7 @@ export default function ProductPage({
   const { data: packPrices } = useQuery({
     queryKey: ['packPrices'],
     queryFn: async () => {
-      const prices = await base44.asServiceRole.entities.PackPrice.list();
+      const prices = await base44.entities.PackPrice.list();
       return prices;
     },
     staleTime: 60000, // Cache for 1 minute
