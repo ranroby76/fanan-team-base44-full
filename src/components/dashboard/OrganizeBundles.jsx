@@ -25,15 +25,20 @@ export default function OrganizeBundles({ products, packs }) {
 
   const saveOrderMutation = useMutation({
     mutationFn: async ({ packName, orderedProducts }) => {
-      // Update display_order for each product
-      const updates = orderedProducts.map((product, index) => 
-        base44.entities.Product.update(product.id, { display_order: index })
-      );
-      await Promise.all(updates);
+      // Update display_order for each product sequentially to ensure order
+      for (let i = 0; i < orderedProducts.length; i++) {
+        await base44.entities.Product.update(orderedProducts[i].id, { display_order: i });
+      }
+      return { packName, orderedProducts };
     },
-    onSuccess: (_, { packName }) => {
+    onSuccess: (data) => {
+      // Update local state with the new order before refetching
+      setPackProducts(prev => ({
+        ...prev,
+        [data.packName]: data.orderedProducts.map((p, i) => ({ ...p, display_order: i }))
+      }));
       queryClient.invalidateQueries(['products-admin']);
-      toast.success(`Order saved for ${packName}!`);
+      toast.success(`Order saved for ${data.packName}!`);
     },
     onError: (error) => {
       toast.error("Failed to save order: " + error.message);
