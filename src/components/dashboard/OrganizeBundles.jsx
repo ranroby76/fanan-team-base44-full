@@ -42,14 +42,17 @@ export default function OrganizeBundles({ products, packs }) {
       return { packName };
     },
     onSuccess: async (data) => {
-      console.log('Save successful, invalidating caches...');
+      console.log('Save successful, clearing all caches...');
       
-      // Clear all product-related caches - use predicate to match any query starting with 'products'
-      queryClient.invalidateQueries({ 
+      // Remove all product queries from cache completely
+      queryClient.removeQueries({ 
         predicate: (query) => query.queryKey[0] === 'products' 
       });
       
-      toast.success(`Order saved for ${data.packName}!`);
+      // Also force refetch of current admin view
+      await queryClient.refetchQueries(['products-admin']);
+      
+      toast.success(`Order saved for ${data.packName}! Navigate to the pack page to see changes.`);
     },
     onError: (error) => {
       console.error('Save failed:', error);
