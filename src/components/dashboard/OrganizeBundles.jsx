@@ -10,9 +10,16 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 export default function OrganizeBundles({ products, packs }) {
   const [packProducts, setPackProducts] = React.useState({});
   const queryClient = useQueryClient();
+  const justSavedRef = React.useRef(false);
 
   // Initialize pack products with proper ordering
   React.useEffect(() => {
+    // Don't reset if we just saved - wait for user to manually drag again
+    if (justSavedRef.current) {
+      justSavedRef.current = false;
+      return;
+    }
+    
     const grouped = {};
     packs.forEach(pack => {
       const items = products
@@ -42,7 +49,10 @@ export default function OrganizeBundles({ products, packs }) {
       return { packName };
     },
     onSuccess: async (data) => {
-      console.log('Save successful, clearing all caches...');
+      console.log('Save successful, keeping local order...');
+      
+      // Mark that we just saved to prevent useEffect from resetting
+      justSavedRef.current = true;
       
       // Remove all product queries from cache completely
       queryClient.removeQueries({ 
@@ -52,7 +62,7 @@ export default function OrganizeBundles({ products, packs }) {
       // Also force refetch of current admin view
       await queryClient.refetchQueries(['products-admin']);
       
-      toast.success(`Order saved for ${data.packName}! Navigate to the pack page to see changes.`);
+      toast.success(`Order saved for ${data.packName}!`);
     },
     onError: (error) => {
       console.error('Save failed:', error);
