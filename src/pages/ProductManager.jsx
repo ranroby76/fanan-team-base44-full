@@ -25,6 +25,8 @@ export default function ProductManager() {
   const [madMidiPrice, setMadMidiPrice] = useState("22.00");
   const [maxPackPrice, setMaxPackPrice] = useState("12.00");
   const [showAddPackForm, setShowAddPackForm] = useState(false);
+  const [clientSearch, setClientSearch] = useState("");
+  const [clientPackFilter, setClientPackFilter] = useState("all");
 
   const queryClient = useQueryClient();
 
@@ -516,8 +518,57 @@ export default function ProductManager() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Customer Purchases</CardTitle>
-                <CardDescription>{clients.length} total purchases</CardDescription>
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                  <div>
+                    <CardTitle>Customer Purchases</CardTitle>
+                    <CardDescription>
+                      {clients.filter(c => {
+                        const searchLower = clientSearch.toLowerCase();
+                        const matchesSearch = !clientSearch || 
+                          c.customer_name?.toLowerCase().includes(searchLower) ||
+                          c.customer_email?.toLowerCase().includes(searchLower) ||
+                          c.serial_number?.toLowerCase().includes(searchLower) ||
+                          c.machine_id?.toLowerCase().includes(searchLower);
+                        const matchesPack = clientPackFilter === "all" || c.pack_name === clientPackFilter;
+                        return matchesSearch && matchesPack;
+                      }).length} of {clients.length} purchases
+                    </CardDescription>
+                  </div>
+                  
+                  <div className="flex gap-2 w-full md:w-auto">
+                    <div className="flex gap-2 bg-muted/20 p-1 rounded-lg">
+                      <Button
+                        size="sm"
+                        variant={clientPackFilter === "all" ? "default" : "ghost"}
+                        onClick={() => setClientPackFilter("all")}
+                        className="text-xs"
+                      >
+                        All
+                      </Button>
+                      {packs.map(pack => (
+                        <Button
+                          key={pack}
+                          size="sm"
+                          variant={clientPackFilter === pack ? "default" : "ghost"}
+                          onClick={() => setClientPackFilter(pack)}
+                          className="text-xs"
+                        >
+                          {pack}
+                        </Button>
+                      ))}
+                    </div>
+                    
+                    <div className="relative">
+                      <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                      <Input 
+                        placeholder="Search name, email, serial..." 
+                        className="pl-8 h-9 w-[250px]" 
+                        value={clientSearch}
+                        onChange={(e) => setClientSearch(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </div>
               </CardHeader>
               <CardContent>
                 <div className="rounded-md border overflow-auto">
@@ -534,7 +585,18 @@ export default function ProductManager() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {clients.map((client) => (
+                      {clients
+                        .filter(c => {
+                          const searchLower = clientSearch.toLowerCase();
+                          const matchesSearch = !clientSearch || 
+                            c.customer_name?.toLowerCase().includes(searchLower) ||
+                            c.customer_email?.toLowerCase().includes(searchLower) ||
+                            c.serial_number?.toLowerCase().includes(searchLower) ||
+                            c.machine_id?.toLowerCase().includes(searchLower);
+                          const matchesPack = clientPackFilter === "all" || c.pack_name === clientPackFilter;
+                          return matchesSearch && matchesPack;
+                        })
+                        .map((client) => (
                         <TableRow key={client.id}>
                           <TableCell className="font-medium">{client.customer_name || 'N/A'}</TableCell>
                           <TableCell>{client.customer_email}</TableCell>
@@ -555,10 +617,19 @@ export default function ProductManager() {
                           </TableCell>
                         </TableRow>
                       ))}
-                      {clients.length === 0 && (
+                      {clients.filter(c => {
+                        const searchLower = clientSearch.toLowerCase();
+                        const matchesSearch = !clientSearch || 
+                          c.customer_name?.toLowerCase().includes(searchLower) ||
+                          c.customer_email?.toLowerCase().includes(searchLower) ||
+                          c.serial_number?.toLowerCase().includes(searchLower) ||
+                          c.machine_id?.toLowerCase().includes(searchLower);
+                        const matchesPack = clientPackFilter === "all" || c.pack_name === clientPackFilter;
+                        return matchesSearch && matchesPack;
+                      }).length === 0 && (
                         <TableRow>
                           <TableCell colSpan={7} className="text-center h-24 text-muted-foreground">
-                            No clients found.
+                            No clients found matching filters.
                           </TableCell>
                         </TableRow>
                       )}
