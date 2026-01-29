@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Search, Edit, Plus, Loader2, Lock, Trash2, Eye, EyeOff } from "lucide-react";
+import { Search, Edit, Plus, Loader2, Lock, Trash2, Eye, EyeOff, Users } from "lucide-react";
 import { toast } from "sonner";
 import EditProduct from "../components/dashboard/EditProduct";
 import AddPackForm from "../components/dashboard/AddPackForm";
@@ -42,6 +42,12 @@ export default function ProductManager() {
   const { data: prices = [] } = useQuery({
     queryKey: ["packPrices"],
     queryFn: () => base44.entities.PackPrice.list(),
+    enabled: isAuthenticated,
+  });
+
+  const { data: clients = [] } = useQuery({
+    queryKey: ["clients"],
+    queryFn: () => base44.entities.Purchase.list('-created_date', 1000),
     enabled: isAuthenticated,
   });
 
@@ -247,6 +253,14 @@ export default function ProductManager() {
           onClick={() => setActiveTab("bundles")}
         >
           Organize Bundles
+        </Button>
+        <Button
+          variant={activeTab === "clients" ? "default" : "ghost"}
+          className="w-full justify-start"
+          onClick={() => setActiveTab("clients")}
+        >
+          <Users className="w-4 h-4 mr-2" />
+          Clients
         </Button>
       </div>
 
@@ -491,6 +505,69 @@ export default function ProductManager() {
 
         {activeTab === "bundles" && (
           <OrganizeBundles products={uniqueProducts} packs={packs} />
+        )}
+
+        {activeTab === "clients" && (
+          <div className="max-w-7xl">
+            <div className="mb-8">
+              <h1 className="text-3xl font-bold font-headline text-primary">Clients</h1>
+              <p className="text-muted-foreground">View all customer purchases</p>
+            </div>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Customer Purchases</CardTitle>
+                <CardDescription>{clients.length} total purchases</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="rounded-md border overflow-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Customer Name</TableHead>
+                        <TableHead>Email</TableHead>
+                        <TableHead>Pack</TableHead>
+                        <TableHead>Serial Number</TableHead>
+                        <TableHead>Machine ID</TableHead>
+                        <TableHead className="text-right">Amount</TableHead>
+                        <TableHead>Purchase Date</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {clients.map((client) => (
+                        <TableRow key={client.id}>
+                          <TableCell className="font-medium">{client.customer_name || 'N/A'}</TableCell>
+                          <TableCell>{client.customer_email}</TableCell>
+                          <TableCell>
+                            <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold border-transparent bg-secondary text-secondary-foreground">
+                              {client.pack_name}
+                            </span>
+                          </TableCell>
+                          <TableCell className="font-mono text-sm">{client.serial_number}</TableCell>
+                          <TableCell className="text-sm text-muted-foreground">{client.machine_id || '-'}</TableCell>
+                          <TableCell className="text-right font-semibold">${client.amount_paid.toFixed(2)}</TableCell>
+                          <TableCell className="text-sm text-muted-foreground">
+                            {new Date(client.created_date).toLocaleDateString('en-US', { 
+                              year: 'numeric', 
+                              month: 'short', 
+                              day: 'numeric' 
+                            })}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                      {clients.length === 0 && (
+                        <TableRow>
+                          <TableCell colSpan={7} className="text-center h-24 text-muted-foreground">
+                            No clients found.
+                          </TableCell>
+                        </TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         )}
       </div>
     </div>
