@@ -114,7 +114,7 @@ export default function ProductPage({
 
   // Get pack price if available - prioritize pack price over individual product price
   const packPrice = packPrices?.find(p => p.pack_name === finalProduct.pack);
-  const displayPrice = packPrice ? `$${packPrice.price.toFixed(2)}` : (finalProduct.price || price);
+  const displayPrice = finalProduct.pack === "Free Pack" ? "Free" : (packPrice ? `$${packPrice.price.toFixed(2)}` : (finalProduct.price || price));
 
   const [mainImage, setMainImage] = useState(finalProduct.image || productImage);
   
