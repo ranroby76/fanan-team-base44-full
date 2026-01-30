@@ -12,20 +12,19 @@ import { useQuery } from "@tanstack/react-query";
 // Helper to convert GitHub URLs to raw format
 const fixImageUrl = (url) => {
   if (!url) return url;
-  const githubRawBase = "https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team/public/images/";
+  
+  // If it's already a full URL (http/https), return as-is (includes Base44 storage and GitHub raw URLs)
+  if (url.includes('http://') || url.includes('https://')) {
+    // Fix GitHub tree URLs to raw format
+    if (url.includes('github.com') && url.includes('/tree/')) {
+      return url.replace('/tree/', '/raw/');
+    }
+    return url;
+  }
   
   // If it's just a filename, prepend the GitHub raw URL
-  if (!url.includes('http') && !url.includes('/')) {
-    return githubRawBase + url;
-  }
-  
-  // If it's a GitHub tree URL, convert to raw
-  if (url.includes('github.com') && url.includes('/tree/')) {
-    const filename = url.split('/').pop();
-    return githubRawBase + filename;
-  }
-  
-  return url;
+  const githubRawBase = "https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team/public/images/";
+  return githubRawBase + url;
 };
 
 export default function ProductPage({ 
