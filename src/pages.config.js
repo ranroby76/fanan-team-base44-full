@@ -107,6 +107,7 @@ import sultana2 from './pages/sultana-2';
 import tropicanaFun from './pages/tropicana-fun';
 import yowlseq2 from './pages/yowlseq-2';
 import zoe2 from './pages/zoe-2';
+import Product from './pages/Product';
 import __Layout from './Layout.jsx';
 
 
@@ -171,6 +172,7 @@ export const PAGES = {
     "tropicana-fun": tropicanaFun,
     "yowlseq-2": yowlseq2,
     "zoe-2": zoe2,
+    "Product": Product,
 }
 
 export const pagesConfig = {

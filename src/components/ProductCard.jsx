@@ -31,7 +31,7 @@ export default function ProductCard({ product }) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <Link to={product.page_slug ? `/${product.page_slug}` : "#"} className="flex flex-col h-full">
+      <Link to={product.page_slug ? `/${product.page_slug}` : `/Product?slug=${encodeURIComponent(product.title)}`} className="flex flex-col h-full">
         {/* Image Container */}
         <div className="aspect-video relative overflow-hidden bg-muted flex items-center justify-center bg-black/5">
           {images.length > 0 ? (
