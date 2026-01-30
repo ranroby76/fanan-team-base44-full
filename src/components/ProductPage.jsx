@@ -53,8 +53,14 @@ export default function ProductPage({
       // Try to find product by slug or title using backend function for public access
       const { data: products } = await base44.functions.invoke('getProducts');
       if (slug) {
+        // First try exact slug match
         const bySlug = products.find(p => p.page_slug === slug);
         if (bySlug) return bySlug;
+        // Also try matching by auto-generated slug from title
+        const byTitleSlug = products.find(p => 
+          p.title?.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') === slug
+        );
+        if (byTitleSlug) return byTitleSlug;
       }
       return products.find(p => p.title === productName) || null;
     },
