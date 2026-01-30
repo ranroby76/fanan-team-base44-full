@@ -142,11 +142,12 @@ export default function EditProduct({ product, onClose }) {
               <Input {...register("title", { required: true })} placeholder="Product Name" />
             </div>
 
-            {/* 2. Short Description (Hidden/Removed) */}
-            {/* <div className="space-y-2">
+            {/* 2. Short Description */}
+            <div className="space-y-2">
               <Label className="text-lg font-bold">Short Description</Label>
+              <p className="text-sm text-muted-foreground">Brief description shown on product cards and gallery banners</p>
               <Input {...register("short_description")} placeholder="Brief description for cards" />
-            </div> */}
+            </div>
 
             {/* 3. Product Pack */}
             <div className="space-y-2">
