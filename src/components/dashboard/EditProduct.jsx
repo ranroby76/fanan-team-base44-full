@@ -76,16 +76,26 @@ export default function EditProduct({ product, onClose }) {
   };
 
   const updateProductMutation = useMutation({
-    mutationFn: (data) => {
+    mutationFn: async (data) => {
+      // Auto-generate page_slug from title if not set
+      if (!data.page_slug && data.title) {
+        data.page_slug = data.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      }
+      
       if (product.id) {
         return base44.entities.Product.update(product.id, data);
       } else {
         return base44.entities.Product.create(data);
       }
     },
-    onSuccess: () => {
+    onSuccess: (savedProduct, variables) => {
       queryClient.invalidateQueries({ queryKey: ['products'] });
-      toast.success(product.id ? "Product updated successfully" : "Product created successfully");
+      const slug = variables.page_slug || variables.title?.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      toast.success(
+        product.id 
+          ? "Product updated successfully" 
+          : `Product created! Access it at /${slug}`
+      );
       onClose();
     },
     onError: (error) => {
