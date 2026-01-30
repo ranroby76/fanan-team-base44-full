@@ -78,6 +78,7 @@ import MyPurchases from './pages/MyPurchases';
 import PacksList from './pages/PacksList';
 import Playlisted from './pages/Playlisted';
 import Playlisted2 from './pages/Playlisted2';
+import Product from './pages/Product';
 import ProductManager from './pages/ProductManager';
 import Quentin from './pages/Quentin';
 import RandRobin from './pages/RandRobin';
@@ -107,7 +108,7 @@ import sultana2 from './pages/sultana-2';
 import tropicanaFun from './pages/tropicana-fun';
 import yowlseq2 from './pages/yowlseq-2';
 import zoe2 from './pages/zoe-2';
-import Product from './pages/Product';
+import villain from './pages/villain';
 import __Layout from './Layout.jsx';
 
 
@@ -143,6 +144,7 @@ export const PAGES = {
     "PacksList": PacksList,
     "Playlisted": Playlisted,
     "Playlisted2": Playlisted2,
+    "Product": Product,
     "ProductManager": ProductManager,
     "Quentin": Quentin,
     "RandRobin": RandRobin,
@@ -172,7 +174,7 @@ export const PAGES = {
     "tropicana-fun": tropicanaFun,
     "yowlseq-2": yowlseq2,
     "zoe-2": zoe2,
-    "Product": Product,
+    "villain": villain,
 }
 
 export const pagesConfig = {
