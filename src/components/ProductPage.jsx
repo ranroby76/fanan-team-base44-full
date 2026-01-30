@@ -234,7 +234,7 @@ export default function ProductPage({
                            if (trimmed.startsWith('##')) {
                              // Close any open list
                              if (currentList.length > 0) {
-                               elements.push(<ul key={`list-${i}`} className="list-disc ml-6 space-y-2 my-3">{currentList}</ul>);
+                               elements.push(<ul key={`list-${i}`} className="list-disc ml-6 space-y-2 my-3 marker:text-primary">{currentList}</ul>);
                                currentList = [];
                              }
                              elements.push(<h3 key={i} className="text-xl font-bold text-primary mt-6 mb-3">{trimmed.replace(/^##\s*/, '')}</h3>);
@@ -243,13 +243,13 @@ export default function ProductPage({
                            } else if (trimmed) {
                              // Close any open list
                              if (currentList.length > 0) {
-                               elements.push(<ul key={`list-${i}`} className="list-disc ml-6 space-y-2 my-3">{currentList}</ul>);
+                               elements.push(<ul key={`list-${i}`} className="list-disc ml-6 space-y-2 my-3 marker:text-primary">{currentList}</ul>);
                                currentList = [];
                              }
                              elements.push(<p key={i} className="text-foreground/90 leading-relaxed">{trimmed}</p>);
                            } else if (currentList.length > 0) {
                              // Empty line closes the list
-                             elements.push(<ul key={`list-${i}`} className="list-disc ml-6 space-y-2 my-3">{currentList}</ul>);
+                             elements.push(<ul key={`list-${i}`} className="list-disc ml-6 space-y-2 my-3 marker:text-primary">{currentList}</ul>);
                              currentList = [];
                            }
                          });
