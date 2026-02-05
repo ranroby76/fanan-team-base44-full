@@ -40,7 +40,7 @@ const SEOHead = () => {
     
     const ogUrl = document.querySelector('meta[property="og:url"]') || document.createElement('meta');
     ogUrl.setAttribute('property', 'og:url');
-    ogUrl.content = "https://fanan-team-com.base44.app";
+    ogUrl.content = "https://fananteam.site";
     if (!document.querySelector('meta[property="og:url"]')) document.head.appendChild(ogUrl);
     
     const ogImage = document.querySelector('meta[property="og:image"]') || document.createElement('meta');
@@ -54,14 +54,20 @@ const SEOHead = () => {
     twitterCard.content = "summary_large_image";
     if (!document.querySelector('meta[name="twitter:card"]')) document.head.appendChild(twitterCard);
     
-    // Canonical URL
+    // Canonical URL - use primary domain
     let canonical = document.querySelector('link[rel="canonical"]');
     if (!canonical) {
       canonical = document.createElement('link');
       canonical.rel = "canonical";
       document.head.appendChild(canonical);
     }
-    canonical.href = "https://fanan-team-com.base44.app";
+    canonical.href = "https://fananteam.site";
+    
+    // Site name for better branding
+    const ogSiteName = document.querySelector('meta[property="og:site_name"]') || document.createElement('meta');
+    ogSiteName.setAttribute('property', 'og:site_name');
+    ogSiteName.content = "Fanan Team";
+    if (!document.querySelector('meta[property="og:site_name"]')) document.head.appendChild(ogSiteName);
     
   }, []);
   
