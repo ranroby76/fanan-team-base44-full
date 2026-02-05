@@ -40,7 +40,7 @@ const SEOHead = () => {
     
     const ogUrl = document.querySelector('meta[property="og:url"]') || document.createElement('meta');
     ogUrl.setAttribute('property', 'og:url');
-    ogUrl.content = "https://fananteam.site";
+    ogUrl.content = "https://fanan-team-com.base44.app";
     if (!document.querySelector('meta[property="og:url"]')) document.head.appendChild(ogUrl);
     
     const ogImage = document.querySelector('meta[property="og:image"]') || document.createElement('meta');
@@ -61,7 +61,7 @@ const SEOHead = () => {
       canonical.rel = "canonical";
       document.head.appendChild(canonical);
     }
-    canonical.href = "https://fananteam.site";
+    canonical.href = "https://fanan-team-com.base44.app";
     
     // Site name for better branding
     const ogSiteName = document.querySelector('meta[property="og:site_name"]') || document.createElement('meta');
