@@ -106,9 +106,9 @@ import scandisoul2 from './pages/scandisoul-2';
 import spacelifter4 from './pages/spacelifter-4';
 import sultana2 from './pages/sultana-2';
 import tropicanaFun from './pages/tropicana-fun';
+import villain from './pages/villain';
 import yowlseq2 from './pages/yowlseq-2';
 import zoe2 from './pages/zoe-2';
-import villain from './pages/villain';
 import __Layout from './Layout.jsx';
 
 
@@ -172,9 +172,9 @@ export const PAGES = {
     "spacelifter-4": spacelifter4,
     "sultana-2": sultana2,
     "tropicana-fun": tropicanaFun,
+    "villain": villain,
     "yowlseq-2": yowlseq2,
     "zoe-2": zoe2,
-    "villain": villain,
 }
 
 export const pagesConfig = {

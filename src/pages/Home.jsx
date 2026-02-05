@@ -4,6 +4,70 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
 
+// SEO Meta Tags Component
+const SEOHead = () => {
+  React.useEffect(() => {
+    // Set page title
+    document.title = "Fanan Team - VST Plugins & MIDI Tools for Music Production";
+    
+    // Meta description
+    const metaDescription = document.querySelector('meta[name="description"]') || document.createElement('meta');
+    metaDescription.name = "description";
+    metaDescription.content = "Fanan Team creates professional VST plugins and MIDI tools for music producers. Explore our Mad MIDI Machines, Max! Pack, and Free Pack. Affordable, high-quality VSTi instruments and effects.";
+    if (!document.querySelector('meta[name="description"]')) document.head.appendChild(metaDescription);
+    
+    // Meta keywords
+    const metaKeywords = document.querySelector('meta[name="keywords"]') || document.createElement('meta');
+    metaKeywords.name = "keywords";
+    metaKeywords.content = "VST plugins, VSTi, MIDI tools, music production, audio plugins, synthesizer, virtual instruments, DAW plugins, Windows VST, Mac AU, CLAP plugins, Fanan Team, Mad MIDI Machines, free VST";
+    if (!document.querySelector('meta[name="keywords"]')) document.head.appendChild(metaKeywords);
+    
+    // Open Graph tags for social sharing
+    const ogTitle = document.querySelector('meta[property="og:title"]') || document.createElement('meta');
+    ogTitle.setAttribute('property', 'og:title');
+    ogTitle.content = "Fanan Team - VST Plugins & MIDI Tools";
+    if (!document.querySelector('meta[property="og:title"]')) document.head.appendChild(ogTitle);
+    
+    const ogDescription = document.querySelector('meta[property="og:description"]') || document.createElement('meta');
+    ogDescription.setAttribute('property', 'og:description');
+    ogDescription.content = "Professional VST plugins and MIDI tools for music producers. High-quality, affordable virtual instruments.";
+    if (!document.querySelector('meta[property="og:description"]')) document.head.appendChild(ogDescription);
+    
+    const ogType = document.querySelector('meta[property="og:type"]') || document.createElement('meta');
+    ogType.setAttribute('property', 'og:type');
+    ogType.content = "website";
+    if (!document.querySelector('meta[property="og:type"]')) document.head.appendChild(ogType);
+    
+    const ogUrl = document.querySelector('meta[property="og:url"]') || document.createElement('meta');
+    ogUrl.setAttribute('property', 'og:url');
+    ogUrl.content = "https://fanan-team-com.base44.app";
+    if (!document.querySelector('meta[property="og:url"]')) document.head.appendChild(ogUrl);
+    
+    const ogImage = document.querySelector('meta[property="og:image"]') || document.createElement('meta');
+    ogImage.setAttribute('property', 'og:image');
+    ogImage.content = "https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team-3/public/images/fanan_logo.png";
+    if (!document.querySelector('meta[property="og:image"]')) document.head.appendChild(ogImage);
+    
+    // Twitter Card tags
+    const twitterCard = document.querySelector('meta[name="twitter:card"]') || document.createElement('meta');
+    twitterCard.name = "twitter:card";
+    twitterCard.content = "summary_large_image";
+    if (!document.querySelector('meta[name="twitter:card"]')) document.head.appendChild(twitterCard);
+    
+    // Canonical URL
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.rel = "canonical";
+      document.head.appendChild(canonical);
+    }
+    canonical.href = "https://fanan-team-com.base44.app";
+    
+  }, []);
+  
+  return null;
+};
+
 const FlexedBicepIcon = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -25,6 +89,7 @@ const FlexedBicepIcon = (props) => (
 export default function Home() {
   return (
     <div className="space-y-12 animate-fade-in">
+      <SEOHead />
       <section className="relative flex justify-center w-full mx-auto">
         <div className="w-full">
           <img
