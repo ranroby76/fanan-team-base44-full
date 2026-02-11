@@ -169,11 +169,11 @@ export default function ProductPage({
         <div className="lg:col-span-3">
           <div className="rounded-lg border bg-card text-card-foreground shadow-lg overflow-hidden sticky top-24">
             <Dialog>
-              <DialogTrigger asChild>
-                <button className="block relative w-full bg-muted cursor-zoom-in group">
-                  <img
-                    src={mainImage}
-                    alt={`Main view of ${finalProduct.name}`}
+                <DialogTrigger asChild>
+                  <button className="block relative w-full bg-muted cursor-zoom-in group">
+                    <img
+                      src={displayImage}
+                      alt={`Main view of ${finalProduct.name}`}
                     className="object-contain p-2 w-full h-auto transition-transform duration-300 group-hover:scale-[1.02]"
                     onError={(e) => {
                       e.target.src = 'https://via.placeholder.com/400x300?text=Image+Not+Available';
