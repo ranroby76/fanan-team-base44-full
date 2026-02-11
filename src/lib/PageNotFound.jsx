@@ -1,7 +1,9 @@
+import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import DynamicPack from '@/pages/DynamicPack';
+import ProductPage from '@/components/ProductPage';
 
 
 export default function PageNotFound({}) {
@@ -63,13 +65,7 @@ export default function PageNotFound({}) {
     }
     
     if (dynamicMatch?.type === 'product') {
-        // Render product page dynamically
-        const ProductPage = React.lazy(() => import('@/components/ProductPage'));
-        return (
-            <React.Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-background"><div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div></div>}>
-                <ProductPage slug={pageName.toLowerCase()} />
-            </React.Suspense>
-        );
+        return <ProductPage slug={pageName.toLowerCase()} />;
     }
     
     return (
