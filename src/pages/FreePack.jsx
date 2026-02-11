@@ -8,13 +8,11 @@ import ProductCard from "@/components/ProductCard";
 
 
 export default function FreePack() {
-  const { data: products, isLoading, error, refetch } = useQuery({
+  const { data: products, isLoading, isFetching, error, refetch } = useQuery({
     queryKey: ['products', 'Free Pack'],
     queryFn: async () => {
       const { data } = await base44.functions.invoke('getProducts');
       if (!Array.isArray(data)) throw new Error("Invalid data format received");
-
-      console.log('Free Pack - Raw data:', data.filter(p => p.pack === "Free Pack").map(p => `${p.title}: display_order=${p.display_order}`));
 
       // Deduplicate products
       const seen = new Set();
@@ -25,25 +23,19 @@ export default function FreePack() {
         return true;
       });
 
-      const sorted = uniqueData
+      return uniqueData
         .filter(p => p.pack === "Free Pack" && !p.is_hidden)
         .sort((a, b) => {
           const orderA = typeof a.display_order === 'number' ? a.display_order : 999;
           const orderB = typeof b.display_order === 'number' ? b.display_order : 999;
           return orderA - orderB;
         });
-      
-      console.log('Free Pack - After sort:', sorted.map(p => `${p.title}: display_order=${p.display_order}`));
-      return sorted;
     },
-    initialData: [],
-    staleTime: 0,
-    cacheTime: 0,
-    refetchOnWindowFocus: true,
-    refetchOnMount: 'always'
+    staleTime: 60000, // Cache for 1 minute
+    refetchOnWindowFocus: false
   });
 
-  if (isLoading) {
+  if (isLoading || (isFetching && (!products || products.length === 0))) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
