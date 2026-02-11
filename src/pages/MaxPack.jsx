@@ -12,7 +12,12 @@ export default function MaxPack() {
     queryKey: ['products', PACK_NAME],
     queryFn: async () => {
       // Direct entity fetch - much faster than backend function
-      const data = await base44.entities.Product.filter({ pack: PACK_NAME, is_hidden: false });
+      const rawData = await base44.entities.Product.filter({ pack: PACK_NAME, is_hidden: false });
+      // Flatten data structure if nested
+      const data = rawData.map(p => {
+        const d = p.data || p;
+        return { id: p.id, ...d };
+      });
       return data.sort((a, b) => {
         const orderA = typeof a.display_order === 'number' ? a.display_order : 999;
         const orderB = typeof b.display_order === 'number' ? b.display_order : 999;
