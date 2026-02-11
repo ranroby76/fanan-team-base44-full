@@ -127,12 +127,16 @@ export default function ProductPage({
   );
   const displayPrice = finalProduct.pack === "Free Pack" ? "Free" : (packPrice ? `$${packPrice.price.toFixed(2)}` : (finalProduct.price || price));
 
-  const [mainImage, setMainImage] = useState(finalProduct.image || productImage);
+  // Reset main image when product changes - use useEffect to sync with finalProduct
+  const [mainImage, setMainImage] = useState(null);
   
-  // Reset main image when product changes
   React.useEffect(() => {
-    setMainImage(finalProduct.image || productImage);
-  }, [finalProduct.image, productImage, slug, productName]);
+    if (finalProduct.image) {
+      setMainImage(finalProduct.image);
+    } else if (productImage) {
+      setMainImage(productImage);
+    }
+  }, [finalProduct.image, productImage, slug, productName, dbProduct]);
 
   const allImages = finalProduct.gallery && finalProduct.gallery.length > 0 ? finalProduct.gallery : [finalProduct.image].filter(Boolean);
 
