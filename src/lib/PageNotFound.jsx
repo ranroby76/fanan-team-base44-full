@@ -4,6 +4,7 @@ import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import DynamicPack from '@/pages/DynamicPack';
 import ProductPage from '@/components/ProductPage';
+import Layout from '@/Layout';
 
 
 export default function PageNotFound({}) {
@@ -51,21 +52,31 @@ export default function PageNotFound({}) {
         staleTime: 300000,
     });
 
-    // If it's a valid dynamic route, render the appropriate component
+    // If it's a valid dynamic route, render the appropriate component wrapped in Layout
     if (dynamicLoading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-background">
-                <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-            </div>
+            <Layout currentPageName="Loading">
+                <div className="min-h-screen flex items-center justify-center">
+                    <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                </div>
+            </Layout>
         );
     }
     
     if (dynamicMatch?.type === 'pack') {
-        return <DynamicPack />;
+        return (
+            <Layout currentPageName="DynamicPack">
+                <DynamicPack />
+            </Layout>
+        );
     }
     
     if (dynamicMatch?.type === 'product') {
-        return <ProductPage slug={pageName.toLowerCase()} />;
+        return (
+            <Layout currentPageName="Product">
+                <ProductPage slug={pageName.toLowerCase()} />
+            </Layout>
+        );
     }
     
     return (
