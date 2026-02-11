@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Search, Edit, Plus, Loader2 } from "lucide-react";
+import { Search, Edit, Plus, Loader2, Wand2, CheckCircle2, XCircle, Link2 } from "lucide-react";
 import EditProduct from "../components/dashboard/EditProduct";
 
 export default function Dashboard() {
@@ -14,14 +14,35 @@ export default function Dashboard() {
   const [selectedPack, setSelectedPack] = useState("Mad MIDI Machines");
   const [editingProduct, setEditingProduct] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [linkingFormulas, setLinkingFormulas] = useState(false);
+  const [linkResults, setLinkResults] = useState(null);
+  const queryClient = useQueryClient();
 
   const { data: products, isLoading } = useQuery({
     queryKey: ['products'],
-    queryFn: () => base44.entities.Product.list(undefined, 100), // Get all products with correct signature
+    queryFn: () => base44.entities.Product.list(undefined, 100),
     initialData: [],
   });
 
+  const { data: packPrices = [] } = useQuery({
+    queryKey: ['packPrices'],
+    queryFn: () => base44.entities.PackPrice.list(),
+  });
+
   const packs = ["Mad MIDI Machines", "Max! Pack", "Free Pack"];
+
+  const handleAutoLinkFormulas = async () => {
+    setLinkingFormulas(true);
+    setLinkResults(null);
+    try {
+      const response = await base44.functions.invoke('autoLinkSerialFormulas');
+      setLinkResults(response.data);
+      queryClient.invalidateQueries({ queryKey: ['packPrices'] });
+    } catch (error) {
+      setLinkResults({ error: error.message });
+    }
+    setLinkingFormulas(false);
+  };
 
   const filteredProducts = products
     .filter(p => 
@@ -167,12 +188,105 @@ export default function Dashboard() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="settings">
+        <TabsContent value="settings" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Settings</CardTitle>
-              <CardDescription>App configuration coming soon.</CardDescription>
+              <CardTitle className="flex items-center gap-2">
+                <Link2 className="w-5 h-5" />
+                Serial Formula Linking
+              </CardTitle>
+              <CardDescription>
+                Automatically link serial formula secrets to their matching packs using AI.
+              </CardDescription>
             </CardHeader>
+            <CardContent className="space-y-4">
+              <Button 
+                onClick={handleAutoLinkFormulas} 
+                disabled={linkingFormulas}
+                className="gap-2"
+              >
+                {linkingFormulas ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Wand2 className="w-4 h-4" />
+                )}
+                {linkingFormulas ? "Linking..." : "Auto-Link Serial Formulas"}
+              </Button>
+              
+              {linkResults && !linkResults.error && (
+                <div className="mt-4 space-y-2">
+                  <p className="text-sm text-muted-foreground">{linkResults.message}</p>
+                  <div className="rounded-md border">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Pack</TableHead>
+                          <TableHead>Linked Secret</TableHead>
+                          <TableHead>Status</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {linkResults.results?.map((result, idx) => (
+                          <TableRow key={idx}>
+                            <TableCell className="font-medium">{result.pack}</TableCell>
+                            <TableCell className="text-xs font-mono">
+                              {result.linked_to || "—"}
+                            </TableCell>
+                            <TableCell>
+                              {result.status === "updated" && (
+                                <span className="flex items-center gap-1 text-green-500 text-sm">
+                                  <CheckCircle2 className="w-4 h-4" /> Updated
+                                </span>
+                              )}
+                              {result.status === "already_linked" && (
+                                <span className="flex items-center gap-1 text-blue-500 text-sm">
+                                  <CheckCircle2 className="w-4 h-4" /> Already Linked
+                                </span>
+                              )}
+                              {result.status === "no_match" && (
+                                <span className="flex items-center gap-1 text-yellow-500 text-sm">
+                                  <XCircle className="w-4 h-4" /> No Match
+                                </span>
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </div>
+              )}
+              
+              {linkResults?.error && (
+                <p className="text-sm text-destructive">{linkResults.error}</p>
+              )}
+
+              <div className="mt-6 pt-4 border-t">
+                <h4 className="font-medium mb-2">Current Pack Configurations</h4>
+                <div className="rounded-md border">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Pack Name</TableHead>
+                        <TableHead>Price</TableHead>
+                        <TableHead>Serial Formula Secret</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {packPrices.map((pack) => (
+                        <TableRow key={pack.id}>
+                          <TableCell className="font-medium">{pack.pack_name}</TableCell>
+                          <TableCell>${pack.price?.toFixed(2)}</TableCell>
+                          <TableCell className="text-xs font-mono">
+                            {pack.serial_formula_secret || <span className="text-muted-foreground">Not linked</span>}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </div>
+            </CardContent>
           </Card>
         </TabsContent>
       </Tabs>
