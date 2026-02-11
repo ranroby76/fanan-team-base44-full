@@ -1,41 +1,29 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ProductCard from "@/components/ProductCard";
 
+const PACK_NAME = "Free Pack";
 
 export default function FreePack() {
-  const { data: products, isLoading, isFetching, error, refetch } = useQuery({
-    queryKey: ['products', 'Free Pack'],
+  const { data: products, isLoading, error, refetch } = useQuery({
+    queryKey: ['products', PACK_NAME],
     queryFn: async () => {
-      const { data } = await base44.functions.invoke('getProducts');
-      if (!Array.isArray(data)) throw new Error("Invalid data format received");
-
-      // Deduplicate products
-      const seen = new Set();
-      const uniqueData = data.filter(p => {
-        if (!p.title) return false;
-        if (seen.has(p.title)) return false;
-        seen.add(p.title);
-        return true;
+      // Direct entity fetch - much faster than backend function
+      const data = await base44.entities.Product.filter({ pack: PACK_NAME, is_hidden: false });
+      return data.sort((a, b) => {
+        const orderA = typeof a.display_order === 'number' ? a.display_order : 999;
+        const orderB = typeof b.display_order === 'number' ? b.display_order : 999;
+        return orderA - orderB;
       });
-
-      return uniqueData
-        .filter(p => p.pack === "Free Pack" && !p.is_hidden)
-        .sort((a, b) => {
-          const orderA = typeof a.display_order === 'number' ? a.display_order : 999;
-          const orderB = typeof b.display_order === 'number' ? b.display_order : 999;
-          return orderA - orderB;
-        });
     },
-    staleTime: 60000, // Cache for 1 minute
-    refetchOnWindowFocus: false
+    staleTime: 300000, // Cache for 5 minutes
+    gcTime: 600000,
   });
 
-  if (isLoading || (isFetching && (!products || products.length === 0))) {
+  if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />

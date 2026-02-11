@@ -1,46 +1,26 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ProductCard from "@/components/ProductCard";
 
+const PACK_NAME = "Mad MIDI Machines";
 
 export default function MadMidiMachinePack() {
   const { data: products, isLoading, error, refetch } = useQuery({
-    queryKey: ['products', 'Mad MIDI Machines'],
+    queryKey: ['products', PACK_NAME],
     queryFn: async () => {
-      const { data } = await base44.functions.invoke('getProducts');
-      if (!Array.isArray(data)) throw new Error("Invalid data format received");
-
-      console.log('Mad MIDI Machines - Raw data:', data.filter(p => p.pack === "Mad MIDI Machines").map(p => `${p.title}: display_order=${p.display_order}`));
-
-      // Deduplicate products
-      const seen = new Set();
-      const uniqueData = data.filter(p => {
-        if (!p.title) return false;
-        if (seen.has(p.title)) return false;
-        seen.add(p.title);
-        return true;
+      // Direct entity fetch - much faster than backend function
+      const data = await base44.entities.Product.filter({ pack: PACK_NAME, is_hidden: false });
+      return data.sort((a, b) => {
+        const orderA = typeof a.display_order === 'number' ? a.display_order : 999;
+        const orderB = typeof b.display_order === 'number' ? b.display_order : 999;
+        return orderA - orderB;
       });
-
-      const sorted = uniqueData
-        .filter(p => p.pack === "Mad MIDI Machines" && !p.is_hidden)
-        .sort((a, b) => {
-          const orderA = typeof a.display_order === 'number' ? a.display_order : 999;
-          const orderB = typeof b.display_order === 'number' ? b.display_order : 999;
-          return orderA - orderB;
-        });
-      
-      console.log('Mad MIDI Machines - After sort:', sorted.map(p => `${p.title}: display_order=${p.display_order}`));
-      return sorted;
     },
-    initialData: [],
-    staleTime: 0,
-    cacheTime: 0,
-    refetchOnWindowFocus: true,
-    refetchOnMount: 'always'
+    staleTime: 300000, // Cache for 5 minutes
+    gcTime: 600000,
   });
 
   if (isLoading) {
