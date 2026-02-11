@@ -1,6 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
+import DynamicPack from '@/pages/DynamicPack';
 
 
 export default function PageNotFound({}) {
@@ -18,6 +19,39 @@ export default function PageNotFound({}) {
             }
         }
     });
+
+    // Check if URL matches a dynamic pack pattern (ends with "Pack")
+    const { data: matchedPack, isLoading: packLoading } = useQuery({
+        queryKey: ['checkDynamicPack', pageName],
+        queryFn: async () => {
+            if (!pageName.toLowerCase().endsWith('pack')) return null;
+            
+            const packSlug = pageName.replace(/Pack$/i, '').toLowerCase().replace(/[^a-z0-9]/g, '');
+            const allPacks = await base44.entities.PackPrice.list();
+            
+            return allPacks.find(p => {
+                const normalizedPackName = p.pack_name.toLowerCase().replace(/[^a-z0-9]/g, '');
+                return normalizedPackName === packSlug || 
+                       normalizedPackName.includes(packSlug) ||
+                       packSlug.includes(normalizedPackName);
+            }) || null;
+        },
+        staleTime: 300000,
+    });
+
+    // If it's a valid dynamic pack, render the DynamicPack component
+    if (pageName.toLowerCase().endsWith('pack') && (packLoading || matchedPack)) {
+        if (packLoading) {
+            return (
+                <div className="min-h-screen flex items-center justify-center">
+                    <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                </div>
+            );
+        }
+        if (matchedPack) {
+            return <DynamicPack />;
+        }
+    }
     
     return (
         <div className="min-h-screen flex items-center justify-center p-6 bg-slate-50">
