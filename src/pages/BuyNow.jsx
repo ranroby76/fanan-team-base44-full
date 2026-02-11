@@ -1,21 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Input } from "@/components/ui/input";
-import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
+import PackPurchaseCard from "@/components/PackPurchaseCard";
+
+// Hardcoded packs with their logos
+const HARDCODED_PACKS = [
+  { name: "Mad MIDI Machines", logo: "https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team/public/images/mad%20midi%20machines.png", defaultPrice: 22.00 },
+  { name: "Max Pack", logo: "https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team/public/images/pro%20pack.png", defaultPrice: 12.00 },
+];
 
 export default function BuyNow() {
-  const [machineIds, setMachineIds] = React.useState({
-    madMidi: "",
-    max: ""
-  });
-
-  const [serials, setSerials] = React.useState({
-    madMidi: "",
-    max: ""
-  });
-
   const [userCountry, setUserCountry] = React.useState(null);
   const [paypalError, setPaypalError] = React.useState(null);
   const [paypalClientId, setPaypalClientId] = React.useState(null);
@@ -36,20 +32,42 @@ export default function BuyNow() {
       });
   }, []);
 
-  const { data: prices = [] } = useQuery({
+  const { data: dbPacks = [] } = useQuery({
     queryKey: ["packPrices"],
     queryFn: () => base44.entities.PackPrice.list(),
   });
 
-  const madMidiPrice = React.useMemo(() => {
-    const price = prices.find(p => p.pack_name === "Mad MIDI Machines");
-    return price ? price.price : 22.00;
-  }, [prices]);
-
-  const maxPackPrice = React.useMemo(() => {
-    const price = prices.find(p => p.pack_name === "Max Pack");
-    return price ? price.price : 12.00;
-  }, [prices]);
+  // Build list of all paid packs (hardcoded + dynamic from DB)
+  const allPaidPacks = React.useMemo(() => {
+    const hardcodedNames = HARDCODED_PACKS.map(p => p.name.toLowerCase().replace(/[^a-z0-9]/g, ''));
+    
+    // Get hardcoded packs with prices from DB
+    const hardcodedWithPrices = HARDCODED_PACKS.map(pack => {
+      const dbPrice = dbPacks.find(p => 
+        p.pack_name.toLowerCase().replace(/[^a-z0-9]/g, '') === pack.name.toLowerCase().replace(/[^a-z0-9]/g, '')
+      );
+      return {
+        name: pack.name,
+        logo: pack.logo,
+        price: dbPrice ? dbPrice.price : pack.defaultPrice
+      };
+    });
+    
+    // Add new packs from database that aren't hardcoded and aren't free
+    const dynamicPacks = dbPacks
+      .filter(p => {
+        const normalizedName = p.pack_name.toLowerCase().replace(/[^a-z0-9]/g, '');
+        const isFree = normalizedName.includes('free') || p.price === 0;
+        return !hardcodedNames.includes(normalizedName) && !isFree;
+      })
+      .map(p => ({
+        name: p.pack_name,
+        logo: p.logo_url,
+        price: p.price
+      }));
+    
+    return [...hardcodedWithPrices, ...dynamicPacks];
+  }, [dbPacks]);
 
   React.useEffect(() => {
     // Detect user's location
@@ -60,67 +78,6 @@ export default function BuyNow() {
       })
       .catch(err => console.error('Location detection failed:', err));
   }, []);
-
-  const handlePayPalApprove = async (data, pack, price, packName, details) => {
-    try {
-      // Calculate serial number from machine ID based on pack
-      const machineId = parseInt(machineIds[pack]);
-      
-      if (isNaN(machineId) || machineId <= 0) {
-        alert("Invalid Machine ID. Please enter a valid numeric ID.");
-        return;
-      }
-      
-      let serial;
-      
-      if (pack === 'madMidi') {
-        // Mad MIDI Machines formula
-        const serialNumber = Math.floor(((((((machineId + 8354) * 2) + 1691) * 2) - 9097) * 0.1));
-        serial = serialNumber.toString();
-      } else if (pack === 'max') {
-        // Max Pack formula
-        const serialNumber = ((((machineId + 7541) * 2) + 2001) * 2) - 9002;
-        serial = serialNumber.toString();
-      }
-      
-      setSerials(prev => ({...prev, [pack]: serial}));
-
-      // Verify payment and save purchase on backend
-      const verification = await base44.functions.invoke('verifyPayPalPayment', {
-        orderId: data.orderID,
-        packName,
-        serialNumber: serial,
-        machineId: machineId.toString()
-      });
-
-      if (!verification.data.success) {
-        alert("Payment verification failed. Please contact support.");
-        return;
-      }
-
-      // Send email via backend
-      try {
-        const customerEmail = verification.data.payer.email;
-        const customerName = verification.data.payer.name || "Customer";
-
-        await base44.functions.invoke('sendConfirmationEmail', {
-          customerEmail,
-          customerName,
-          amount: verification.data.amount,
-          serialNumber: serial,
-          packName
-        });
-
-        alert(`Payment successful! Your serial: ${serial} has been sent to ${customerEmail}`);
-      } catch (error) {
-        console.error("Email send error:", error);
-        alert(`Payment successful! Your serial: ${serial}\n(Email notification failed, but your serial is displayed here)`);
-      }
-    } catch (error) {
-      console.error("Payment processing error:", error);
-      alert("Payment processing failed. Please contact support with order ID: " + data.orderID);
-    }
-  };
 
   if (!paypalClientId) {
     return (
@@ -181,163 +138,16 @@ export default function BuyNow() {
 
       {/* Products Grid */}
       <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-12">
-        {/* Mad MIDI Machines Pack */}
-        <div className="bg-card border border-border rounded-lg p-8 shadow-xl">
-          <div className="flex justify-center mb-6">
-            <img 
-              src="https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team/public/images/mad%20midi%20machines.png" 
-              alt="Mad MIDI Machines Pack" 
-              className="h-24 w-auto"
-            />
-          </div>
-          
-          <p className="text-5xl font-bold text-primary text-center mb-6">${madMidiPrice.toFixed(2)}</p>
-          
-          <div className="space-y-4">
-            <div>
-              <p className="text-sm font-semibold text-destructive mb-2 blink-text">ENTER YOUR ID HERE FIRST!</p>
-              <p className="text-xs text-muted-foreground mb-3">Find this in the plugin's "REGISTER" window.</p>
-              <Input
-                placeholder="enter your id here"
-                value={machineIds.madMidi}
-                onChange={(e) => setMachineIds({...machineIds, madMidi: e.target.value})}
-                className="mb-4"
-              />
-            </div>
-            
-            <div>
-              <p className="text-sm font-semibold mb-2">Serial Number</p>
-              <p className="text-xs text-muted-foreground mb-3">Your serial will be sent to your email and shown here. You can always log in with your email and see your purchases and serials in the "My Purchases" page.</p>
-              <Input
-                placeholder=""
-                value={serials.madMidi}
-                readOnly
-                className={serials.madMidi ? "bg-green-900/50 border-green-600" : "bg-muted"}
-              />
-            </div>
-            
-            {machineIds.madMidi.length >= 3 && (
-              <div className="mt-4">
-                {paypalError && (
-                  <div className="mb-3 p-3 bg-destructive/10 text-destructive text-sm rounded">
-                    {paypalError}
-                  </div>
-                )}
-                {userCountry && (
-                  <div className="flex items-center justify-center gap-2 mb-3 text-sm text-muted-foreground">
-                    <span className="text-2xl">{String.fromCodePoint(0x1F1E6 + userCountry.charCodeAt(0) - 65, 0x1F1E6 + userCountry.charCodeAt(1) - 65)}</span>
-                    <span>Payment from {userCountry}</span>
-                  </div>
-                )}
-                <PayPalButtons
-                  style={{ 
-                    layout: "vertical",
-                    shape: "rect"
-                  }}
-                  createOrder={(data, actions) => {
-                    return actions.order.create({
-                      purchase_units: [{
-                        amount: {
-                          value: madMidiPrice.toFixed(2),
-                          currency_code: "USD"
-                        },
-                        description: "Mad MIDI Machines Pack"
-                      }]
-                    });
-                  }}
-                  onApprove={(data, actions) => {
-                    return actions.order.capture().then((details) => {
-                      handlePayPalApprove(data, 'madMidi', madMidiPrice, 'Mad MIDI Machines Pack', details);
-                    });
-                  }}
-                  onError={(err) => {
-                    alert("Payment error. Please try again.");
-                  }}
-                  fundingSource={undefined}
-                />
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Max Pack */}
-        <div className="bg-card border border-border rounded-lg p-8 shadow-xl">
-          <div className="flex justify-center mb-6">
-            <img 
-              src="https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team/public/images/pro%20pack.png" 
-              alt="Max Pack" 
-              className="h-24 w-auto"
-            />
-          </div>
-          
-          <p className="text-5xl font-bold text-primary text-center mb-6">${maxPackPrice.toFixed(2)}</p>
-          
-          <div className="space-y-4">
-            <div>
-              <p className="text-sm font-semibold text-destructive mb-2 blink-text">ENTER YOUR ID HERE FIRST!</p>
-              <p className="text-xs text-muted-foreground mb-3">Find this in the plugin's "REGISTER" window.</p>
-              <Input
-                placeholder="enter your id here"
-                value={machineIds.max}
-                onChange={(e) => setMachineIds({...machineIds, max: e.target.value})}
-                className="mb-4"
-              />
-            </div>
-            
-            <div>
-              <p className="text-sm font-semibold mb-2">Serial Number</p>
-              <p className="text-xs text-muted-foreground mb-3">Your serial will be sent to your email and shown here. You can always log in with your email and see your purchases and serials in the "My Purchases" page.</p>
-              <Input
-                placeholder=""
-                value={serials.max}
-                readOnly
-                className={serials.max ? "bg-green-900/50 border-green-600" : "bg-muted"}
-              />
-            </div>
-            
-            {machineIds.max.length >= 3 && (
-              <div className="mt-4">
-                {paypalError && (
-                  <div className="mb-3 p-3 bg-destructive/10 text-destructive text-sm rounded">
-                    {paypalError}
-                  </div>
-                )}
-                {userCountry && (
-                  <div className="flex items-center justify-center gap-2 mb-3 text-sm text-muted-foreground">
-                    <span className="text-2xl">{String.fromCodePoint(0x1F1E6 + userCountry.charCodeAt(0) - 65, 0x1F1E6 + userCountry.charCodeAt(1) - 65)}</span>
-                    <span>Payment from {userCountry}</span>
-                  </div>
-                )}
-                <PayPalButtons
-                  style={{ 
-                    layout: "vertical",
-                    shape: "rect"
-                  }}
-                  createOrder={(data, actions) => {
-                    return actions.order.create({
-                      purchase_units: [{
-                        amount: {
-                          value: maxPackPrice.toFixed(2),
-                          currency_code: "USD"
-                        },
-                        description: "Max Pack"
-                      }]
-                    });
-                  }}
-                  onApprove={(data, actions) => {
-                    return actions.order.capture().then((details) => {
-                      handlePayPalApprove(data, 'max', maxPackPrice, 'Max Pack', details);
-                    });
-                  }}
-                  onError={(err) => {
-                    alert("Payment error. Please try again.");
-                  }}
-                  fundingSource={undefined}
-                />
-              </div>
-            )}
-          </div>
-        </div>
+        {allPaidPacks.map((pack) => (
+          <PackPurchaseCard
+            key={pack.name}
+            packName={pack.name}
+            price={pack.price}
+            logoUrl={pack.logo}
+            userCountry={userCountry}
+            paypalError={paypalError}
+          />
+        ))}
       </div>
 
       {/* Help Section */}
