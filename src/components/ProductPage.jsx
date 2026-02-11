@@ -139,6 +139,9 @@ export default function ProductPage({
   }, [finalProduct.image, productImage, slug, productName, dbProduct]);
 
   const allImages = finalProduct.gallery && finalProduct.gallery.length > 0 ? finalProduct.gallery : [finalProduct.image].filter(Boolean);
+  
+  // Use finalProduct.image as fallback for mainImage display
+  const displayImage = mainImage || finalProduct.image;
 
   // If product is hidden, show message
   if (dbProduct?.is_hidden) {
