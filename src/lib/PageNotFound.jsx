@@ -20,37 +20,56 @@ export default function PageNotFound({}) {
         }
     });
 
-    // Check if URL matches a dynamic pack pattern (ends with "Pack")
-    const { data: matchedPack, isLoading: packLoading } = useQuery({
-        queryKey: ['checkDynamicPack', pageName],
+    // Check if URL matches a dynamic pack pattern (ends with "Pack") OR a product page_slug
+    const { data: dynamicMatch, isLoading: dynamicLoading } = useQuery({
+        queryKey: ['checkDynamicRoute', pageName],
         queryFn: async () => {
-            if (!pageName.toLowerCase().endsWith('pack')) return null;
+            // First check if it's a pack URL
+            if (pageName.toLowerCase().endsWith('pack')) {
+                const packSlug = pageName.replace(/Pack$/i, '').toLowerCase().replace(/[^a-z0-9]/g, '');
+                const allPacks = await base44.entities.PackPrice.list();
+                
+                const pack = allPacks.find(p => {
+                    const normalizedPackName = p.pack_name.toLowerCase().replace(/[^a-z0-9]/g, '');
+                    return normalizedPackName === packSlug || 
+                           normalizedPackName.includes(packSlug) ||
+                           packSlug.includes(normalizedPackName);
+                });
+                if (pack) return { type: 'pack', data: pack };
+            }
             
-            const packSlug = pageName.replace(/Pack$/i, '').toLowerCase().replace(/[^a-z0-9]/g, '');
-            const allPacks = await base44.entities.PackPrice.list();
+            // Then check if it's a product page_slug
+            const products = await base44.entities.Product.filter({ page_slug: pageName.toLowerCase() });
+            if (products && products.length > 0) {
+                return { type: 'product', data: products[0] };
+            }
             
-            return allPacks.find(p => {
-                const normalizedPackName = p.pack_name.toLowerCase().replace(/[^a-z0-9]/g, '');
-                return normalizedPackName === packSlug || 
-                       normalizedPackName.includes(packSlug) ||
-                       packSlug.includes(normalizedPackName);
-            }) || null;
+            return null;
         },
         staleTime: 300000,
     });
 
-    // If it's a valid dynamic pack, render the DynamicPack component
-    if (pageName.toLowerCase().endsWith('pack') && (packLoading || matchedPack)) {
-        if (packLoading) {
-            return (
-                <div className="min-h-screen flex items-center justify-center">
-                    <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-                </div>
-            );
-        }
-        if (matchedPack) {
-            return <DynamicPack />;
-        }
+    // If it's a valid dynamic route, render the appropriate component
+    if (dynamicLoading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-background">
+                <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+            </div>
+        );
+    }
+    
+    if (dynamicMatch?.type === 'pack') {
+        return <DynamicPack />;
+    }
+    
+    if (dynamicMatch?.type === 'product') {
+        // Render product page dynamically
+        const ProductPage = React.lazy(() => import('@/components/ProductPage'));
+        return (
+            <React.Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-background"><div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div></div>}>
+                <ProductPage slug={pageName.toLowerCase()} />
+            </React.Suspense>
+        );
     }
     
     return (
