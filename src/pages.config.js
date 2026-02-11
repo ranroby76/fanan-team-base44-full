@@ -109,7 +109,7 @@ import tropicanaFun from './pages/tropicana-fun';
 import villain from './pages/villain';
 import yowlseq2 from './pages/yowlseq-2';
 import zoe2 from './pages/zoe-2';
-import ColosseumPack from './pages/ColosseumPack';
+import DynamicPack from './pages/DynamicPack';
 import __Layout from './Layout.jsx';
 
 
@@ -176,7 +176,7 @@ export const PAGES = {
     "villain": villain,
     "yowlseq-2": yowlseq2,
     "zoe-2": zoe2,
-    "ColosseumPack": ColosseumPack,
+    "DynamicPack": DynamicPack,
 }
 
 export const pagesConfig = {
