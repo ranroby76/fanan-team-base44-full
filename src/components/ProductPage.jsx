@@ -202,10 +202,10 @@ export default function ProductPage({
                       key={idx}
                       onClick={() => setMainImage(img)}
                       className={`relative h-24 w-24 rounded-md overflow-hidden border-2 transition-all duration-200 ${
-                        mainImage === img 
-                          ? "border-primary shadow-lg scale-105" 
-                          : "border-transparent hover:border-primary/50 hover:scale-105"
-                      }`}
+                          displayImage === img 
+                            ? "border-primary shadow-lg scale-105" 
+                            : "border-transparent hover:border-primary/50 hover:scale-105"
+                        }`}
                     >
                       <img
                         src={img}
