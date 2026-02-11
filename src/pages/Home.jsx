@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
+import { base44 } from "@/api/base44Client";
+import { useQuery } from "@tanstack/react-query";
 
 // SEO Meta Tags Component
 const SEOHead = () => {
@@ -92,7 +94,49 @@ const FlexedBicepIcon = (props) => (
   </svg>
 );
 
+// Hardcoded packs with their logos
+const HARDCODED_PACKS = [
+  { name: "Mad MIDI Machines", path: "/MadMidiMachinePack", logo: "https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team-3/public/images/mad%20midi%20machines.png" },
+  { name: "Max! Pack", path: "/MaxPack", logo: "https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team-3/public/images/pro%20pack.png" },
+  { name: "Free Pack", path: "/FreePack", logo: "https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team-3/public/images/free%20pack.png" },
+];
+
+// Helper to fix GitHub URLs to raw format
+const fixImageUrl = (url) => {
+  if (!url) return url;
+  if (url.includes('github.com') && url.includes('/blob/')) {
+    return url.replace('github.com', 'raw.githubusercontent.com').replace('/blob/', '/');
+  }
+  return url;
+};
+
 export default function Home() {
+  // Fetch packs from database
+  const { data: dbPacks = [] } = useQuery({
+    queryKey: ['packPrices'],
+    queryFn: () => base44.entities.PackPrice.list(),
+    staleTime: 60000,
+  });
+
+  // Merge hardcoded packs with dynamic packs from database
+  const allPacks = React.useMemo(() => {
+    const hardcodedNames = HARDCODED_PACKS.map(p => p.name.toLowerCase().replace(/[^a-z0-9]/g, ''));
+    
+    // Add new packs from database that aren't hardcoded
+    const dynamicPacks = dbPacks
+      .filter(p => {
+        const normalizedName = p.pack_name.toLowerCase().replace(/[^a-z0-9]/g, '');
+        return !hardcodedNames.includes(normalizedName);
+      })
+      .map(p => ({
+        name: p.pack_name,
+        path: `/${p.pack_name.replace(/[^a-zA-Z0-9]+/g, '')}Pack`,
+        logo: fixImageUrl(p.logo_url)
+      }));
+    
+    return [...HARDCODED_PACKS, ...dynamicPacks];
+  }, [dbPacks]);
+
   return (
     <div className="space-y-12 animate-fade-in">
       <SEOHead />
@@ -170,38 +214,22 @@ export default function Home() {
 
       <div className="container mx-auto px-4">
         <div className="space-y-6 flex flex-col items-center">
-          <Link to="/MadMidiMachinePack" className="group w-full max-w-2xl">
-            <div className="h-32 bg-zinc-900 rounded-full border-2 border-primary/20 hover:border-primary transition-all duration-300 shadow-md hover:shadow-xl flex items-center justify-center p-4 overflow-hidden relative">
-              <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <img
-                src="https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team-3/public/images/mad%20midi%20machines.png"
-                alt="Mad MIDI Machines Pack"
-                className="h-full w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-              />
-            </div>
-          </Link>
-
-          <Link to="/MaxPack" className="group w-full max-w-2xl">
-            <div className="h-32 bg-zinc-900 rounded-full border-2 border-primary/20 hover:border-primary transition-all duration-300 shadow-md hover:shadow-xl flex items-center justify-center p-4 overflow-hidden relative">
-              <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <img
-                src="https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team-3/public/images/pro%20pack.png"
-                alt="Max! Pack"
-                className="h-full w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-              />
-            </div>
-          </Link>
-
-          <Link to="/FreePack" className="group w-full max-w-2xl">
-            <div className="h-32 bg-zinc-900 rounded-full border-2 border-primary/20 hover:border-primary transition-all duration-300 shadow-md hover:shadow-xl flex items-center justify-center p-4 overflow-hidden relative">
-              <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <img
-                src="https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team-3/public/images/free%20pack.png"
-                alt="Free Pack"
-                className="h-full w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-              />
-            </div>
-          </Link>
+          {allPacks.map((pack) => (
+            <Link key={pack.name} to={pack.path} className="group w-full max-w-2xl">
+              <div className="h-32 bg-zinc-900 rounded-full border-2 border-primary/20 hover:border-primary transition-all duration-300 shadow-md hover:shadow-xl flex items-center justify-center p-4 overflow-hidden relative">
+                <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                {pack.logo ? (
+                  <img
+                    src={pack.logo}
+                    alt={pack.name}
+                    className="h-full w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+                  />
+                ) : (
+                  <span className="text-2xl font-bold text-primary">{pack.name}</span>
+                )}
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
 

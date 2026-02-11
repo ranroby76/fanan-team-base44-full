@@ -14,11 +14,41 @@ import ScrollToTop from "@/components/ScrollToTop";
 export default function Layout({ children, currentPageName }) {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const [user, setUser] = React.useState(null);
+  const [productLinks, setProductLinks] = React.useState([
+    { name: "Mad MIDI Machines", path: "/MadMidiMachinePack" },
+    { name: "Max! Pack", path: "/MaxPack" },
+    { name: "Free Pack", path: "/FreePack" },
+  ]);
 
   React.useEffect(() => {
     base44.auth.me()
       .then(u => setUser(u))
       .catch(() => setUser(null));
+    
+    // Fetch packs from database and build dynamic product links
+    base44.entities.PackPrice.list()
+      .then(packs => {
+        const hardcodedPacks = [
+          { name: "Mad MIDI Machines", path: "/MadMidiMachinePack" },
+          { name: "Max! Pack", path: "/MaxPack" },
+          { name: "Free Pack", path: "/FreePack" },
+        ];
+        const hardcodedNames = hardcodedPacks.map(p => p.name.toLowerCase().replace(/[^a-z0-9]/g, ''));
+        
+        // Add new packs from database that aren't hardcoded
+        const dynamicPacks = packs
+          .filter(p => {
+            const normalizedName = p.pack_name.toLowerCase().replace(/[^a-z0-9]/g, '');
+            return !hardcodedNames.includes(normalizedName);
+          })
+          .map(p => ({
+            name: p.pack_name,
+            path: `/${p.pack_name.replace(/[^a-zA-Z0-9]+/g, '')}Pack`
+          }));
+        
+        setProductLinks([...hardcodedPacks, ...dynamicPacks]);
+      })
+      .catch(() => {});
   }, []);
 
   // Navigation structure matching reference
@@ -29,12 +59,6 @@ export default function Layout({ children, currentPageName }) {
     { name: "Buy Now", page: "BuyNow", path: "/BuyNow", icon: ShoppingCart },
     { name: "Contact Us", page: "ContactUs", path: "/ContactUs", icon: Mail },
     { name: "VIP Login", page: "ProductManager", path: "/ProductManager", icon: List },
-  ];
-
-  const productLinks = [
-    { name: "Mad MIDI Machines", path: "/MadMidiMachinePack" },
-    { name: "Max! Pack", path: "/MaxPack" },
-    { name: "Free Pack", path: "/FreePack" },
   ];
 
   return (
