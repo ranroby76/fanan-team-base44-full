@@ -184,7 +184,7 @@ export default function ProductPage({
               </DialogTrigger>
               <DialogContent className="max-w-[90vw] max-h-[90vh] p-0 bg-transparent border-none shadow-none flex justify-center items-center">
                 <img
-                  src={mainImage}
+                  src={displayImage}
                   alt="Full view"
                   className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
                   onError={(e) => {
