@@ -51,7 +51,8 @@ export default function ProductPage({
     queryKey: ['product', slug || productName], // Unique key per product
     queryFn: async () => {
       // Try to find product by slug or title using backend function for public access
-      const { data: products } = await base44.functions.invoke('getProducts');
+      const response = await base44.functions.invoke('getProducts');
+      const products = response.data || response;
       if (slug) {
         // First try exact slug match
         const bySlug = products.find(p => p.page_slug === slug);
@@ -64,7 +65,8 @@ export default function ProductPage({
       }
       return products.find(p => p.title === productName) || null;
     },
-    staleTime: 0, // Always fetch fresh data
+    staleTime: 300000, // Cache for 5 minutes
+    gcTime: 600000,
     enabled: !!(slug || productName), // Only fetch when we have slug or productName
   });
 
