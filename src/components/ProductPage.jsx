@@ -46,28 +46,25 @@ export default function ProductPage({
   packLink = "/PacksList",
   longDescription
 }) {
-  // Fetch dynamic data if available
+  // Fetch dynamic data if available - use direct entity filter for speed
   const { data: dbProduct } = useQuery({
-    queryKey: ['product', slug || productName], // Unique key per product
+    queryKey: ['product', slug || productName],
     queryFn: async () => {
-      // Try to find product by slug or title using backend function for public access
-      const response = await base44.functions.invoke('getProducts');
-      const products = response.data || response;
+      // Try to find product by slug first (fast direct query)
       if (slug) {
-        // First try exact slug match
-        const bySlug = products.find(p => p.page_slug === slug);
-        if (bySlug) return bySlug;
-        // Also try matching by auto-generated slug from title
-        const byTitleSlug = products.find(p => 
-          p.title?.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') === slug
-        );
-        if (byTitleSlug) return byTitleSlug;
+        const bySlug = await base44.entities.Product.filter({ page_slug: slug });
+        if (bySlug && bySlug.length > 0) return bySlug[0];
       }
-      return products.find(p => p.title === productName) || null;
+      // Fallback to title search
+      if (productName) {
+        const byTitle = await base44.entities.Product.filter({ title: productName });
+        if (byTitle && byTitle.length > 0) return byTitle[0];
+      }
+      return null;
     },
     staleTime: 300000, // Cache for 5 minutes
     gcTime: 600000,
-    enabled: !!(slug || productName), // Only fetch when we have slug or productName
+    enabled: !!(slug || productName),
   });
 
   // Fetch pack prices
