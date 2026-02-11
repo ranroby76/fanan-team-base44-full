@@ -182,6 +182,27 @@ export default function EditProduct({ product, onClose }) {
               />
             </div>
 
+            {/* Coming Soon Toggle */}
+            <div className="flex items-center space-x-3 p-4 border rounded-lg bg-muted/10">
+              <Controller
+                control={control}
+                name="is_coming_soon"
+                render={({ field }) => (
+                  <Checkbox 
+                    id="is_coming_soon" 
+                    checked={field.value || false}
+                    onCheckedChange={field.onChange}
+                  />
+                )}
+              />
+              <Label htmlFor="is_coming_soon" className="text-lg font-bold cursor-pointer">
+                🚀 Coming Soon
+              </Label>
+              <span className="text-sm text-muted-foreground">
+                Shows "Coming Soon" banner on product card and page
+              </span>
+            </div>
+
             {/* 4. Formats */}
             <div className="space-y-3 border p-4 rounded-lg bg-muted/10">
               <Label className="text-lg font-bold">Formats</Label>

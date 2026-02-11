@@ -9,6 +9,8 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 
+const COMING_SOON_BANNER = "https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team/public/images/COMING%20SOON%20BANNER.png";
+
 // Helper to convert GitHub URLs to raw format
 const fixImageUrl = (url) => {
   if (!url) return url;
@@ -97,7 +99,8 @@ export default function ProductPage({
     pack: dbProduct.pack,
     downloadLinks: dbProduct.download_links || [],
     youtubeLinks: dbProduct.youtube_links || [],
-    demoLimitations: dbProduct.demo_limitations
+    demoLimitations: dbProduct.demo_limitations,
+    isComingSoon: dbProduct.is_coming_soon || false
   } : {
     name: productName,
     description: productDescription,
@@ -113,7 +116,8 @@ export default function ProductPage({
     pack: packName,
     downloadLinks: [],
     youtubeLinks: [],
-    demoLimitations: null
+    demoLimitations: null,
+    isComingSoon: false
   };
 
   // Get pack price if available - prioritize pack price over individual product price
@@ -177,6 +181,16 @@ export default function ProductPage({
                     }}
                   />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors" />
+                  
+                  {/* Coming Soon Banner */}
+                  {finalProduct.isComingSoon && (
+                    <img 
+                      src={COMING_SOON_BANNER} 
+                      alt="Coming Soon" 
+                      className="absolute top-4 right-4 pointer-events-none"
+                      style={{ width: '20%', height: 'auto' }}
+                    />
+                  )}
                 </button>
               </DialogTrigger>
               <DialogContent className="max-w-[90vw] max-h-[90vh] p-0 bg-transparent border-none shadow-none flex justify-center items-center">

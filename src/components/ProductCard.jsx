@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
+const COMING_SOON_BANNER = "https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team/public/images/COMING%20SOON%20BANNER.png";
+
 export default function ProductCard({ product }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
@@ -42,6 +44,16 @@ export default function ProductCard({ product }) {
             />
           ) : (
             <div className="text-muted-foreground text-sm">No Image</div>
+          )}
+
+          {/* Coming Soon Banner */}
+          {product.is_coming_soon && (
+            <img 
+              src={COMING_SOON_BANNER} 
+              alt="Coming Soon" 
+              className="absolute top-2 right-2 pointer-events-none"
+              style={{ width: '20%', height: 'auto' }}
+            />
           )}
           
           {/* Gallery Indicator (only if multiple images) */}
