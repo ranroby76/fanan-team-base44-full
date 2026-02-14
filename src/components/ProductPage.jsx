@@ -239,7 +239,6 @@ export default function ProductPage({
           <Card className="shadow-lg border-2 border-primary/20">
             <CardContent className="p-6 space-y-6">
               <div>
-                <h2 className="font-bold tracking-tight font-headline text-4xl text-primary mb-2">{finalProduct.name}</h2>
                 <h3 className="font-semibold tracking-tight font-headline text-lg text-foreground/60 mb-4">About this Product</h3>
                 <div className="space-y-4 text-foreground/90 leading-relaxed">
                   {finalProduct.longDescription ? (
