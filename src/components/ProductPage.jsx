@@ -410,34 +410,43 @@ export default function ProductPage({
               </div>
 
               <div className="space-y-3">
-                {/* Custom Download Links */}
-                {finalProduct.downloadLinks && finalProduct.downloadLinks.length > 0 && finalProduct.downloadLinks.map((link, idx) => (
-                  (link.url || link.label) && (
-                    <Button key={idx} asChild className="w-full h-12 text-base font-bold bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg hover:shadow-primary/20 transition-all">
-                      <a href={link.url || "#"} target="_blank" rel="noopener noreferrer">
-                        <Download className="mr-2 h-5 w-5" /> {link.label || "Download"}
-                      </a>
-                    </Button>
-                  )
-                ))}
-
-                {/* Legacy Links (only if no custom download links) */}
-                {(!finalProduct.downloadLinks || finalProduct.downloadLinks.length === 0) && (
+                {/* Coming Soon State */}
+                {finalProduct.isComingSoon ? (
+                  <div className="w-full h-12 flex items-center justify-center text-lg font-bold text-primary bg-primary/10 border-2 border-primary/30 rounded-md">
+                    Coming Soon
+                  </div>
+                ) : (
                   <>
-                    {finalProduct.demoLink && (
-                      <Button asChild variant="outline" className="w-full h-12 text-base font-semibold border-primary/50 hover:bg-primary/10 hover:text-primary transition-all">
-                        <a href={finalProduct.demoLink} target="_blank" rel="noopener noreferrer">
-                          <Download className="mr-2 h-5 w-5" /> Download
-                        </a>
-                      </Button>
-                    )}
+                    {/* Custom Download Links */}
+                    {finalProduct.downloadLinks && finalProduct.downloadLinks.length > 0 && finalProduct.downloadLinks.map((link, idx) => (
+                      (link.url || link.label) && (
+                        <Button key={idx} asChild className="w-full h-12 text-base font-bold bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg hover:shadow-primary/20 transition-all">
+                          <a href={link.url || "#"} target="_blank" rel="noopener noreferrer">
+                            <Download className="mr-2 h-5 w-5" /> {link.label || "Download"}
+                          </a>
+                        </Button>
+                      )
+                    ))}
 
-                    {finalProduct.buyLink && (
-                      <Button asChild className="w-full h-12 text-base font-bold bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg hover:shadow-primary/20 transition-all">
-                        <Link to={finalProduct.buyLink}>
-                          <ShoppingCart className="mr-2 h-5 w-5" /> Buy Now
-                        </Link>
-                      </Button>
+                    {/* Legacy Links (only if no custom download links) */}
+                    {(!finalProduct.downloadLinks || finalProduct.downloadLinks.length === 0) && (
+                      <>
+                        {finalProduct.demoLink && (
+                          <Button asChild variant="outline" className="w-full h-12 text-base font-semibold border-primary/50 hover:bg-primary/10 hover:text-primary transition-all">
+                            <a href={finalProduct.demoLink} target="_blank" rel="noopener noreferrer">
+                              <Download className="mr-2 h-5 w-5" /> Download
+                            </a>
+                          </Button>
+                        )}
+
+                        {finalProduct.buyLink && (
+                          <Button asChild className="w-full h-12 text-base font-bold bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg hover:shadow-primary/20 transition-all">
+                            <Link to={finalProduct.buyLink}>
+                              <ShoppingCart className="mr-2 h-5 w-5" /> Buy Now
+                            </Link>
+                          </Button>
+                        )}
+                      </>
                     )}
                   </>
                 )}
