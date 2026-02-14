@@ -163,7 +163,7 @@ export default function ProductPage({
         </Link>
       </div>
 
-      <h1 className="text-5xl font-bold font-headline text-primary mb-8 text-center">{finalProduct.name}</h1>
+      <h1 className="text-6xl md:text-7xl font-bold font-headline text-primary mb-8 text-center">{finalProduct.name}</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
         {/* Left Column - Gallery (3 cols) */}
