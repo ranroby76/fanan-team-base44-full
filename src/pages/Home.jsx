@@ -6,33 +6,41 @@ import { Separator } from "@/components/ui/separator";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 
-// SEO Meta Tags Component
+// SEO Meta Tags Component - Optimized for fananteam.site
 const SEOHead = () => {
   React.useEffect(() => {
-    // Set page title
-    document.title = "Fanan Team - VST Plugins & MIDI Tools for Music Production";
+    const PRIMARY_DOMAIN = "https://fananteam.site";
     
-    // Meta description
+    // Set page title - optimized for search
+    document.title = "Fanan Team - Professional VST Plugins & MIDI Tools | Free & Premium Audio Software";
+    
+    // Meta description - keyword rich
     const metaDescription = document.querySelector('meta[name="description"]') || document.createElement('meta');
     metaDescription.name = "description";
-    metaDescription.content = "Fanan Team creates professional VST plugins and MIDI tools for music producers. Explore our Mad MIDI Machines, Max! Pack, and Free Pack. Affordable, high-quality VSTi instruments and effects.";
+    metaDescription.content = "Fanan Team creates professional VST plugins, VSTi instruments, and MIDI tools for music production. Download free VST plugins or explore Mad MIDI Machines, Max! Pack, and Colosseum. Windows & Mac compatible. Affordable high-quality virtual instruments for producers and musicians.";
     if (!document.querySelector('meta[name="description"]')) document.head.appendChild(metaDescription);
     
-    // Meta keywords
+    // Meta keywords - comprehensive
     const metaKeywords = document.querySelector('meta[name="keywords"]') || document.createElement('meta');
     metaKeywords.name = "keywords";
-    metaKeywords.content = "VST plugins, VSTi, MIDI tools, music production, audio plugins, synthesizer, virtual instruments, DAW plugins, Windows VST, Mac AU, CLAP plugins, Fanan Team, Mad MIDI Machines, free VST";
+    metaKeywords.content = "VST plugins, VSTi, MIDI tools, music production, audio plugins, synthesizer, virtual instruments, DAW plugins, Windows VST, Mac AU, CLAP plugins, Fanan Team, fananteam, Mad MIDI Machines, Max Pack, free VST plugins, free VSTi, audio software, music software, plugin bundle, MIDI sequencer, arpeggiator plugin, sampler VST";
     if (!document.querySelector('meta[name="keywords"]')) document.head.appendChild(metaKeywords);
+    
+    // Robots meta - allow indexing
+    const metaRobots = document.querySelector('meta[name="robots"]') || document.createElement('meta');
+    metaRobots.name = "robots";
+    metaRobots.content = "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
+    if (!document.querySelector('meta[name="robots"]')) document.head.appendChild(metaRobots);
     
     // Open Graph tags for social sharing
     const ogTitle = document.querySelector('meta[property="og:title"]') || document.createElement('meta');
     ogTitle.setAttribute('property', 'og:title');
-    ogTitle.content = "Fanan Team - VST Plugins & MIDI Tools";
+    ogTitle.content = "Fanan Team - Professional VST Plugins & MIDI Tools for Music Production";
     if (!document.querySelector('meta[property="og:title"]')) document.head.appendChild(ogTitle);
     
     const ogDescription = document.querySelector('meta[property="og:description"]') || document.createElement('meta');
     ogDescription.setAttribute('property', 'og:description');
-    ogDescription.content = "Professional VST plugins and MIDI tools for music producers. High-quality, affordable virtual instruments.";
+    ogDescription.content = "Download free and premium VST plugins, VSTi instruments, and MIDI tools. High-quality, affordable virtual instruments for Windows & Mac.";
     if (!document.querySelector('meta[property="og:description"]')) document.head.appendChild(ogDescription);
     
     const ogType = document.querySelector('meta[property="og:type"]') || document.createElement('meta');
@@ -42,7 +50,7 @@ const SEOHead = () => {
     
     const ogUrl = document.querySelector('meta[property="og:url"]') || document.createElement('meta');
     ogUrl.setAttribute('property', 'og:url');
-    ogUrl.content = "https://fanan-team-com.base44.app";
+    ogUrl.content = PRIMARY_DOMAIN;
     if (!document.querySelector('meta[property="og:url"]')) document.head.appendChild(ogUrl);
     
     const ogImage = document.querySelector('meta[property="og:image"]') || document.createElement('meta');
@@ -50,26 +58,71 @@ const SEOHead = () => {
     ogImage.content = "https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team-3/public/images/fanan_logo.png";
     if (!document.querySelector('meta[property="og:image"]')) document.head.appendChild(ogImage);
     
+    const ogImageAlt = document.querySelector('meta[property="og:image:alt"]') || document.createElement('meta');
+    ogImageAlt.setAttribute('property', 'og:image:alt');
+    ogImageAlt.content = "Fanan Team Logo - VST Plugins and MIDI Tools";
+    if (!document.querySelector('meta[property="og:image:alt"]')) document.head.appendChild(ogImageAlt);
+    
     // Twitter Card tags
     const twitterCard = document.querySelector('meta[name="twitter:card"]') || document.createElement('meta');
     twitterCard.name = "twitter:card";
     twitterCard.content = "summary_large_image";
     if (!document.querySelector('meta[name="twitter:card"]')) document.head.appendChild(twitterCard);
     
-    // Canonical URL - use primary domain
+    const twitterTitle = document.querySelector('meta[name="twitter:title"]') || document.createElement('meta');
+    twitterTitle.name = "twitter:title";
+    twitterTitle.content = "Fanan Team - VST Plugins & MIDI Tools";
+    if (!document.querySelector('meta[name="twitter:title"]')) document.head.appendChild(twitterTitle);
+    
+    const twitterDescription = document.querySelector('meta[name="twitter:description"]') || document.createElement('meta');
+    twitterDescription.name = "twitter:description";
+    twitterDescription.content = "Professional VST plugins and MIDI tools for music producers. Free and premium audio software.";
+    if (!document.querySelector('meta[name="twitter:description"]')) document.head.appendChild(twitterDescription);
+    
+    // Canonical URL - PRIMARY DOMAIN fananteam.site
     let canonical = document.querySelector('link[rel="canonical"]');
     if (!canonical) {
       canonical = document.createElement('link');
       canonical.rel = "canonical";
       document.head.appendChild(canonical);
     }
-    canonical.href = "https://fanan-team-com.base44.app";
+    canonical.href = PRIMARY_DOMAIN;
     
     // Site name for better branding
     const ogSiteName = document.querySelector('meta[property="og:site_name"]') || document.createElement('meta');
     ogSiteName.setAttribute('property', 'og:site_name');
     ogSiteName.content = "Fanan Team";
     if (!document.querySelector('meta[property="og:site_name"]')) document.head.appendChild(ogSiteName);
+    
+    // Author meta
+    const metaAuthor = document.querySelector('meta[name="author"]') || document.createElement('meta');
+    metaAuthor.name = "author";
+    metaAuthor.content = "Fanan Team";
+    if (!document.querySelector('meta[name="author"]')) document.head.appendChild(metaAuthor);
+    
+    // Structured data for Google (JSON-LD)
+    let structuredData = document.querySelector('script[type="application/ld+json"]');
+    if (!structuredData) {
+      structuredData = document.createElement('script');
+      structuredData.type = "application/ld+json";
+      document.head.appendChild(structuredData);
+    }
+    structuredData.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Fanan Team",
+      "url": PRIMARY_DOMAIN,
+      "logo": "https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team-3/public/images/fanan_logo.png",
+      "description": "Professional VST plugins and MIDI tools for music production",
+      "sameAs": [],
+      "offers": {
+        "@type": "AggregateOffer",
+        "priceCurrency": "USD",
+        "lowPrice": "0",
+        "highPrice": "25",
+        "offerCount": "50+"
+      }
+    });
     
   }, []);
   

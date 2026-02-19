@@ -62,6 +62,7 @@ import Concordia from './pages/Concordia';
 import ContactUs from './pages/ContactUs';
 import Dashboard from './pages/Dashboard';
 import Djup from './pages/Djup';
+import DynamicPack from './pages/DynamicPack';
 import FreePack from './pages/FreePack';
 import GalaDuo from './pages/GalaDuo';
 import GalaXL from './pages/GalaXL';
@@ -109,7 +110,6 @@ import tropicanaFun from './pages/tropicana-fun';
 import villain from './pages/villain';
 import yowlseq2 from './pages/yowlseq-2';
 import zoe2 from './pages/zoe-2';
-import DynamicPack from './pages/DynamicPack';
 import __Layout from './Layout.jsx';
 
 
@@ -129,6 +129,7 @@ export const PAGES = {
     "ContactUs": ContactUs,
     "Dashboard": Dashboard,
     "Djup": Djup,
+    "DynamicPack": DynamicPack,
     "FreePack": FreePack,
     "GalaDuo": GalaDuo,
     "GalaXL": GalaXL,
@@ -176,7 +177,6 @@ export const PAGES = {
     "villain": villain,
     "yowlseq-2": yowlseq2,
     "zoe-2": zoe2,
-    "DynamicPack": DynamicPack,
 }
 
 export const pagesConfig = {
