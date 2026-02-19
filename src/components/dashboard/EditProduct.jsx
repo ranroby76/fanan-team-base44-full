@@ -284,11 +284,23 @@ export default function EditProduct({ product, onClose }) {
                 <div key={i} className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-muted/20 rounded">
                   <div className="space-y-2">
                     <Label>Download link {i + 1} label</Label>
-                    <Input {...register(`download_links.${i}.label`)} placeholder={`e.g. Download VST (Win)`} />
+                    <Controller
+                      control={control}
+                      name={`download_links.${i}.label`}
+                      render={({ field }) => (
+                        <Input {...field} value={field.value || ""} placeholder={`e.g. Download VST (Win)`} />
+                      )}
+                    />
                   </div>
                   <div className="space-y-2">
                     <Label>Download link {i + 1}</Label>
-                    <Input {...register(`download_links.${i}.url`)} placeholder="https://..." />
+                    <Controller
+                      control={control}
+                      name={`download_links.${i}.url`}
+                      render={({ field }) => (
+                        <Input {...field} value={field.value || ""} placeholder="https://..." />
+                      )}
+                    />
                   </div>
                 </div>
               ))}
