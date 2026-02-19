@@ -60,7 +60,22 @@ export default function EditProduct({ product, onClose }) {
 
   // Reset form when product changes
   useEffect(() => {
-    reset(defaultValues);
+    const newDefaults = {
+      ...product,
+      title: product.title || "",
+      short_description: product.short_description || "",
+      pack: product.pack || "Mad MIDI Machines",
+      buy_link: product.buy_link || "/BuyNow",
+      demo_link: product.demo_link || "",
+      page_slug: product.page_slug || "",
+      long_description: product.long_description || "",
+      supported_audio_formats: product.supported_audio_formats || "",
+      supported_video_formats: product.supported_video_formats || "",
+      formats: product.formats || [],
+      download_links: ensureArraySize(product.download_links, 4, { label: "", url: "" }),
+      youtube_links: ensureArraySize(product.youtube_links, 4, ""),
+    };
+    reset(newDefaults);
     setImage1(product.main_image || "");
     setGalleryImages(ensureArraySize(product.gallery_images, 6, ""));
   }, [product, reset]);
