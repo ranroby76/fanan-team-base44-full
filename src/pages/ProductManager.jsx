@@ -72,12 +72,33 @@ export default function ProductManager() {
         return base44.entities.PackPrice.create({ pack_name: packName, price: parseFloat(price) });
       }
     },
+    onMutate: async ({ packName, price }) => {
+      await queryClient.cancelQueries({ queryKey: ["packPrices"] });
+      const previousPrices = queryClient.getQueryData(["packPrices"]);
+      
+      queryClient.setQueryData(["packPrices"], (old) => {
+        if (!old) return [];
+        const exists = old.find(p => p.pack_name === packName);
+        if (exists) {
+          return old.map(p => p.pack_name === packName ? { ...p, price: parseFloat(price) } : p);
+        } else {
+          return [...old, { pack_name: packName, price: parseFloat(price), id: 'temp-' + Date.now() }];
+        }
+      });
+      
+      return { previousPrices };
+    },
     onSuccess: () => {
-      queryClient.invalidateQueries(["packPrices"]);
       toast.success("Prices saved successfully!");
     },
-    onError: (error) => {
+    onError: (error, variables, context) => {
+      if (context?.previousPrices) {
+        queryClient.setQueryData(["packPrices"], context.previousPrices);
+      }
       toast.error("Failed to save prices: " + error.message);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["packPrices"] });
     }
   });
 
