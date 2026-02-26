@@ -7,6 +7,7 @@ import PackPurchaseCard from "@/components/PackPurchaseCard";
 
 // Hardcoded packs with their logos
 const HARDCODED_PACKS = [
+  { name: "Colosseum", logo: "https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team/public/images/colosseum_logo.png", defaultPrice: 20.00 },
   { name: "Mad MIDI Machines", logo: "https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team/public/images/mad%20midi%20machines.png", defaultPrice: 22.00 },
   { name: "Max Pack", logo: "https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team/public/images/pro%20pack.png", defaultPrice: 12.00 },
 ];

@@ -119,7 +119,7 @@ export default function ProductManager() {
 
   // Get all unique packs from both hardcoded and database
   const packs = React.useMemo(() => {
-    const hardcodedPacks = ["Mad MIDI Machines", "Max! Pack", "Free Pack"];
+    const hardcodedPacks = ["Colosseum", "Mad MIDI Machines", "Max! Pack", "Free Pack"];
     const dbPacks = (prices || []).map(p => p.pack_name);
     return [...new Set([...hardcodedPacks, ...dbPacks])];
   }, [prices]);

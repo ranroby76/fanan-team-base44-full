@@ -15,6 +15,7 @@ export default function Layout({ children, currentPageName }) {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const [user, setUser] = React.useState(null);
   const [productLinks, setProductLinks] = React.useState([
+    { name: "Colosseum", path: "/ColosseumPack" },
     { name: "Mad MIDI Machines", path: "/MadMidiMachinePack" },
     { name: "Max! Pack", path: "/MaxPack" },
     { name: "Free Pack", path: "/FreePack" },
@@ -29,6 +30,7 @@ export default function Layout({ children, currentPageName }) {
     base44.entities.PackPrice.list()
       .then(packs => {
         const hardcodedPacks = [
+          { name: "Colosseum", path: "/ColosseumPack" },
           { name: "Mad MIDI Machines", path: "/MadMidiMachinePack" },
           { name: "Max! Pack", path: "/MaxPack" },
           { name: "Free Pack", path: "/FreePack" },
