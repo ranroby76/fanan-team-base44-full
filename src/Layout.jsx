@@ -1,7 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import { base44 } from "@/api/base44Client";
-import { Menu, X, Home, VenetianMask, List, HelpCircle, ShoppingCart, Mail, Package, ChevronDown, User, LogIn, LogOut } from "lucide-react";
+import { Menu, X, Home, VenetianMask, List, HelpCircle, ShoppingCart, Mail, Package, ChevronDown, User, LogIn, LogOut, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -14,6 +15,18 @@ import ScrollToTop from "@/components/ScrollToTop";
 export default function Layout({ children, currentPageName }) {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const [user, setUser] = React.useState(null);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isRoot = location.pathname === "/";
+
+  React.useEffect(() => {
+    // Add viewport-fit=cover
+    let meta = document.querySelector('meta[name="viewport"]');
+    if (meta && !meta.getAttribute('content').includes('viewport-fit=cover')) {
+      meta.setAttribute('content', meta.getAttribute('content') + ', viewport-fit=cover');
+    }
+  }, []);
+
   const [productLinks, setProductLinks] = React.useState([
     { name: "Colosseum", path: "/ColosseumPack" },
     { name: "Mad MIDI Machines", path: "/MadMidiMachinePack" },
@@ -90,15 +103,15 @@ export default function Layout({ children, currentPageName }) {
           --radius: 0.5rem;
         }
       `}</style>
-      <header className="bg-primary text-primary-foreground shadow-lg sticky top-0 z-50">
-        <nav className="container mx-auto px-4 py-3">
-          <div className="flex items-center justify-between">
-            <Link to="/" className="text-2xl font-bold text-primary-foreground hover:opacity-90 transition-colors flex items-center gap-2">
-              <img src="https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team-3/public/images/fanan_logo.png" alt="Fanan Team" className="h-10 w-auto" />
-            </Link>
+      <header className="bg-primary text-primary-foreground shadow-lg sticky top-0 z-50 pt-[env(safe-area-inset-top)]">
+        {/* Desktop Nav */}
+        <nav className="hidden md:flex container mx-auto px-4 py-3 items-center justify-between">
+          <Link to="/" className="text-2xl font-bold text-primary-foreground hover:opacity-90 transition-colors flex items-center gap-2">
+            <img src="https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team-3/public/images/fanan_logo.png" alt="Fanan Team" className="h-10 w-auto" />
+          </Link>
 
-            <div className="hidden md:flex items-center space-x-2">
-              <Button variant="ghost" asChild className={`hover:bg-primary-foreground/10 text-primary-foreground ${currentPageName === 'Home' ? 'bg-primary-foreground/10' : ''}`}>
+          <div className="flex items-center space-x-2">
+            <Button variant="ghost" asChild className={`hover:bg-primary-foreground/10 text-primary-foreground ${currentPageName === 'Home' ? 'bg-primary-foreground/10' : ''}`}>
                 <Link to="/" className="flex items-center gap-2">
                   <Home size={18} />
                   <span>Home</span>
@@ -168,17 +181,31 @@ export default function Layout({ children, currentPageName }) {
                   <span>Login</span>
                 </Button>
               )}
-            </div>
-
-            <button
-              className="md:hidden text-primary-foreground"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
           </div>
+        </nav>
 
-          {mobileMenuOpen && (
+        {/* Mobile Header Nav */}
+        <nav className="md:hidden flex items-center justify-between px-4 h-16">
+          {!isRoot ? (
+            <button onClick={() => navigate(-1)} className="p-2 -ml-2 text-primary-foreground">
+              <ArrowLeft size={24} />
+            </button>
+          ) : (
+            <div className="w-10"></div>
+          )}
+          <Link to="/" className="font-bold flex items-center gap-2">
+            <img src="https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team-3/public/images/fanan_logo.png" alt="Fanan Team" className="h-8 w-auto" />
+          </Link>
+          <button
+            className="p-2 -mr-2 text-primary-foreground"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </nav>
+
+        {/* Mobile Menu Content */}
+        {mobileMenuOpen && (
             <div className="md:hidden mt-4 pb-4 space-y-2">
               <Link
                 to="/"
@@ -248,11 +275,44 @@ export default function Layout({ children, currentPageName }) {
         </nav>
       </header>
 
-      <main className="flex-grow py-8">
-        {children}
+      <main className="flex-grow py-8 pb-20 md:pb-8 relative overflow-hidden">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={location.pathname}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.2 }}
+          >
+            {children}
+          </motion.div>
+        </AnimatePresence>
       </main>
 
-      <footer className="bg-secondary text-secondary-foreground py-8 mt-12">
+      {/* Mobile Navbar */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-card border-t z-50 pb-[env(safe-area-inset-bottom)]">
+        <div className="flex justify-around items-center h-16 px-2">
+          <Link to="/" className={`flex flex-col items-center justify-center w-full h-full text-xs font-medium ${location.pathname === '/' ? 'text-primary' : 'text-muted-foreground hover:text-primary'}`}>
+            <Home size={20} className="mb-1" />
+            Home
+          </Link>
+          <Link to="/PacksList" className={`flex flex-col items-center justify-center w-full h-full text-xs font-medium ${location.pathname === '/PacksList' ? 'text-primary' : 'text-muted-foreground hover:text-primary'}`}>
+            <Package size={20} className="mb-1" />
+            Products
+          </Link>
+          <Link to={user ? "/MyPurchases" : "/ProductManager"} onClick={(e) => {
+            if (!user) {
+              e.preventDefault();
+              base44.auth.redirectToLogin("/MyPurchases");
+            }
+          }} className={`flex flex-col items-center justify-center w-full h-full text-xs font-medium ${location.pathname === '/MyPurchases' ? 'text-primary' : 'text-muted-foreground hover:text-primary'}`}>
+            <ShoppingCart size={20} className="mb-1" />
+            Purchases
+          </Link>
+        </div>
+      </nav>
+
+      <footer className="bg-secondary text-secondary-foreground py-8 mt-12 pb-[calc(2rem+env(safe-area-inset-bottom))] md:pb-8">
         <div className="container mx-auto px-4 text-center">
           <img src="https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team-3/public/images/fanan_logo.png" alt="Fanan Team logo" className="mx-auto h-10 w-auto mb-3 opacity-90" />
           <p className="text-secondary-foreground">
