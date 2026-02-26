@@ -32,6 +32,17 @@ export default function BuyNow() {
       });
   }, []);
 
+  const { data: user } = useQuery({
+    queryKey: ["currentUser"],
+    queryFn: () => base44.auth.me().catch(() => null),
+  });
+
+  const { data: userPurchases = [] } = useQuery({
+    queryKey: ["userPurchases", user?.email],
+    queryFn: () => base44.entities.Purchase.filter({ customer_email: user.email }),
+    enabled: !!user?.email,
+  });
+
   const { data: dbPacks = [] } = useQuery({
     queryKey: ["packPrices"],
     queryFn: () => base44.entities.PackPrice.list(),
@@ -136,18 +147,34 @@ export default function BuyNow() {
         />
       </div>
 
+      {!user && (
+        <div className="text-center mb-8 p-4 bg-primary/10 rounded-lg max-w-2xl mx-auto border border-primary/20">
+          <p className="text-sm">
+            <strong className="text-primary">Already a customer?</strong>{" "}
+            Log in to get a <span className="font-bold">50% discount</span> on additional licenses for packs you already own!
+          </p>
+        </div>
+      )}
+
       {/* Products Grid */}
       <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-12">
-        {allPaidPacks.map((pack) => (
-          <PackPurchaseCard
-            key={pack.name}
-            packName={pack.name}
-            price={pack.price}
-            logoUrl={pack.logo}
-            userCountry={userCountry}
-            paypalError={paypalError}
-          />
-        ))}
+        {allPaidPacks.map((pack) => {
+          const hasPurchased = userPurchases.some(p => p.pack_name.toLowerCase().replace(/[^a-z0-9]/g, '') === pack.name.toLowerCase().replace(/[^a-z0-9]/g, ''));
+          const finalPrice = hasPurchased ? pack.price * 0.5 : pack.price;
+          
+          return (
+            <PackPurchaseCard
+              key={pack.name}
+              packName={pack.name}
+              price={finalPrice}
+              originalPrice={pack.price}
+              hasDiscount={hasPurchased}
+              logoUrl={pack.logo}
+              userCountry={userCountry}
+              paypalError={paypalError}
+            />
+          );
+        })}
       </div>
 
       {/* Help Section */}

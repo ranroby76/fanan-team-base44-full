@@ -34,6 +34,8 @@ const generateSerial = (packName, machineId) => {
 export default function PackPurchaseCard({ 
   packName, 
   price, 
+  originalPrice,
+  hasDiscount,
   logoUrl, 
   userCountry, 
   paypalError 
@@ -105,7 +107,21 @@ export default function PackPurchaseCard({
         )}
       </div>
       
-      <p className="text-5xl font-bold text-primary text-center mb-6">${price.toFixed(2)}</p>
+      <div className="text-center mb-6">
+        {hasDiscount && (
+          <div className="mb-2 flex justify-center">
+            <span className="text-sm font-bold bg-green-500/20 text-green-500 px-3 py-1 rounded-full border border-green-500/50">
+              50% OFF - Additional License
+            </span>
+          </div>
+        )}
+        <div className="flex items-center justify-center gap-3">
+          {hasDiscount && originalPrice && (
+            <p className="text-3xl font-bold text-muted-foreground line-through">${originalPrice.toFixed(2)}</p>
+          )}
+          <p className="text-5xl font-bold text-primary">${price.toFixed(2)}</p>
+        </div>
+      </div>
       
       <div className="space-y-4">
         <div>

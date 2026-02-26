@@ -48,6 +48,17 @@ export default function ProductPage({
   packLink = "/PacksList",
   longDescription
 }) {
+  const { data: user } = useQuery({
+    queryKey: ["currentUser"],
+    queryFn: () => base44.auth.me().catch(() => null),
+  });
+
+  const { data: userPurchases = [] } = useQuery({
+    queryKey: ["userPurchases", user?.email],
+    queryFn: () => base44.entities.Purchase.filter({ customer_email: user.email }),
+    enabled: !!user?.email,
+  });
+
   // Fetch dynamic data if available - use direct entity filter for speed
   const { data: dbProduct } = useQuery({
     queryKey: ['product', slug || productName],
@@ -126,7 +137,18 @@ export default function ProductPage({
     p.pack_name === finalProduct.pack || 
     p.pack_name.replace(/[!]/g, '') === finalProduct.pack.replace(/[!]/g, '')
   );
-  const displayPrice = finalProduct.pack === "Free Pack" ? "Free" : (packPrice ? `$${packPrice.price.toFixed(2)}` : (finalProduct.price || price));
+  
+  const parsePrice = (p) => {
+    if (!p) return NaN;
+    if (typeof p === 'number') return p;
+    return parseFloat(p.toString().replace('$', ''));
+  };
+  
+  const hasPurchased = userPurchases.some(p => p.pack_name && finalProduct.pack && p.pack_name.toLowerCase().replace(/[^a-z0-9]/g, '') === finalProduct.pack.toLowerCase().replace(/[^a-z0-9]/g, ''));
+  const basePriceValue = packPrice ? packPrice.price : (parsePrice(finalProduct.price) || parsePrice(price));
+  const discountedPriceValue = hasPurchased && !isNaN(basePriceValue) ? basePriceValue * 0.5 : basePriceValue;
+  
+  const displayPrice = finalProduct.pack === "Free Pack" ? "Free" : (!isNaN(discountedPriceValue) ? `$${discountedPriceValue.toFixed(2)}` : (finalProduct.price || price));
 
   // Reset main image when product changes - use useEffect to sync with finalProduct
   const [mainImage, setMainImage] = useState(null);
@@ -396,7 +418,19 @@ export default function ProductPage({
             <CardContent className="p-6 space-y-6">
               {displayPrice && (
                 <div className="text-center">
-                  <p className="text-4xl font-bold text-primary">{displayPrice}</p>
+                  {hasPurchased && finalProduct.pack !== "Free Pack" && (
+                    <div className="mb-2">
+                      <span className="text-xs font-bold bg-green-500/20 text-green-500 px-2 py-1 rounded-full border border-green-500/50">
+                        50% OFF - Additional License
+                      </span>
+                    </div>
+                  )}
+                  <div className="flex items-center justify-center gap-2">
+                    {hasPurchased && finalProduct.pack !== "Free Pack" && !isNaN(basePriceValue) && (
+                      <span className="text-2xl font-bold text-muted-foreground line-through">${basePriceValue.toFixed(2)}</span>
+                    )}
+                    <p className="text-4xl font-bold text-primary">{displayPrice}</p>
+                  </div>
                 </div>
               )}
 
