@@ -3,7 +3,8 @@ import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Package, Calendar, Key, Mail, LogIn, Trash2 } from "lucide-react";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Package, Calendar, Key, Mail, LogIn, Trash2, UserX } from "lucide-react";
 import { format } from "date-fns";
 import PullToRefresh from "@/components/PullToRefresh";
 
@@ -38,6 +39,16 @@ export default function MyPurchases() {
     mutationFn: (purchaseId) => base44.entities.Purchase.delete(purchaseId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['myPurchases'] });
+    }
+  });
+
+  const deleteAccountMutation = useMutation({
+    mutationFn: () => base44.functions.invoke('deleteAccount'),
+    onSuccess: () => {
+      base44.auth.logout();
+    },
+    onError: (error) => {
+      alert("Failed to delete account: " + error.message);
     }
   });
 
@@ -96,12 +107,39 @@ export default function MyPurchases() {
     <PullToRefresh onRefresh={async () => { await refetch(); }}>
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
-          <div className="mb-8">
-          <h1 className="text-4xl font-bold text-primary mb-2">My Purchases</h1>
-          <p className="text-muted-foreground flex items-center gap-2">
-            <Mail className="w-4 h-4" />
-            {user.email}
-          </p>
+          <div className="mb-8 flex justify-between items-start">
+          <div>
+            <h1 className="text-4xl font-bold text-primary mb-2">My Purchases</h1>
+            <p className="text-muted-foreground flex items-center gap-2">
+              <Mail className="w-4 h-4" />
+              {user.email}
+            </p>
+          </div>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="destructive" size="sm" className="gap-2">
+                <UserX className="w-4 h-4" />
+                <span className="hidden sm:inline">Delete Account</span>
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete your account and all associated purchase data.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction 
+                  onClick={() => deleteAccountMutation.mutate()}
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                >
+                  Delete Account
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
 
         {purchasesLoading ? (

@@ -1,7 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Menu, X, Home, VenetianMask, List, HelpCircle, ShoppingCart, Mail, Package, ChevronDown, User, LogIn, LogOut } from "lucide-react";
+import { Menu, X, Home, VenetianMask, List, HelpCircle, ShoppingCart, Mail, Package, ChevronDown, User, LogIn, LogOut, ArrowLeft } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -14,6 +15,8 @@ import ScrollToTop from "@/components/ScrollToTop";
 export default function Layout({ children, currentPageName }) {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const [user, setUser] = React.useState(null);
+  const location = useLocation();
+  const navigate = useNavigate();
   const [productLinks, setProductLinks] = React.useState([
     { name: "Colosseum", path: "/ColosseumPack" },
     { name: "Mad MIDI Machines", path: "/MadMidiMachinePack" },
@@ -93,9 +96,21 @@ export default function Layout({ children, currentPageName }) {
       <header className="bg-primary text-primary-foreground shadow-lg sticky top-0 z-50">
         <nav className="container mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
-            <Link to="/" className="text-2xl font-bold text-primary-foreground hover:opacity-90 transition-colors flex items-center gap-2">
-              <img src="https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team-3/public/images/fanan_logo.png" alt="Fanan Team" className="h-10 w-auto" />
-            </Link>
+            <div className="flex items-center gap-2">
+              {location.pathname !== "/" && (
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  onClick={() => navigate(-1)} 
+                  className="mr-2 text-primary-foreground md:hidden"
+                >
+                  <ArrowLeft size={24} />
+                </Button>
+              )}
+              <Link to="/" className="text-2xl font-bold text-primary-foreground hover:opacity-90 transition-colors flex items-center gap-2">
+                <img src="https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team-3/public/images/fanan_logo.png" alt="Fanan Team" className="h-10 w-auto" />
+              </Link>
+            </div>
 
             <div className="hidden md:flex items-center space-x-2">
               <Button variant="ghost" asChild className={`hover:bg-primary-foreground/10 text-primary-foreground ${currentPageName === 'Home' ? 'bg-primary-foreground/10' : ''}`}>
@@ -248,8 +263,19 @@ export default function Layout({ children, currentPageName }) {
         </nav>
       </header>
 
-      <main className="flex-grow py-8 pb-24 md:pb-8">
-        {children}
+      <main className="flex-grow py-8 pb-24 md:pb-8 overflow-hidden">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={location.pathname}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.2 }}
+            className="h-full"
+          >
+            {children}
+          </motion.div>
+        </AnimatePresence>
       </main>
 
       {/* Bottom Navigation for Mobile */}
