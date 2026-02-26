@@ -248,11 +248,40 @@ export default function Layout({ children, currentPageName }) {
         </nav>
       </header>
 
-      <main className="flex-grow py-8">
+      <main className="flex-grow py-8 pb-24 md:pb-8">
         {children}
       </main>
 
-      <footer className="bg-secondary text-secondary-foreground py-8 mt-12">
+      {/* Bottom Navigation for Mobile */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-card/95 backdrop-blur-sm border-t border-border flex justify-around items-center p-2 z-50 safe-area-pb">
+        <Link to="/" className={`flex flex-col items-center p-2 w-full transition-colors ${currentPageName === 'Home' ? 'text-primary' : 'text-muted-foreground hover:text-primary/80'}`}>
+          <Home size={20} />
+          <span className="text-[10px] mt-1 font-medium">Home</span>
+        </Link>
+        <Link to="/PacksList" className={`flex flex-col items-center p-2 w-full transition-colors ${currentPageName === 'PacksList' ? 'text-primary' : 'text-muted-foreground hover:text-primary/80'}`}>
+          <Package size={20} />
+          <span className="text-[10px] mt-1 font-medium">Packs</span>
+        </Link>
+        <Link to="/BuyNow" className={`flex flex-col items-center p-2 w-full transition-colors ${currentPageName === 'BuyNow' ? 'text-primary' : 'text-muted-foreground hover:text-primary/80'}`}>
+          <ShoppingCart size={20} />
+          <span className="text-[10px] mt-1 font-medium">Store</span>
+        </Link>
+        <Link 
+          to={user ? "/MyPurchases" : "/"} 
+          onClick={(e) => { 
+            if(!user) { 
+              e.preventDefault(); 
+              base44.auth.redirectToLogin(window.location.pathname); 
+            } 
+          }} 
+          className={`flex flex-col items-center p-2 w-full transition-colors ${currentPageName === 'MyPurchases' ? 'text-primary' : 'text-muted-foreground hover:text-primary/80'}`}
+        >
+           <User size={20} />
+           <span className="text-[10px] mt-1 font-medium">{user ? "Purchases" : "Login"}</span>
+        </Link>
+      </div>
+
+      <footer className="bg-secondary text-secondary-foreground py-8 md:mt-12 mb-16 md:mb-0">
         <div className="container mx-auto px-4 text-center">
           <img src="https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team-3/public/images/fanan_logo.png" alt="Fanan Team logo" className="mx-auto h-10 w-auto mb-3 opacity-90" />
           <p className="text-secondary-foreground">

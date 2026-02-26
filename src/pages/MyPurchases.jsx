@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Package, Calendar, Key, Mail, LogIn, Trash2 } from "lucide-react";
 import { format } from "date-fns";
+import PullToRefresh from "@/components/PullToRefresh";
 
 export default function MyPurchases() {
   const [user, setUser] = React.useState(null);
@@ -23,7 +24,7 @@ export default function MyPurchases() {
       });
   }, []);
 
-  const { data: purchases = [], isLoading: purchasesLoading } = useQuery({
+  const { data: purchases = [], isLoading: purchasesLoading, refetch } = useQuery({
     queryKey: ['myPurchases', user?.email],
     queryFn: async () => {
       if (!user?.email) return [];
@@ -92,9 +93,10 @@ export default function MyPurchases() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="mb-8">
+    <PullToRefresh onRefresh={async () => { await refetch(); }}>
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="mb-8">
           <h1 className="text-4xl font-bold text-primary mb-2">My Purchases</h1>
           <p className="text-muted-foreground flex items-center gap-2">
             <Mail className="w-4 h-4" />
@@ -170,8 +172,9 @@ export default function MyPurchases() {
               </Card>
             ))}
           </div>
-        )}
+          )}
+        </div>
       </div>
-    </div>
+    </PullToRefresh>
   );
 }
