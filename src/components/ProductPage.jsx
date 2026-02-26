@@ -144,7 +144,8 @@ export default function ProductPage({
     return parseFloat(p.toString().replace('$', ''));
   };
   
-  const hasPurchased = userPurchases.some(p => p.pack_name && finalProduct.pack && p.pack_name.toLowerCase().replace(/[^a-z0-9]/g, '') === finalProduct.pack.toLowerCase().replace(/[^a-z0-9]/g, ''));
+  const normalizePackName = (name) => (name || '').toLowerCase().replace(/pack/g, '').replace(/[^a-z0-9]/g, '');
+  const hasPurchased = userPurchases.some(p => normalizePackName(p.pack_name) === normalizePackName(finalProduct.pack));
   const basePriceValue = packPrice ? packPrice.price : (parsePrice(finalProduct.price) || parsePrice(price));
   const discountedPriceValue = hasPurchased && !isNaN(basePriceValue) ? basePriceValue * 0.5 : basePriceValue;
   

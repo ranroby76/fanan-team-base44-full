@@ -48,14 +48,16 @@ export default function BuyNow() {
     queryFn: () => base44.entities.PackPrice.list(),
   });
 
+  const normalizePackName = (name) => (name || '').toLowerCase().replace(/pack/g, '').replace(/[^a-z0-9]/g, '');
+
   // Build list of all paid packs (hardcoded + dynamic from DB)
   const allPaidPacks = React.useMemo(() => {
-    const hardcodedNames = HARDCODED_PACKS.map(p => p.name.toLowerCase().replace(/[^a-z0-9]/g, ''));
+    const hardcodedNames = HARDCODED_PACKS.map(p => normalizePackName(p.name));
     
     // Get hardcoded packs with prices from DB
     const hardcodedWithPrices = HARDCODED_PACKS.map(pack => {
       const dbPrice = dbPacks.find(p => 
-        p.pack_name.toLowerCase().replace(/[^a-z0-9]/g, '') === pack.name.toLowerCase().replace(/[^a-z0-9]/g, '')
+        normalizePackName(p.pack_name) === normalizePackName(pack.name)
       );
       return {
         name: pack.name,
@@ -67,8 +69,9 @@ export default function BuyNow() {
     // Add new packs from database that aren't hardcoded and aren't free
     const dynamicPacks = dbPacks
       .filter(p => {
-        const normalizedName = p.pack_name.toLowerCase().replace(/[^a-z0-9]/g, '');
-        const isFree = normalizedName.includes('free') || p.price === 0;
+        const normalizedName = normalizePackName(p.pack_name);
+        const originalNormalized = p.pack_name.toLowerCase().replace(/[^a-z0-9]/g, '');
+        const isFree = originalNormalized.includes('free') || p.price === 0;
         return !hardcodedNames.includes(normalizedName) && !isFree;
       })
       .map(p => ({
@@ -159,7 +162,7 @@ export default function BuyNow() {
       {/* Products Grid */}
       <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-12">
         {allPaidPacks.map((pack) => {
-          const hasPurchased = userPurchases.some(p => p.pack_name.toLowerCase().replace(/[^a-z0-9]/g, '') === pack.name.toLowerCase().replace(/[^a-z0-9]/g, ''));
+          const hasPurchased = userPurchases.some(p => normalizePackName(p.pack_name) === normalizePackName(pack.name));
           const finalPrice = hasPurchased ? pack.price * 0.5 : pack.price;
           
           return (
