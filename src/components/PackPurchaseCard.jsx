@@ -137,7 +137,7 @@ export default function PackPurchaseCard({
         
         <div>
           <p className="text-sm font-semibold mb-2">Serial Number</p>
-          <p className="text-xs text-muted-foreground mb-3">Your serial will be sent to your email and shown here. You can always log in with your email and see your purchases and serials in the "My Purchases" page.</p>
+          <p className="text-xs text-muted-foreground mb-3">Your serial will be shown here. You can always log in with your email and see your purchases and serials in the "My Purchases" page.</p>
           <Input
             placeholder=""
             value={serial}
