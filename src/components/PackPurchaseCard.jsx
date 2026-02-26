@@ -82,10 +82,10 @@ export default function PackPurchaseCard({
           packName
         });
 
-        alert(`Payment successful! Your serial: ${generatedSerial} has been sent to ${customerEmail}`);
+        alert(`Payment successful! Your serial: ${generatedSerial}`);
       } catch (error) {
         console.error("Email send error:", error);
-        alert(`Payment successful! Your serial: ${generatedSerial}\n(Email notification failed, but your serial is displayed here)`);
+        alert(`Payment successful! Your serial: ${generatedSerial}`);
       }
     } catch (error) {
       console.error("Payment processing error:", error);
