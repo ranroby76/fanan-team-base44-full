@@ -22,6 +22,9 @@ const generateSerial = (packName, machineId) => {
     return Math.floor(((((((id + 8354) * 2) + 1691) * 2) - 9097) * 0.1)).toString();
   } else if (packName === "Max Pack" || packName === "Max! Pack") {
     return (((((id + 7541) * 2) + 2001) * 2) - 9002).toString();
+  } else if (packName === "Colosseum" || packName === "Colosseum Pack") {
+    // Formula: (((((ID+7999)*2)+1111)*2)-9392)
+    return (((((id + 7999) * 2) + 1111) * 2) - 9392).toString();
   } else {
     // Default formula for new packs - simple transformation
     return Math.floor(((id + 5000) * 3) + 7777).toString();
