@@ -155,7 +155,7 @@ export default function BuyNow() {
         <div className="text-center mb-8 p-4 bg-primary/10 rounded-lg max-w-2xl mx-auto border border-primary/20">
           <p className="text-sm">
             <strong className="text-primary">Already a customer?</strong>{" "}
-            Log in to get a <span className="font-bold">50% discount</span> on additional licenses for packs and flagship products like Colosseum that you already own!
+            Log in to get a <span className="font-bold">50% discount</span> on additional licenses for packs you already own!
           </p>
         </div>
       )}
