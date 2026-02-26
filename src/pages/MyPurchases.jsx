@@ -3,9 +3,8 @@ import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Package, Calendar, Key, Mail, LogIn, Trash2, UserX } from "lucide-react";
+import { Package, Calendar, Key, Mail, LogIn, Trash2 } from "lucide-react";
 import { format } from "date-fns";
-import PullToRefresh from "@/components/PullToRefresh";
 
 export default function MyPurchases() {
   const [user, setUser] = React.useState(null);
@@ -24,7 +23,7 @@ export default function MyPurchases() {
       });
   }, []);
 
-  const { data: purchases = [], isLoading: purchasesLoading, refetch } = useQuery({
+  const { data: purchases = [], isLoading: purchasesLoading } = useQuery({
     queryKey: ['myPurchases', user?.email],
     queryFn: async () => {
       if (!user?.email) return [];
@@ -93,33 +92,14 @@ export default function MyPurchases() {
   }
 
   return (
-    <PullToRefresh onRefresh={async () => await refetch()}>
-      <div className="container mx-auto px-4 py-8 min-h-screen">
-        <div className="max-w-4xl mx-auto">
-        <div className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div>
-            <h1 className="text-4xl font-bold text-primary mb-2">My Purchases</h1>
-            <p className="text-muted-foreground flex items-center gap-2">
-              <Mail className="w-4 h-4" />
-              {user.email}
-            </p>
-          </div>
-          <Button
-            variant="outline"
-            className="text-destructive border-destructive hover:bg-destructive/10"
-            onClick={async () => {
-              if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-                try {
-                  await base44.entities.User.delete(user.id);
-                  await base44.auth.logout();
-                } catch (err) {
-                  alert('Could not delete account. Please try again or contact support.');
-                }
-              }
-            }}
-          >
-            <UserX className="w-4 h-4 mr-2" /> Delete Account
-          </Button>
+    <div className="container mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-primary mb-2">My Purchases</h1>
+          <p className="text-muted-foreground flex items-center gap-2">
+            <Mail className="w-4 h-4" />
+            {user.email}
+          </p>
         </div>
 
         {purchasesLoading ? (
@@ -193,6 +173,5 @@ export default function MyPurchases() {
         )}
       </div>
     </div>
-    </PullToRefresh>
   );
 }

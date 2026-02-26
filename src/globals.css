@@ -1,4 +1,4 @@
-
+css
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -39,10 +39,5 @@
   }
   body {
     @apply bg-background text-foreground;
-    overscroll-behavior-y: none;
-  }
-  button, a, nav, [role="button"], [role="tab"], .nav-item {
-    user-select: none;
-    -webkit-user-select: none;
   }
 }

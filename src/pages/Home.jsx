@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import PullToRefresh from "@/components/PullToRefresh";
 
 // SEO Meta Tags Component - Optimized for fananteam.site
 const SEOHead = () => {
@@ -166,7 +165,7 @@ const fixImageUrl = (url) => {
 
 export default function Home() {
   // Fetch packs from database
-  const { data: dbPacks = [], refetch } = useQuery({
+  const { data: dbPacks = [] } = useQuery({
     queryKey: ['packPrices'],
     queryFn: () => base44.entities.PackPrice.list(),
     staleTime: 60000,
@@ -192,8 +191,7 @@ export default function Home() {
   }, [dbPacks]);
 
   return (
-    <PullToRefresh onRefresh={async () => await refetch()}>
-    <div className="space-y-12 animate-fade-in min-h-screen">
+    <div className="space-y-12 animate-fade-in">
       <SEOHead />
       <section className="relative flex justify-center w-full mx-auto">
         <div className="w-full">
@@ -304,6 +302,5 @@ export default function Home() {
         </Link>
       </section>
     </div>
-    </PullToRefresh>
   );
 }
