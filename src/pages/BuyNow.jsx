@@ -143,7 +143,7 @@ export default function BuyNow() {
       </div>
 
       {/* Store Logo */}
-      <div className="flex justify-center mb-12">
+      <div className="flex justify-center mb-8">
         <img 
           src="https://raw.githubusercontent.com/ranroby76/studio-fanan-team/fanan-team/public/images/fanan_store_logo.png" 
           alt="Fanan Store" 
@@ -151,11 +151,27 @@ export default function BuyNow() {
         />
       </div>
 
+      {/* Policy Announcement */}
+      <div className="max-w-3xl mx-auto mb-8 bg-card border-2 border-primary/40 rounded-xl p-6 text-center shadow-lg relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent"></div>
+        <h2 className="text-2xl font-bold text-primary mb-3 uppercase tracking-wider">
+          50% Discount Policy
+        </h2>
+        <p className="text-foreground/90 text-lg mb-2">
+          Need an additional license for a pack you already own?
+        </p>
+        <p className="text-foreground/80">
+          We offer a <strong className="text-primary font-bold text-xl">50% discount</strong> on second and subsequent purchases of the same pack!
+          <br/>
+          Simply ensure you are logged in with the email used for your initial purchase, and the discount will be applied automatically below.
+        </p>
+      </div>
+
       {!user && (
-        <div className="text-center mb-8 p-4 bg-primary/10 rounded-lg max-w-2xl mx-auto border border-primary/20">
+        <div className="text-center mb-10 p-4 bg-primary/10 rounded-lg max-w-md mx-auto border border-primary/20">
           <p className="text-sm">
-            <strong className="text-primary">Already a customer?</strong>{" "}
-            Log in to get a <span className="font-bold">50% discount</span> on additional licenses for packs you already own!
+            <strong className="text-primary">Not logged in?</strong>{" "}
+            Please log in to your account to claim your returning customer discounts.
           </p>
         </div>
       )}

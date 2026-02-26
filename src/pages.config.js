@@ -56,7 +56,6 @@ import Betelgeuse from './pages/Betelgeuse';
 import Bjorn from './pages/Bjorn';
 import Bonnie from './pages/Bonnie';
 import Brunetta from './pages/Brunetta';
-import BuyNow from './pages/BuyNow';
 import Callisto from './pages/Callisto';
 import Concordia from './pages/Concordia';
 import ContactUs from './pages/ContactUs';
@@ -110,6 +109,7 @@ import tropicanaFun from './pages/tropicana-fun';
 import villain from './pages/villain';
 import yowlseq2 from './pages/yowlseq-2';
 import zoe2 from './pages/zoe-2';
+import BuyNow from './pages/BuyNow';
 import __Layout from './Layout.jsx';
 
 
@@ -123,7 +123,6 @@ export const PAGES = {
     "Bjorn": Bjorn,
     "Bonnie": Bonnie,
     "Brunetta": Brunetta,
-    "BuyNow": BuyNow,
     "Callisto": Callisto,
     "Concordia": Concordia,
     "ContactUs": ContactUs,
@@ -177,6 +176,7 @@ export const PAGES = {
     "villain": villain,
     "yowlseq-2": yowlseq2,
     "zoe-2": zoe2,
+    "BuyNow": BuyNow,
 }
 
 export const pagesConfig = {
