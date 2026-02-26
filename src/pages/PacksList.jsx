@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
+import PullToRefresh from "@/components/PullToRefresh";
 
 // Hardcoded packs with their products
 const HARDCODED_PACKS = [
@@ -34,13 +35,13 @@ const HARDCODED_PACKS = [
 
 export default function PacksList() {
   // Fetch packs and products from database
-  const { data: dbPacks = [] } = useQuery({
+  const { data: dbPacks = [], refetch: refetchPacks } = useQuery({
     queryKey: ['packPrices'],
     queryFn: () => base44.entities.PackPrice.list(),
     staleTime: 60000,
   });
 
-  const { data: allProducts = [], isLoading } = useQuery({
+  const { data: allProducts = [], isLoading, refetch: refetchProducts } = useQuery({
     queryKey: ['allProducts'],
     queryFn: async () => {
       const products = await base44.entities.Product.filter({ is_hidden: { $ne: true } });
@@ -84,7 +85,8 @@ export default function PacksList() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-12 max-w-4xl">
+    <PullToRefresh onRefresh={async () => { await Promise.all([refetchPacks(), refetchProducts()]); }}>
+    <div className="container mx-auto px-4 py-12 max-w-4xl min-h-screen">
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold text-primary mb-4">Plugin Packs List</h1>
         <p className="text-lg text-muted-foreground">
@@ -107,5 +109,6 @@ export default function PacksList() {
         ))}
       </div>
     </div>
+    </PullToRefresh>
   );
 }
