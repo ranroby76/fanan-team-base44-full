@@ -1,12 +1,38 @@
+"use client"
+
 import * as React from "react"
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
 import { Check, ChevronRight, Circle } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import { Drawer, DrawerContent, DrawerTrigger, DrawerTitle } from "@/components/ui/drawer"
+import { useMediaQuery } from "@/components/hooks/use-media-query"
 
-const DropdownMenu = DropdownMenuPrimitive.Root
+const DropdownContext = React.createContext({})
 
-const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger
+const DropdownMenu = ({ children, ...props }) => {
+  const isMobile = useMediaQuery("(max-width: 768px)")
+  const [open, setOpen] = React.useState(false)
+  return (
+    <DropdownContext.Provider value={{ isMobile, open, setOpen }}>
+      {isMobile ? (
+        <Drawer open={open} onOpenChange={setOpen} {...props}>{children}</Drawer>
+      ) : (
+        <DropdownMenuPrimitive.Root open={open} onOpenChange={setOpen} {...props}>{children}</DropdownMenuPrimitive.Root>
+      )}
+    </DropdownContext.Provider>
+  )
+}
+
+const DropdownMenuTrigger = React.forwardRef(({ className, children, asChild, ...props }, ref) => {
+  const { isMobile } = React.useContext(DropdownContext)
+  if (isMobile) {
+    if (asChild) return <DrawerTrigger asChild ref={ref} {...props}>{children}</DrawerTrigger>
+    return <DrawerTrigger ref={ref} className={className} {...props}>{children}</DrawerTrigger>
+  }
+  return <DropdownMenuPrimitive.Trigger asChild={asChild} ref={ref} className={className} {...props}>{children}</DropdownMenuPrimitive.Trigger>
+})
+DropdownMenuTrigger.displayName = DropdownMenuPrimitive.Trigger.displayName
 
 const DropdownMenuGroup = DropdownMenuPrimitive.Group
 
@@ -44,31 +70,68 @@ const DropdownMenuSubContent = React.forwardRef(({ className, ...props }, ref) =
 DropdownMenuSubContent.displayName =
   DropdownMenuPrimitive.SubContent.displayName
 
-const DropdownMenuContent = React.forwardRef(({ className, sideOffset = 4, ...props }, ref) => (
-  <DropdownMenuPrimitive.Portal>
-    <DropdownMenuPrimitive.Content
-      ref={ref}
-      sideOffset={sideOffset}
-      className={cn(
-        "z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md",
-        "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
-        className
-      )}
-      {...props} />
-  </DropdownMenuPrimitive.Portal>
-))
+const DropdownMenuContent = React.forwardRef(({ className, sideOffset = 4, children, ...props }, ref) => {
+  const { isMobile } = React.useContext(DropdownContext)
+  if (isMobile) {
+    return (
+      <DrawerContent className="pb-8">
+        <div className="sr-only"><DrawerTitle>Menu</DrawerTitle></div>
+        <div className="mt-2 flex flex-col gap-1 p-4">
+          {children}
+        </div>
+      </DrawerContent>
+    )
+  }
+  return (
+    <DropdownMenuPrimitive.Portal>
+      <DropdownMenuPrimitive.Content
+        ref={ref}
+        sideOffset={sideOffset}
+        className={cn(
+          "z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md",
+          "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+          className
+        )}
+        {...props}>
+        {children}
+      </DropdownMenuPrimitive.Content>
+    </DropdownMenuPrimitive.Portal>
+  )
+})
 DropdownMenuContent.displayName = DropdownMenuPrimitive.Content.displayName
 
-const DropdownMenuItem = React.forwardRef(({ className, inset, ...props }, ref) => (
-  <DropdownMenuPrimitive.Item
-    ref={ref}
-    className={cn(
-      "relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&>svg]:size-4 [&>svg]:shrink-0",
-      inset && "pl-8",
-      className
-    )}
-    {...props} />
-))
+const DropdownMenuItem = React.forwardRef(({ className, inset, onClick, children, ...props }, ref) => {
+  const { isMobile, setOpen } = React.useContext(DropdownContext)
+  if (isMobile) {
+    return (
+      <button
+        ref={ref}
+        type="button"
+        className={cn("flex w-full items-center gap-2 rounded-md p-3 text-sm transition-colors hover:bg-accent", inset && "pl-8", className)}
+        onClick={(e) => {
+          if (onClick) onClick(e)
+          setOpen(false)
+        }}
+        {...props}
+      >
+        {children}
+      </button>
+    )
+  }
+  return (
+    <DropdownMenuPrimitive.Item
+      ref={ref}
+      className={cn(
+        "relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&>svg]:size-4 [&>svg]:shrink-0",
+        inset && "pl-8",
+        className
+      )}
+      onClick={onClick}
+      {...props}>
+      {children}
+    </DropdownMenuPrimitive.Item>
+  )
+})
 DropdownMenuItem.displayName = DropdownMenuPrimitive.Item.displayName
 
 const DropdownMenuCheckboxItem = React.forwardRef(({ className, children, checked, ...props }, ref) => (

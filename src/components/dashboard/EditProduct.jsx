@@ -103,8 +103,29 @@ export default function EditProduct({ product, onClose }) {
         return base44.entities.Product.create(data);
       }
     },
+    onMutate: async (newProductData) => {
+      await queryClient.cancelQueries({ queryKey: ['products'] });
+      await queryClient.cancelQueries({ queryKey: ['products-admin'] });
+      const previousProducts = queryClient.getQueryData(['products']);
+      const previousAdminProducts = queryClient.getQueryData(['products-admin']);
+      
+      const updateData = (old) => {
+        if (!old) return [];
+        if (product.id) {
+           return old.map(p => p.id === product.id ? { ...p, ...newProductData } : p);
+        } else {
+           return [...old, { ...newProductData, id: 'temp-' + Date.now() }];
+        }
+      };
+
+      queryClient.setQueryData(['products'], updateData);
+      queryClient.setQueryData(['products-admin'], updateData);
+
+      return { previousProducts, previousAdminProducts };
+    },
     onSuccess: (savedProduct, variables) => {
       queryClient.invalidateQueries({ queryKey: ['products'] });
+      queryClient.invalidateQueries({ queryKey: ['products-admin'] });
       const slug = variables.page_slug || variables.title?.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
       toast.success(
         product.id 
@@ -113,8 +134,18 @@ export default function EditProduct({ product, onClose }) {
       );
       onClose();
     },
-    onError: (error) => {
+    onError: (error, variables, context) => {
+      if (context?.previousProducts) {
+        queryClient.setQueryData(['products'], context.previousProducts);
+      }
+      if (context?.previousAdminProducts) {
+        queryClient.setQueryData(['products-admin'], context.previousAdminProducts);
+      }
       toast.error("Failed to save product: " + error.message);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+      queryClient.invalidateQueries({ queryKey: ['products-admin'] });
     }
   });
 

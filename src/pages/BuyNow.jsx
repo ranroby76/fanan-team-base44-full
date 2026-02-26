@@ -4,6 +4,7 @@ import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import PackPurchaseCard from "@/components/PackPurchaseCard";
+import PullToRefresh from "@/components/PullToRefresh";
 
 // Hardcoded packs with their logos
 const HARDCODED_PACKS = [
@@ -38,13 +39,13 @@ export default function BuyNow() {
     queryFn: () => base44.auth.me().catch(() => null),
   });
 
-  const { data: userPurchases = [] } = useQuery({
+  const { data: userPurchases = [], refetch: refetchPurchases } = useQuery({
     queryKey: ["userPurchases", user?.email],
     queryFn: () => base44.entities.Purchase.filter({ customer_email: user.email }),
     enabled: !!user?.email,
   });
 
-  const { data: dbPacks = [] } = useQuery({
+  const { data: dbPacks = [], refetch: refetchPacks } = useQuery({
     queryKey: ["packPrices"],
     queryFn: () => base44.entities.PackPrice.list(),
   });
@@ -119,6 +120,7 @@ export default function BuyNow() {
         setPaypalError("PayPal failed to load");
       }}
     >
+    <PullToRefresh onRefresh={async () => { await Promise.all([refetchPurchases(), refetchPacks()]); }}>
     <>
     <style>{`
       @keyframes blink {
@@ -209,6 +211,7 @@ export default function BuyNow() {
       </div>
     </div>
     </>
+    </PullToRefresh>
     </PayPalScriptProvider>
   );
 }
