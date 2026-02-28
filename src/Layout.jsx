@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import ScrollToTop from "@/components/ScrollToTop";
+import SEO from "@/components/SEO";
 
 export default function Layout({ children, currentPageName }) {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
@@ -69,6 +70,7 @@ export default function Layout({ children, currentPageName }) {
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
       <ScrollToTop />
+      <SEO title={currentPageName !== 'Home' ? currentPageName : ''} />
       <style>{`
         :root {
           --background: 0 0% 7%;
