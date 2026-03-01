@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import EditProduct from "../components/dashboard/EditProduct";
 import AddPackForm from "../components/dashboard/AddPackForm";
 import OrganizeBundles from "../components/dashboard/OrganizeBundles";
+import AddClientForm from "../components/dashboard/AddClientForm";
 
 export default function ProductManager() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -25,6 +26,7 @@ export default function ProductManager() {
   const [madMidiPrice, setMadMidiPrice] = useState("22.00");
   const [maxPackPrice, setMaxPackPrice] = useState("12.00");
   const [showAddPackForm, setShowAddPackForm] = useState(false);
+  const [showAddClientForm, setShowAddClientForm] = useState(false);
   const [clientSearch, setClientSearch] = useState("");
   const [clientPackFilter, setClientPackFilter] = useState("all");
 
@@ -471,6 +473,13 @@ export default function ProductManager() {
           </>
         )}
 
+      {showAddClientForm && (
+        <AddClientForm 
+          onClose={() => setShowAddClientForm(false)} 
+          packs={packs}
+        />
+      )}
+
         {activeTab === "pricing" && (
           <div className="max-w-2xl">
             <div className="mb-8">
@@ -556,8 +565,11 @@ export default function ProductManager() {
                     </CardDescription>
                   </div>
                   
-                  <div className="flex gap-2 w-full md:w-auto">
-                    <div className="flex gap-2 bg-muted/20 p-1 rounded-lg">
+                  <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
+                    <Button onClick={() => setShowAddClientForm(true)} size="sm">
+                      <Plus className="w-4 h-4 mr-2" /> Add Client
+                    </Button>
+                    <div className="flex flex-wrap gap-2 bg-muted/20 p-1 rounded-lg">
                       <Button
                         size="sm"
                         variant={clientPackFilter === "all" ? "default" : "ghost"}
