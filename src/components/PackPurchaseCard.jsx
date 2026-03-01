@@ -103,9 +103,11 @@ export default function PackPurchaseCard({
         });
 
         alert(`Payment successful! Your serial: ${generatedSerial}`);
+        if (onPurchaseSuccess) onPurchaseSuccess();
       } catch (error) {
         console.error("Email send error:", error);
         alert(`Payment successful! Your serial: ${generatedSerial}`);
+        if (onPurchaseSuccess) onPurchaseSuccess();
       }
     } catch (error) {
       console.error("Payment processing error:", error);
@@ -150,7 +152,7 @@ export default function PackPurchaseCard({
           <Input
             placeholder="enter your id here"
             value={machineId}
-            onChange={(e) => setMachineId(e.target.value)}
+            onChange={handleMachineIdChange}
             className="mb-4"
           />
         </div>
