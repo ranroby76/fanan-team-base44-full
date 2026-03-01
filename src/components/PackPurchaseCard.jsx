@@ -36,12 +36,32 @@ export default function PackPurchaseCard({
   price, 
   originalPrice,
   hasDiscount,
+  latestPurchase,
   logoUrl, 
   userCountry, 
-  paypalError 
+  paypalError,
+  onPurchaseSuccess
 }) {
-  const [machineId, setMachineId] = React.useState("");
-  const [serial, setSerial] = React.useState("");
+  const [machineId, setMachineId] = React.useState(latestPurchase?.machine_id || "");
+  const [serial, setSerial] = React.useState(latestPurchase?.serial_number || "");
+
+  React.useEffect(() => {
+    if (latestPurchase && latestPurchase.machine_id) {
+      setMachineId(latestPurchase.machine_id);
+      setSerial(latestPurchase.serial_number);
+    }
+  }, [latestPurchase]);
+
+  const handleMachineIdChange = (e) => {
+    const val = e.target.value;
+    setMachineId(val);
+    
+    if (latestPurchase && val === latestPurchase.machine_id) {
+      setSerial(latestPurchase.serial_number);
+    } else {
+      setSerial("");
+    }
+  };
 
   const handlePayPalApprove = async (data, actions) => {
     try {
