@@ -181,7 +181,11 @@ export default function BuyNow() {
       {/* Products Grid */}
       <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-12">
         {allPaidPacks.map((pack) => {
-          const hasPurchased = userPurchases.some(p => normalizePackName(p.pack_name) === normalizePackName(pack.name));
+          const packPurchases = userPurchases.filter(p => normalizePackName(p.pack_name) === normalizePackName(pack.name));
+          const hasPurchased = packPurchases.length > 0;
+          // Sort by created_date descending to get the latest purchase
+          packPurchases.sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
+          const latestPurchase = hasPurchased ? packPurchases[0] : null;
           const finalPrice = hasPurchased ? pack.price * 0.5 : pack.price;
           
           return (
@@ -191,9 +195,11 @@ export default function BuyNow() {
               price={finalPrice}
               originalPrice={pack.price}
               hasDiscount={hasPurchased}
+              latestPurchase={latestPurchase}
               logoUrl={pack.logo}
               userCountry={userCountry}
               paypalError={paypalError}
+              onPurchaseSuccess={() => refetchPurchases()}
             />
           );
         })}
