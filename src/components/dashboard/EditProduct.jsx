@@ -84,6 +84,22 @@ export default function EditProduct({ product, onClose }) {
   const [image1, setImage1] = React.useState(product.main_image || "");
   const [galleryImages, setGalleryImages] = React.useState(ensureArraySize(product.gallery_images, 6, ""));
 
+  const currentPackName = watch("pack");
+  const currentPackObj = packs.find(p => p.pack_name === currentPackName);
+  
+  const [packPrice, setPackPrice] = React.useState("");
+  const [packLogoUrl, setPackLogoUrl] = React.useState("");
+
+  useEffect(() => {
+    if (currentPackObj) {
+      setPackPrice(currentPackObj.price || "");
+      setPackLogoUrl(currentPackObj.logo_url || "");
+    } else {
+      setPackPrice("");
+      setPackLogoUrl("");
+    }
+  }, [currentPackObj]);
+
   const setGalleryImage = (idx, val) => {
     const newGallery = [...galleryImages];
     newGallery[idx] = val;
