@@ -108,15 +108,34 @@ export default function EditProduct({ product, onClose }) {
 
   const updateProductMutation = useMutation({
     mutationFn: async (data) => {
+      const { packPrice, packLogoUrl, ...productData } = data;
+      
       // Auto-generate page_slug from title if not set
-      if (!data.page_slug && data.title) {
-        data.page_slug = data.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      if (!productData.page_slug && productData.title) {
+        productData.page_slug = productData.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
       }
       
+      // Update or create pack
+      if (productData.pack) {
+        const existingPack = packs.find(p => p.pack_name === productData.pack);
+        if (existingPack) {
+          await base44.entities.PackPrice.update(existingPack.id, {
+            price: parseFloat(packPrice) || 0,
+            logo_url: packLogoUrl
+          });
+        } else {
+          await base44.entities.PackPrice.create({
+            pack_name: productData.pack,
+            price: parseFloat(packPrice) || 0,
+            logo_url: packLogoUrl
+          });
+        }
+      }
+
       if (product.id) {
-        return base44.entities.Product.update(product.id, data);
+        return base44.entities.Product.update(product.id, productData);
       } else {
-        return base44.entities.Product.create(data);
+        return base44.entities.Product.create(productData);
       }
     },
     onMutate: async (newProductData) => {
@@ -142,6 +161,7 @@ export default function EditProduct({ product, onClose }) {
     onSuccess: (savedProduct, variables) => {
       queryClient.invalidateQueries({ queryKey: ['products'] });
       queryClient.invalidateQueries({ queryKey: ['products-admin'] });
+      queryClient.invalidateQueries({ queryKey: ['packPrices'] });
       const slug = variables.page_slug || variables.title?.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
       toast.success(
         product.id 
@@ -173,7 +193,9 @@ export default function EditProduct({ product, onClose }) {
       gallery_images: galleryImages.filter(img => img && img.trim() !== ""),
       // Filter empty links for cleaner DB, but ensure structure
       download_links: data.download_links.filter(l => l.label || l.url), 
-      youtube_links: data.youtube_links.filter(l => l && l.trim() !== "")
+      youtube_links: data.youtube_links.filter(l => l && l.trim() !== ""),
+      packPrice,
+      packLogoUrl
     };
     updateProductMutation.mutate(finalData);
   };
@@ -389,6 +411,38 @@ export default function EditProduct({ product, onClose }) {
                <div className="space-y-2">
                 <Label>Supported Video Formats</Label>
                 <Input {...register("supported_video_formats")} />
+              </div>
+            </div>
+
+            {/* Pack Settings */}
+            <div className="pt-8 mt-8 border-t border-border">
+              <h3 className="text-xl font-bold text-primary mb-4">Pack Settings ({watch("pack")})</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-muted/10 rounded-lg border">
+                <div className="space-y-2">
+                  <Label className="text-lg font-bold">Pack Price (USD)</Label>
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl">$</span>
+                    <Input 
+                      type="number" 
+                      step="0.01"
+                      value={packPrice}
+                      onChange={(e) => setPackPrice(e.target.value)}
+                      placeholder="22.00" 
+                      className="text-xl"
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-lg font-bold">Pack Logo/Banner URL</Label>
+                  <Input 
+                    value={packLogoUrl}
+                    onChange={(e) => setPackLogoUrl(e.target.value)}
+                    placeholder="https://example.com/pack-logo.png" 
+                  />
+                  <p className="text-sm text-muted-foreground">
+                    URL of the pack logo or banner image
+                  </p>
+                </div>
               </div>
             </div>
 
