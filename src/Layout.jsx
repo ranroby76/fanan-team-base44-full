@@ -318,11 +318,7 @@ export default function Layout({ children, currentPageName }) {
           <p className="text-sm text-muted-foreground mt-2">
             VSTi plugins and MIDI tools for music production
             </p>
-            <div className="mt-4">
-            <Link to="/ProductManager" className="text-xs text-muted-foreground hover:text-primary transition-colors">
-              Dashboard
-            </Link>
-            </div>
+
             </div>
             </footer>
     </div>
